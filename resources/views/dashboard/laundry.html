@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StyleHub - Laundry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#9F7AEA',
+                        secondary: '#4FD1C5',
+                        accent: '#FC8181',
+                        light: '#F7FAFC',
+                        dark: '#2D3748',
+                        success: '#68D391',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    screens: {
+                        md: '768px',
+                        lg: '1024px',
+                        xl: '1280px',
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #9f7aea 0%, #4fd1c5 100%);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(159, 122, 234, 0.1);
+        }
+
+        .nav-link.active {
+            background-color: rgba(159, 122, 234, 0.15);
+            border-right: 3px solid #9f7aea;
+        }
+
+        .laundry-item {
+            transition: all 0.3s ease;
+        }
+
+        .laundry-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .urgency-low {
+            border-left: 4px solid #68D391;
+        }
+
+        .urgency-medium {
+            border-left: 4px solid #F6AD55;
+        }
+
+        .urgency-high {
+            border-left: 4px solid #FC8181;
+        }
+
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+            background-color: #e5e7eb;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-low {
+            background-color: #68D391;
+        }
+
+        .progress-medium {
+            background-color: #F6AD55;
+        }
+
+        .progress-high {
+            background-color: #FC8181;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            transition: all 0.3s ease;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        /* Mobile (default) - Hidden sidebar */
+        .sidebar {
+            transform: translateX(-100%);
+            position: fixed;
+            z-index: 50;
+            width: 280px;
+        }
+
+        .sidebar.mobile-open {
+            transform: translateX(0);
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+        }
+
+        /* Toggle Button - Moves with sidebar */
+        .toggle-btn {
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            position: fixed;
+            left: 240px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 80;
+        }
+
+        .sidebar.collapsed-lg .toggle-btn {
+            left: 80px;
+        }
+
+        .sidebar.mobile-open .toggle-btn {
+            left: 280px;
+        }
+
+        .toggle-btn:hover {
+            background: #f9fafb;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        /* User profile dropdown - Positioned closer to trigger */
+        .profile-dropdown {
+            display: none;
+            position: fixed;
+            width: 200px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e5e7eb;
+            z-index: 100;
+            padding: 8px 0;
+            left: 20px;
+            bottom: 60px;
+        }
+
+        .sidebar.collapsed-lg .profile-dropdown {
+            left: 20px;
+        }
+
+        /* Medium screens dropdown positioning */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .profile-dropdown {
+                left: 20px;
+                bottom: 60px;
+            }
+        }
+
+        /* Large screens dropdown positioning */
+        @media (min-width: 1024px) {
+            .profile-dropdown {
+                left: 20px;
+                bottom: 50px;
+            }
+            
+            .sidebar:not(.collapsed-lg) .profile-dropdown {
+                left: 220px;
+            }
+        }
+
+        .profile-dropdown.show {
+            display: block;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 767px) {
+            .profile-dropdown {
+                position: fixed;
+                left: 20px;
+                bottom: 60px;
+                transform: none;
+                width: 200px;
+                max-width: none;
+            }
+            
+            .sidebar.mobile-open .profile-dropdown {
+                left: 20px;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+        }
+
+        /* Medium devices (768px and up) - Fixed sidebar with icons only, not expandable */
+        @media (min-width: 768px) {
+            .sidebar {
+                transform: translateX(0);
+                width: 80px;
+                border-right: 1px solid #e5e7eb;
+            }
+
+            .sidebar .nav-text {
+                display: none;
+            }
+
+            .sidebar .logo-text {
+                display: none;
+            }
+
+            .sidebar .user-name,
+            .sidebar .user-status {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 80px;
+            }
+
+            /* Hide toggle button on medium screens */
+            .toggle-btn {
+                display: none;
+            }
+
+            /* Hide three dots menu on medium screens */
+            #sidebarUserMenu {
+                display: none;
+            }
+        }
+
+        /* Large devices (1024px and up) - Expandable sidebar */
+        @media (min-width: 1024px) {
+            .sidebar {
+                width: 280px;
+                border-right: 1px solid #e5e7eb;
+            }
+
+            .sidebar .nav-text {
+                display: inline;
+            }
+
+            .sidebar .logo-text {
+                display: inline;
+            }
+
+            .sidebar .user-name,
+            .sidebar .user-status {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 280px;
+            }
+
+            .sidebar.collapsed-lg {
+                width: 80px;
+                border-right: 1px solid #e5e7eb;
+            }
+
+            .sidebar.collapsed-lg .nav-text {
+                display: none;
+            }
+
+            .sidebar.collapsed-lg .logo-text {
+                display: none;
+            }
+
+            .sidebar.collapsed-lg .user-name,
+            .sidebar.collapsed-lg .user-status {
+                display: none;
+            }
+
+            .main-content.collapsed-lg {
+                margin-left: 80px;
+            }
+
+            /* Show toggle button on large screens */
+            .toggle-btn {
+                display: flex;
+            }
+
+            /* Show three dots when sidebar is expanded, hide when collapsed */
+            .sidebar:not(.collapsed-lg) #sidebarUserMenu {
+                display: block;
+            }
+            
+            .sidebar.collapsed-lg #sidebarUserMenu {
+                display: none;
+            }
+        }
+
+        .profile-item {
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .profile-item:hover {
+            background: #f9fafb;
+        }
+
+        .profile-item.active {
+            background: rgba(159, 122, 234, 0.1);
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+
+        /* Top bar user profile */
+        .topbar-profile {
+            position: relative;
+        }
+
+        .topbar-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 200px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e5e7eb;
+            z-index: 60;
+            padding: 8px 0;
+        }
+
+        .topbar-dropdown.show {
+            display: block;
+        }
+
+        /* Scrollable sidebar navigation */
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+
+        .sidebar-nav::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Improved responsive grid for laundry items */
+        .laundry-grid {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .laundry-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .laundry-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        /* Improved responsive text sizes */
+        .responsive-text {
+            font-size: 0.875rem;
+        }
+
+        @media (min-width: 640px) {
+            .responsive-text {
+                font-size: 1rem;
+            }
+        }
+
+        .responsive-heading {
+            font-size: 1.25rem;
+        }
+
+        @media (min-width: 640px) {
+            .responsive-heading {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .responsive-heading {
+                font-size: 1.875rem;
+            }
+        }
+
+        /* Improved button responsiveness */
+        .responsive-button {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        @media (min-width: 640px) {
+            .responsive-button {
+                padding: 0.875rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Improved card responsiveness */
+        .responsive-card {
+            padding: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .responsive-card {
+                padding: 1.5rem;
+            }
+        }
+        
+        /* Urgency badges */
+        .urgency-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .badge-low {
+            background-color: #68D391;
+            color: white;
+        }
+        
+        .badge-medium {
+            background-color: #F6AD55;
+            color: white;
+        }
+        
+        .badge-high {
+            background-color: #FC8181;
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="bg-light font-inter">
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Side Navigation -->
+    <div class="sidebar fixed left-0 top-0 bg-white shadow-lg z-50" id="sidebar">
+        <!-- Logo Section -->
+        <div class="p-6 py-5 border-b border-gray-200 flex items-center justify-between">
+            <div class="flex items-center">
+                <i class="fas fa-tshirt text-primary text-2xl mr-3"></i>
+                <span class="logo-text text-xl font-bold text-dark">StyleHub</span>
+            </div>
+            <button class="text-gray-500 hover:text-primary md:hidden" id="closeSidebar">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Navigation Links - Scrollable -->
+        <div class="sidebar-nav py-4">
+            <a href="dashboard.html" class="nav-link flex items-center py-3 px-6 text-dark font-medium">
+                <i class="fas fa-th-large text-primary mr-4 text-lg"></i>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="#" class="nav-link flex items-center py-3 px-6 text-dark font-medium">
+                <i class="fas fa-archive text-primary mr-4 text-lg"></i>
+                <span class="nav-text">My Wardrobe</span>
+            </a>
+            <a href="#" class="nav-link flex items-center py-3 px-6 text-dark font-medium">
+                <i class="fas fa-heart text-primary mr-4 text-lg"></i>
+                <span class="nav-text">Interests</span>
+            </a>
+            <a href="#" class="nav-link flex items-center py-3 px-6 text-dark font-medium">
+                <i class="fas fa-bookmark text-primary mr-4 text-lg"></i>
+                <span class="nav-text">Wishlist</span>
+            </a>
+            <a href="shopping.html" class="nav-link flex items-center py-3 px-6 text-dark font-medium">
+                <i class="fas fa-shopping-cart text-primary mr-4 text-lg"></i>
+                <span class="nav-text">Shopping</span>
+            </a>
+            <a href="orders.html" class="nav-link flex items-center py-3 px-6 text-dark font-medium">
+                <i class="fas fa-shopping-bag text-primary mr-4 text-lg"></i>
+                <span class="nav-text">Orders</span>
+            </a>
+            <a href="laundry.html" class="nav-link active flex items-center py-3 px-6 text-dark font-medium">
+                <i class="fas fa-soap text-primary mr-4 text-lg"></i>
+                <span class="nav-text">Laundry</span>
+            </a>
+        </div>
+
+        <!-- User Section - Always visible at bottom -->
+        <div class="absolute bottom-0 w-full p-4 border-t border-gray-200 bg-white">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center cursor-pointer" id="sidebarUser">
+                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                        U
+                    </div>
+                    <div class="ml-3">
+                        <p class="user-name text-sm font-medium text-dark">
+                            User Name
+                        </p>
+                        <p class="user-status text-xs text-gray-500">
+                            Premium Member
+                        </p>
+                    </div>
+                </div>
+                <button class="text-gray-500 hover:text-primary user-menu-toggle" id="sidebarUserMenu">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Dropdown - Positioned closer to trigger -->
+    <div class="profile-dropdown" id="profileDropdown">
+        <div class="profile-item active">
+            <div class="profile-avatar bg-primary">U</div>
+            <div>
+                <p class="text-sm font-medium text-dark">
+                    User Name
+                </p>
+                <p class="text-xs text-gray-500">
+                    Premium Member
+                </p>
+            </div>
+        </div>
+        <div class="profile-item">
+            <div class="profile-avatar bg-secondary">A</div>
+            <div>
+                <p class="text-sm font-medium text-dark">
+                    Alex Johnson
+                </p>
+                <p class="text-xs text-gray-500">
+                    Family Account
+                </p>
+            </div>
+        </div>
+        <div class="profile-item">
+            <div class="profile-avatar bg-accent">S</div>
+            <div>
+                <p class="text-sm font-medium text-dark">
+                    Sarah Wilson
+                </p>
+                <p class="text-xs text-gray-500">Guest</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-200 mt-2 pt-2">
+            <div class="profile-item">
+                <i class="fas fa-user-plus text-primary mr-3"></i>
+                <span class="text-sm">Add Profile</span>
+            </div>
+            <div class="profile-item">
+                <i class="fas fa-cog text-gray-500 mr-3"></i>
+                <span class="text-sm">Manage Profiles</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toggle Button - Moves with sidebar -->
+    <button class="toggle-btn text-gray-500 hover:text-primary" id="toggleSidebar">
+        <i class="fas fa-chevron-left text-sm"></i>
+    </button>
+
+    <!-- Main Content -->
+    <div class="main-content min-h-screen" id="mainContent">
+        <!-- Top Bar -->
+        <div class="bg-white shadow-sm py-5 px-6 flex justify-between items-center sticky top-0 z-40">
+            <div class="flex items-center">
+                <!-- Hamburger Menu for Mobile -->
+                <button class="text-gray-500 hover:text-primary md:hidden mr-4" id="openSidebar">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h1 class="text-xl font-bold text-dark">
+                    Laundry
+                </h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <button class="bg-white text-primary border border-primary px-2 py-1 rounded-full font-medium hover:bg-primary hover:text-white transition">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <span class="absolute -top-0.5 -right-0.5 bg-accent text-white text-[10px] rounded-full h-3 w-3 flex items-center justify-center">2</span>
+                </div>
+
+                <!-- Top Bar User Profile -->
+                <div class="topbar-profile relative">
+                    <div class="flex items-center space-x-2 cursor-pointer" id="topbarUser">
+                        <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                            U
+                        </div>
+                    </div>
+
+                    <!-- Top Bar Dropdown -->
+                    <div class="topbar-dropdown" id="topbarDropdown">
+                        <div class="profile-item active">
+                            <div class="profile-avatar bg-primary">
+                                U
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-dark">
+                                    User Name
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                    Premium Member
+                                </p>
+                            </div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="profile-avatar bg-secondary">
+                                A
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-dark">
+                                    Alex Johnson
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                    Family Account
+                                </p>
+                            </div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="profile-avatar bg-accent">
+                                S
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-dark">
+                                    Sarah Wilson
+                                </p>
+                                <p class="text-xs text-gray-500">Guest</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-200 mt-2 pt-2">
+                            <div class="profile-item">
+                                <i class="fas fa-user-plus text-primary mr-3"></i>
+                                <span class="text-sm">Add Profile</span>
+                            </div>
+                            <div class="profile-item">
+                                <i class="fas fa-cog text-gray-500 mr-3"></i>
+                                <span class="text-sm">Manage Profiles</span>
+                            </div>
+                            <div class="profile-item">
+                                <i class="fas fa-sign-out-alt text-gray-500 mr-3"></i>
+                                <span class="text-sm">Logout</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Laundry Content -->
+        <div class="container mx-auto px-4 sm:px-6 py-8">
+            <!-- Laundry Summary -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white rounded-2xl shadow-lg responsive-card text-center">
+                    <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-soap text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-dark mb-1">5</h3>
+                    <p class="text-gray-600">In Laundry</p>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg responsive-card text-center">
+                    <div class="w-12 h-12 bg-secondary/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-clock text-secondary text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-dark mb-1">2</h3>
+                    <p class="text-gray-600">Due Soon</p>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg responsive-card text-center">
+                    <div class="w-12 h-12 bg-success/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-check-circle text-success text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-dark mb-1">12</h3>
+                    <p class="text-gray-600">Completed</p>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg responsive-card text-center">
+                    <div class="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-tshirt text-accent text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-dark mb-1">3</h3>
+                    <p class="text-gray-600">Ready to Wear</p>
+                </div>
+            </div>
+
+            <!-- Add to Laundry Section -->
+            <div class="bg-white rounded-2xl shadow-lg responsive-card mb-8">
+                <h2 class="responsive-heading font-bold text-dark mb-6">
+                    Add Items to Laundry
+                </h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Quick Add Form -->
+                    <div>
+                        <h3 class="font-bold text-dark mb-4">Quick Add</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Item Name</label>
+                                <input type="text" id="itemName" class="w-full bg-gray-100 border-0 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="e.g., Blue Jeans, White Shirt">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Laundry Duration</label>
+                                <select id="laundryDuration" class="w-full bg-gray-100 border-0 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-primary">
+                                    <option value="3">3 days (Low urgency)</option>
+                                    <option value="2">2 days (Medium urgency)</option>
+                                    <option value="1">1 day (High urgency)</option>
+                                    <option value="custom">Custom duration</option>
+                                </select>
+                            </div>
+                            <div id="customDuration" class="hidden">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Custom Days</label>
+                                <input type="number" id="customDays" min="1" max="30" class="w-full bg-gray-100 border-0 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter number of days">
+                            </div>
+                            <button id="addToLaundry" class="w-full bg-primary text-white responsive-button rounded-lg font-bold hover:bg-purple-700 transition flex items-center justify-center">
+                                <i class="fas fa-plus mr-2"></i> Add to Laundry
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Bulk Add from Wardrobe -->
+                    <div>
+                        <h3 class="font-bold text-dark mb-4">Add from Wardrobe</h3>
+                        <div class="bg-gray-50 rounded-xl p-4">
+                            <p class="text-gray-600 text-sm mb-4">Select items from your wardrobe to send to laundry</p>
+                            <div class="space-y-3 max-h-48 overflow-y-auto">
+                                <!-- Sample wardrobe items -->
+                                <div class="flex items-center justify-between bg-white p-3 rounded-lg">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
+                                            <i class="fas fa-tshirt text-gray-500"></i>
+                                        </div>
+                                        <div>
+                                            <span class="text-sm font-medium block">White T-Shirt</span>
+                                            <span class="text-xs text-gray-500">Last worn: 2 days ago</span>
+                                        </div>
+                                    </div>
+                                    <button class="add-from-wardrobe text-primary hover:text-purple-700 p-2">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between bg-white p-3 rounded-lg">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
+                                            <i class="fas fa-tshirt text-gray-500"></i>
+                                        </div>
+                                        <div>
+                                            <span class="text-sm font-medium block">Black Jeans</span>
+                                            <span class="text-xs text-gray-500">Last worn: 1 week ago</span>
+                                        </div>
+                                    </div>
+                                    <button class="add-from-wardrobe text-primary hover:text-purple-700 p-2">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between bg-white p-3 rounded-lg">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
+                                            <i class="fas fa-tshirt text-gray-500"></i>
+                                        </div>
+                                        <div>
+                                            <span class="text-sm font-medium block">Blue Dress</span>
+                                            <span class="text-xs text-gray-500">Last worn: 3 days ago</span>
+                                        </div>
+                                    </div>
+                                    <button class="add-from-wardrobe text-primary hover:text-purple-700 p-2">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Laundry -->
+            <div class="bg-white rounded-2xl shadow-lg responsive-card mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="responsive-heading font-bold text-dark">
+                        Current Laundry
+                    </h2>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-600">Filter:</span>
+                        <select class="bg-gray-100 border-0 rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option>All Items</option>
+                            <option>High Urgency</option>
+                            <option>Medium Urgency</option>
+                            <option>Low Urgency</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="laundry-grid" id="laundryItems">
+                    <!-- Laundry items will be dynamically added here -->
+                    <!-- Sample items -->
+                    <div class="laundry-item urgency-high bg-white border border-gray-200 rounded-xl p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="font-bold text-dark">White Shirt</h3>
+                            <span class="urgency-badge badge-high">High</span>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
+                                <i class="fas fa-tshirt text-gray-500"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-600">Added: Today</p>
+                                <p class="text-sm text-gray-600">Due: Tomorrow</p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-xs text-gray-600 mb-1">
+                                <span>Time remaining</span>
+                                <span>1 day</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill progress-high" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="mark-clean flex-1 bg-success text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-green-500 transition flex items-center justify-center">
+                                <i class="fas fa-check mr-1"></i> Mark Clean
+                            </button>
+                            <button class="bg-gray-200 text-gray-700 py-2 px-3 rounded-lg text-sm hover:bg-gray-300 transition">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="laundry-item urgency-medium bg-white border border-gray-200 rounded-xl p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="font-bold text-dark">Blue Jeans</h3>
+                            <span class="urgency-badge badge-medium">Medium</span>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
+                                <i class="fas fa-tshirt text-gray-500"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-600">Added: Yesterday</p>
+                                <p class="text-sm text-gray-600">Due: In 2 days</p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-xs text-gray-600 mb-1">
+                                <span>Time remaining</span>
+                                <span>2 days</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill progress-medium" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="mark-clean flex-1 bg-success text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-green-500 transition flex items-center justify-center">
+                                <i class="fas fa-check mr-1"></i> Mark Clean
+                            </button>
+                            <button class="bg-gray-200 text-gray-700 py-2 px-3 rounded-lg text-sm hover:bg-gray-300 transition">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Laundry History -->
+            <div class="bg-white rounded-2xl shadow-lg responsive-card">
+                <h2 class="responsive-heading font-bold text-dark mb-6">
+                    Laundry History
+                </h2>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left py-3 text-sm font-medium text-gray-600">Item</th>
+                                <th class="text-left py-3 text-sm font-medium text-gray-600">Sent to Laundry</th>
+                                <th class="text-left py-3 text-sm font-medium text-gray-600">Completed</th>
+                                <th class="text-left py-3 text-sm font-medium text-gray-600">Duration</th>
+                                <th class="text-left py-3 text-sm font-medium text-gray-600">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
+                                            <i class="fas fa-tshirt text-gray-500 text-xs"></i>
+                                        </div>
+                                        <span class="text-sm font-medium">Black Dress</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 text-sm text-gray-600">Oct 10, 2023</td>
+                                <td class="py-3 text-sm text-gray-600">Oct 12, 2023</td>
+                                <td class="py-3 text-sm text-gray-600">2 days</td>
+                                <td class="py-3">
+                                    <span class="urgency-badge badge-low">Completed</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
+                                            <i class="fas fa-tshirt text-gray-500 text-xs"></i>
+                                        </div>
+                                        <span class="text-sm font-medium">Red Sweater</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 text-sm text-gray-600">Oct 8, 2023</td>
+                                <td class="py-3 text-sm text-gray-600">Oct 11, 2023</td>
+                                <td class="py-3 text-sm text-gray-600">3 days</td>
+                                <td class="py-3">
+                                    <span class="urgency-badge badge-low">Completed</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements for sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const toggleBtn = document.getElementById('toggleSidebar');
+        const openSidebarBtn = document.getElementById('openSidebar');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const sidebarUser = document.getElementById('sidebarUser');
+        const sidebarUserMenu = document.getElementById('sidebarUserMenu');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const topbarUser = document.getElementById('topbarUser');
+        const topbarDropdown = document.getElementById('topbarDropdown');
+
+        // DOM Elements for laundry functionality
+        const laundryDuration = document.getElementById('laundryDuration');
+        const customDuration = document.getElementById('customDuration');
+        const addToLaundryBtn = document.getElementById('addToLaundry');
+        const laundryItems = document.getElementById('laundryItems');
+        const addFromWardrobeBtns = document.querySelectorAll('.add-from-wardrobe');
+
+        // Sidebar state
+        let isSidebarCollapsed = false;
+
+        // Toggle sidebar on large screens
+        function toggleSidebarLG() {
+            isSidebarCollapsed = !isSidebarCollapsed;
+
+            if (window.innerWidth >= 1024) {
+                // Large devices
+                if (isSidebarCollapsed) {
+                    sidebar.classList.add('collapsed-lg');
+                    mainContent.classList.add('collapsed-lg');
+                    toggleBtn.innerHTML = '<i class="fas fa-chevron-right text-sm"></i>';
+                    toggleBtn.style.left = '68px';
+                    profileDropdown.style.left = '80px';
+                } else {
+                    sidebar.classList.remove('collapsed-lg');
+                    mainContent.classList.remove('collapsed-lg');
+                    toggleBtn.innerHTML = '<i class="fas fa-chevron-left text-sm"></i>';
+                    toggleBtn.style.left = '268px';
+                    profileDropdown.style.left = '280px';
+                }
+            }
+        }
+
+        // Update toggle button and dropdown positions based on sidebar state
+        function updatePositions() {
+            if (sidebar.classList.contains('collapsed-lg')) {
+                toggleBtn.style.left = '68px';
+                profileDropdown.style.left = '80px';
+            } else {
+                toggleBtn.style.left = '268px';
+                profileDropdown.style.left = '50px';
+            }
+        }
+
+        // Open sidebar on mobile
+        function openSidebarMobile() {
+            sidebar.classList.add('mobile-open');
+            sidebarOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Update toggle button position when mobile sidebar opens
+            toggleBtn.style.left = '280px';
+        }
+
+        // Close sidebar on mobile
+        function closeSidebarMobile() {
+            sidebar.classList.remove('mobile-open');
+            sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            // Reset toggle button position when mobile sidebar closes
+            if (window.innerWidth >= 1024) {
+                updatePositions();
+            } else {
+                toggleBtn.style.display = 'none';
+            }
+        }
+
+        // Toggle profile dropdown based on screen size and sidebar state
+        function toggleProfileDropdown(event) {
+            event.stopPropagation();
+            
+            // Close topbar dropdown if open
+            topbarDropdown.classList.remove('show');
+            
+            // Toggle profile dropdown
+            profileDropdown.classList.toggle('show');
+        }
+
+        // Toggle topbar dropdown
+        function toggleTopbarDropdown(event) {
+            event.stopPropagation();
+            
+            // Close profile dropdown if open
+            profileDropdown.classList.remove('show');
+            
+            // Toggle topbar dropdown
+            topbarDropdown.classList.toggle('show');
+        }
+
+        // Close all dropdowns
+        function closeAllDropdowns() {
+            profileDropdown.classList.remove('show');
+            topbarDropdown.classList.remove('show');
+        }
+
+        // Enhanced click outside handler
+        function handleClickOutside(event) {
+            const isProfileDropdownClick = profileDropdown.contains(event.target);
+            const isTopbarDropdownClick = topbarDropdown.contains(event.target);
+            const isSidebarUserClick = sidebarUser.contains(event.target);
+            const isSidebarUserMenuClick = sidebarUserMenu.contains(event.target);
+            const isTopbarUserClick = topbarUser.contains(event.target);
+            
+            // Close dropdowns if click is outside of all dropdown elements and their triggers
+            if (!isProfileDropdownClick && !isSidebarUserClick && !isSidebarUserMenuClick) {
+                profileDropdown.classList.remove('show');
+            }
+            
+            if (!isTopbarDropdownClick && !isTopbarUserClick) {
+                topbarDropdown.classList.remove('show');
+            }
+        }
+
+        // Handle responsive behavior
+        function handleResponsive() {
+            if (window.innerWidth >= 768 && window.innerWidth < 1024) {
+                // Medium screens - icon-only sidebar, not expandable
+                closeSidebarMobile();
+                sidebar.classList.remove('collapsed-lg', 'mobile-open');
+                mainContent.classList.remove('collapsed-lg');
+                
+                // Hide toggle button on medium screens
+                toggleBtn.style.display = 'none';
+                
+                // Ensure three dots are hidden on medium screens
+                sidebarUserMenu.style.display = 'none';
+                
+            } else if (window.innerWidth >= 1024) {
+                // Large screens - expandable sidebar
+                closeSidebarMobile();
+                toggleBtn.style.display = 'flex';
+                
+                // Initialize positions
+                updatePositions();
+                
+                // Show/hide three dots based on sidebar state
+                if (sidebar.classList.contains('collapsed-lg')) {
+                    sidebarUserMenu.style.display = 'none';
+                } else {
+                    sidebarUserMenu.style.display = 'block';
+                }
+            } else {
+                // Small screens
+                sidebar.classList.remove('collapsed-lg');
+                mainContent.classList.remove('collapsed-lg');
+                closeSidebarMobile();
+                
+                // Hide toggle button on mobile
+                toggleBtn.style.display = 'none';
+                
+                // Show three dots on mobile when sidebar is open
+                sidebarUserMenu.style.display = 'block';
+            }
+        }
+
+        // Set up event listeners based on screen size
+        function setupEventListeners() {
+            // Remove all existing event listeners first
+            sidebarUser.removeEventListener('click', toggleProfileDropdown);
+            sidebarUserMenu.removeEventListener('click', toggleProfileDropdown);
+            
+            if (window.innerWidth >= 768 && window.innerWidth < 1024) {
+                // Medium screens: profile icon opens dropdown
+                sidebarUser.addEventListener('click', toggleProfileDropdown);
+            } else if (window.innerWidth >= 1024) {
+                // Large screens: 
+                if (sidebar.classList.contains('collapsed-lg')) {
+                    // When collapsed: profile icon opens dropdown
+                    sidebarUser.addEventListener('click', toggleProfileDropdown);
+                } else {
+                    // When expanded: three dots opens dropdown
+                    sidebarUserMenu.addEventListener('click', toggleProfileDropdown);
+                }
+            } else {
+                // Mobile screens: three dots opens dropdown when sidebar is open
+                sidebarUserMenu.addEventListener('click', toggleProfileDropdown);
+            }
+        }
+
+        // LAUNDRY-SPECIFIC FUNCTIONALITY
+
+        // Show/hide custom duration input
+        laundryDuration.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                customDuration.classList.remove('hidden');
+            } else {
+                customDuration.classList.add('hidden');
+            }
+        });
+
+        // Add item to laundry from quick form
+        addToLaundryBtn.addEventListener('click', function() {
+            const itemName = document.getElementById('itemName').value;
+            let durationDays = laundryDuration.value;
+            
+            if (durationDays === 'custom') {
+                durationDays = document.getElementById('customDays').value;
+            }
+            
+            if (!itemName || !durationDays) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            addLaundryItem(itemName, durationDays);
+            
+            // Reset form
+            document.getElementById('itemName').value = '';
+            laundryDuration.value = '3';
+            customDuration.classList.add('hidden');
+        });
+
+        // Add items from wardrobe
+        addFromWardrobeBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const itemElement = this.closest('.flex.items-center.justify-between');
+                const itemName = itemElement.querySelector('.text-sm.font-medium').textContent;
+                
+                // For demo purposes, using a fixed duration
+                // In a real app, you might want to show a duration selection modal
+                addLaundryItem(itemName, 2);
+                
+                // Visual feedback
+                this.innerHTML = '<i class="fas fa-check text-green-500"></i>';
+                this.disabled = true;
+            });
+        });
+
+        // Function to add a laundry item
+        function addLaundryItem(itemName, durationDays) {
+            // Determine urgency based on days
+            let urgencyClass, urgencyText, urgencyBadgeClass, progressClass;
+            if (durationDays <= 1) {
+                urgencyClass = 'urgency-high';
+                urgencyText = 'High';
+                urgencyBadgeClass = 'badge-high';
+                progressClass = 'progress-high';
+            } else if (durationDays <= 2) {
+                urgencyClass = 'urgency-medium';
+                urgencyText = 'Medium';
+                urgencyBadgeClass = 'badge-medium';
+                progressClass = 'progress-medium';
+            } else {
+                urgencyClass = 'urgency-low';
+                urgencyText = 'Low';
+                urgencyBadgeClass = 'badge-low';
+                progressClass = 'progress-low';
+            }
+            
+            // Calculate progress percentage (inverse of days)
+            const progressWidth = Math.max(10, 100 - (durationDays * 20));
+            
+            // Create new laundry item
+            const newItem = document.createElement('div');
+            newItem.className = `laundry-item ${urgencyClass} bg-white border border-gray-200 rounded-xl p-4`;
+            newItem.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <h3 class="font-bold text-dark">${itemName}</h3>
+                    <span class="urgency-badge ${urgencyBadgeClass}">${urgencyText}</span>
+                </div>
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
+                        <i class="fas fa-tshirt text-gray-500"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm text-gray-600">Added: Today</p>
+                        <p class="text-sm text-gray-600">Due: In ${durationDays} day${durationDays > 1 ? 's' : ''}</p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex justify-between text-xs text-gray-600 mb-1">
+                        <span>Time remaining</span>
+                        <span>${durationDays} day${durationDays > 1 ? 's' : ''}</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill ${progressClass}" style="width: ${progressWidth}%"></div>
+                    </div>
+                </div>
+                <div class="flex space-x-2">
+                    <button class="mark-clean flex-1 bg-success text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-green-500 transition flex items-center justify-center">
+                        <i class="fas fa-check mr-1"></i> Mark Clean
+                    </button>
+                    <button class="bg-gray-200 text-gray-700 py-2 px-3 rounded-lg text-sm hover:bg-gray-300 transition">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Add to laundry items
+            laundryItems.prepend(newItem);
+            
+            // Add event listener to the mark clean button
+            newItem.querySelector('.mark-clean').addEventListener('click', function() {
+                moveToHistory(newItem, itemName, durationDays);
+            });
+            
+            // Show success message
+            showNotification(`${itemName} added to laundry!`, 'success');
+        }
+
+        // Move item to history
+        function moveToHistory(itemElement, itemName, durationDays) {
+            // Remove from current laundry
+            itemElement.remove();
+            
+            // Here you would typically save to a database
+            // For this demo, we'll just log it
+            console.log(`Marked ${itemName} as clean after ${durationDays} days in laundry`);
+            
+            // Show success message
+            showNotification(`${itemName} has been marked as clean!`, 'success');
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transform transition-transform duration-300 ${
+                type === 'success' ? 'bg-success text-white' : 'bg-accent text-white'
+            }`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-${type === 'success' ? 'check' : 'exclamation'}-circle mr-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Add event listeners to existing mark clean buttons
+        document.querySelectorAll('.mark-clean').forEach(button => {
+            button.addEventListener('click', function() {
+                const itemElement = this.closest('.laundry-item');
+                const itemName = itemElement.querySelector('h3').textContent;
+                const durationText = itemElement.querySelector('.text-sm.text-gray-600:last-child').textContent;
+                const durationDays = parseInt(durationText.match(/\d+/)[0]);
+                
+                moveToHistory(itemElement, itemName, durationDays);
+            });
+        });
+
+        // Event Listeners
+        toggleBtn.addEventListener('click', toggleSidebarLG);
+        openSidebarBtn.addEventListener('click', openSidebarMobile);
+        closeSidebarBtn.addEventListener('click', closeSidebarMobile);
+        sidebarOverlay.addEventListener('click', closeSidebarMobile);
+        topbarUser.addEventListener('click', toggleTopbarDropdown);
+
+        // Enhanced click outside detection - listen for clicks anywhere in the document
+        document.addEventListener('click', handleClickOutside);
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            handleResponsive();
+            setupEventListeners();
+        });
+
+        // Update event listeners when sidebar is toggled on large screens
+        toggleBtn.addEventListener('click', () => {
+            if (window.innerWidth >= 1024) {
+                setTimeout(() => {
+                    handleResponsive();
+                    setupEventListeners();
+                }, 300); // Wait for transition to complete
+            }
+        });
+
+        // Initialize
+        handleResponsive();
+        setupEventListeners();
+
+        // Close dropdowns on escape key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeAllDropdowns();
+            }
+        });
+    </script>
+</body>
+</html>

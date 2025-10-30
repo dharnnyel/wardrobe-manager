@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StyleHub - Account Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#9F7AEA',
+                        secondary: '#4FD1C5',
+                        accent: '#FC8181',
+                        light: '#F7FAFC',
+                        dark: '#2D3748',
+                        success: '#68D391',
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    screens: {
+                        md: '768px',
+                        lg: '1024px',
+                        xl: '1280px',
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #9f7aea 0%, #4fd1c5 100%);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(159, 122, 234, 0.1);
+        }
+
+        .nav-link.active {
+            background-color: rgba(159, 122, 234, 0.15);
+            border-right: 3px solid #9f7aea;
+        }
+
+        .profile-card {
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            transition: all 0.3s ease;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        /* Mobile (default) - Hidden sidebar */
+        .sidebar {
+            transform: translateX(-100%);
+            position: fixed;
+            z-index: 50;
+            width: 280px;
+        }
+
+        .sidebar.mobile-open {
+            transform: translateX(0);
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+        }
+
+        /* Toggle Button - Moves with sidebar */
+        .toggle-btn {
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            position: fixed;
+            left: 260px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 80;
+        }
+
+        .sidebar.collapsed-lg .toggle-btn {
+            left: 60px;
+        }
+
+        .sidebar.mobile-open .toggle-btn {
+            left: 260px;
+        }
+
+        .toggle-btn:hover {
+            background: #f9fafb;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        /* User profile dropdown - Positioned closer to trigger */
+        .profile-dropdown {
+            display: none;
+            position: fixed;
+            width: 200px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e5e7eb;
+            z-index: 100;
+            padding: 8px 0;
+            left: 20px;
+            bottom: 60px;
+        }
+
+        .sidebar.collapsed-lg .profile-dropdown {
+            left: 20px;
+        }
+
+        /* Medium screens dropdown positioning */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .profile-dropdown {
+                left: 20px;
+                bottom: 60px;
+            }
+        }
+
+        /* Large screens dropdown positioning */
+        @media (min-width: 1024px) {
+            .profile-dropdown {
+                left: 20px;
+                bottom: 50px;
+            }
+            
+            .sidebar:not(.collapsed-lg) .profile-dropdown {
+                left: 220px;
+            }
+        }
+
+        .profile-dropdown.show {
+            display: block;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 767px) {
+            .profile-dropdown {
+                position: fixed;
+                left: 20px;
+                bottom: 60px;
+                transform: none;
+                width: 200px;
+                max-width: none;
+            }
+            
+            .sidebar.mobile-open .profile-dropdown {
+                left: 20px;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+        }
+
+        /* Medium devices (768px and up) - Fixed sidebar with icons only, not expandable */
+        @media (min-width: 768px) {
+            .sidebar {
+                transform: translateX(0);
+                width: 80px;
+                border-right: 1px solid #e5e7eb;
+            }
+
+            .sidebar .nav-text {
+                display: none;
+            }
+
+            .sidebar .logo-text {
+                display: none;
+            }
+
+            .sidebar .user-name,
+            .sidebar .user-status {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 80px;
+            }
+
+            /* Hide toggle button on medium screens */
+            .toggle-btn {
+                display: none;
+            }
+
+            /* Hide three dots menu on medium screens */
+            #sidebarUserMenu {
+                display: none;
+            }
+        }
+
+        /* Large devices (1024px and up) - Expandable sidebar */
+        @media (min-width: 1024px) {
+            .sidebar {
+                width: 280px;
+                border-right: 1px solid #e5e7eb;
+            }
+
+            .sidebar .nav-text {
+                display: inline;
+            }
+
+            .sidebar .logo-text {
+                display: inline;
+            }
+
+            .sidebar .user-name,
+            .sidebar .user-status {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 280px;
+            }
+
+            .sidebar.collapsed-lg {
+                width: 80px;
+                border-right: 1px solid #e5e7eb;
+            }
+
+            .sidebar.collapsed-lg .nav-text {
+                display: none;
+            }
+
+            .sidebar.collapsed-lg .logo-text {
+                display: none;
+            }
+
+            .sidebar.collapsed-lg .user-name,
+            .sidebar.collapsed-lg .user-status {
+                display: none;
+            }
+
+            .main-content.collapsed-lg {
+                margin-left: 80px;
+            }
+
+            /* Show toggle button on large screens */
+            .toggle-btn {
+                display: flex;
+            }
+
+            /* Show three dots when sidebar is expanded, hide when collapsed */
+            .sidebar:not(.collapsed-lg) #sidebarUserMenu {
+                display: block;
+            }
+            
+            .sidebar.collapsed-lg #sidebarUserMenu {
+                display: none;
+            }
+        }
+
+        .profile-item {
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .profile-item:hover {
+            background: #f9fafb;
+        }
+
+        .profile-item.active {
+            background: rgba(159, 122, 234, 0.1);
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+
+        /* Top bar user profile */
+        .topbar-profile {
+            position: relative;
+        }
+
+        .topbar-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 200px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e5e7eb;
+            z-index: 60;
+            padding: 8px 0;
+        }
+
+        .topbar-dropdown.show {
+            display: block;
+        }
+
+        /* Scrollable sidebar navigation */
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+
+        .sidebar-nav::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Improved responsive text sizes */
+        .responsive-text {
+            font-size: 0.875rem;
+        }
+
+        @media (min-width: 640px) {
+            .responsive-text {
+                font-size: 1rem;
+            }
+        }
+
+        .responsive-heading {
+            font-size: 1.25rem;
+        }
+
+        @media (min-width: 640px) {
+            .responsive-heading {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .responsive-heading {
+                font-size: 1.875rem;
+            }
+        }
+
+        /* Improved button responsiveness */
+        .responsive-button {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        @media (min-width: 640px) {
+            .responsive-button {
+                padding: 0.875rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Improved card responsiveness */
+        .responsive-card {
+            padding: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .responsive-card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            /* Hide scrollbar but keep functionality */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .modal-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #9F7AEA;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Responsive profile cards */
+        .profile-card-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .profile-card-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .profile-card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .profile-card {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 640px) {
+            .profile-card {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-avatar-large {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            margin-right: 1rem;
+            font-size: 1.125rem;
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            flex: 1;
+            margin-top: 0.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .profile-info {
+                margin-top: 0;
+            }
+        }
+
+        .profile-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 0.75rem;
+        }
+
+        @media (min-width: 640px) {
+            .profile-actions {
+                margin-top: 0;
+            }
+        }
+
+        .permission-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .permission-badge {
+            font-size: 0.625rem;
+            padding: 0.125rem 0.375rem;
+            border-radius: 0.375rem;
+        }
+    </style>
+</head>
+
+<body class="bg-light font-poppins">
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Side Navigation -->
+    <div class="sidebar fixed left-0 top-0 bg-white shadow-lg z-50" id="sidebar">
+        <!-- Logo Section -->
+        <div class="p-6 py-5 border-b border-gray-200 flex items-center justify-between">
+            <div class="flex items-center">
+                <i class="fas fa-tshirt text-primary text-2xl mr-3"></i>
+                <span class="logo-text text-xl font-bold text-dark">StyleHub</span>
+            </div>
+            <button class="text-gray-500 hover:text-primary md:hidden" id="closeSidebar">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Navigation Links - Scrollable -->
+        <div class="sidebar-nav py-4">
+            <a href="dashboard.html" class="nav-link flex items-center py-3 px-6 text-dark font-medium">
+                <i class="fas fa-th-large text-primary mr-4 text-lg"></i>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="#" class="nav-link flex items-center py-3 px-6 text-dark font-medium">
+                <i class="fas fa-archive text-primary mr-4 text-lg"></i>
+                <span class="nav-text">My Wardrobe</span>
+            </a>
+            <a href="#" class="nav-link flex items-center py-3 px-6 text-dark font-medium">
+                <i class="fas fa-heart text-primary mr-4 text-lg"></i>
+                <span class="nav-text">Interests</span>
+            </a>
+            <a href="#" class="nav-link flex items-center py-3 px-6 text-dark font-medium">
+                <i class="fas fa-bookmark text-primary mr-4 text-lg"></i>
+                <span class="nav-text">Wishlist</span>
+            </a>
+            <a href="#" class="nav-link flex items-center py-3 px-6 text-dark font-medium">
+                <i class="fas fa-shopping-cart text-primary mr-4 text-lg"></i>
+                <span class="nav-text">Shopping</span>
+            </a>
+            <a href="#" class="nav-link flex items-center py-3 px-6 text-dark font-medium">
+                <i class="fas fa-shopping-bag text-primary mr-4 text-lg"></i>
+                <span class="nav-text">Orders</span>
+            </a>
+            <a href="account.html" class="nav-link active flex items-center py-3 px-6 text-dark font-medium">
+                <i class="fas fa-user text-primary mr-4 text-lg"></i>
+                <span class="nav-text">Account</span>
+            </a>
+        </div>
+
+        <!-- User Section - Always visible at bottom -->
+        <div class="absolute bottom-0 w-full p-4 border-t border-gray-200 bg-white">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center cursor-pointer" id="sidebarUser">
+                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                        U
+                    </div>
+                    <div class="ml-3">
+                        <p class="user-name text-sm font-medium text-dark">
+                            User Name
+                        </p>
+                        <p class="user-status text-xs text-gray-500">
+                            Premium Member
+                        </p>
+                    </div>
+                </div>
+                <button class="text-gray-500 hover:text-primary user-menu-toggle" id="sidebarUserMenu">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Dropdown - Positioned closer to trigger -->
+    <div class="profile-dropdown" id="profileDropdown">
+        <div class="profile-item active">
+            <div class="profile-avatar bg-primary">U</div>
+            <div>
+                <p class="text-sm font-medium text-dark">
+                    User Name
+                </p>
+                <p class="text-xs text-gray-500">
+                    Premium Member
+                </p>
+            </div>
+        </div>
+        <div class="profile-item">
+            <div class="profile-avatar bg-secondary">A</div>
+            <div>
+                <p class="text-sm font-medium text-dark">
+                    Alex Johnson
+                </p>
+                <p class="text-xs text-gray-500">
+                    Family Account
+                </p>
+            </div>
+        </div>
+        <div class="profile-item">
+            <div class="profile-avatar bg-accent">S</div>
+            <div>
+                <p class="text-sm font-medium text-dark">
+                    Sarah Wilson
+                </p>
+                <p class="text-xs text-gray-500">Guest</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-200 mt-2 pt-2">
+            <div class="profile-item">
+                <i class="fas fa-user-plus text-primary mr-3"></i>
+                <span class="text-sm">Add Profile</span>
+            </div>
+            <div class="profile-item">
+                <i class="fas fa-cog text-gray-500 mr-3"></i>
+                <span class="text-sm">Manage Profiles</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toggle Button - Moves with sidebar -->
+    <button class="toggle-btn text-gray-500 hover:text-primary" id="toggleSidebar">
+        <i class="fas fa-chevron-left text-sm"></i>
+    </button>
+
+    <!-- Invitation Modal -->
+    <div class="modal-overlay" id="invitationModal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-dark">Send Profile Invitation</h2>
+                <button class="text-gray-500 hover:text-dark text-xl" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="invitationForm">
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-medium mb-2" for="inviteEmail">
+                        Email Address
+                    </label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                           id="inviteEmail" type="email" placeholder="Enter email address" required>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-medium mb-2" for="profileType">
+                        Profile Type
+                    </label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                            id="profileType" required>
+                        <option value="">Select profile type</option>
+                        <option value="family">Family Member</option>
+                        <option value="guest">Guest</option>
+                        <option value="child">Child</option>
+                    </select>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-medium mb-2" for="profileAvatar">
+                        Profile Avatar Color
+                    </label>
+                    <div class="flex space-x-2">
+                        <div class="w-8 h-8 bg-primary rounded-full cursor-pointer border-2 border-white shadow-md profile-color" data-color="primary"></div>
+                        <div class="w-8 h-8 bg-secondary rounded-full cursor-pointer border-2 border-white shadow-md profile-color" data-color="secondary"></div>
+                        <div class="w-8 h-8 bg-accent rounded-full cursor-pointer border-2 border-white shadow-md profile-color" data-color="accent"></div>
+                        <div class="w-8 h-8 bg-success rounded-full cursor-pointer border-2 border-white shadow-md profile-color" data-color="success"></div>
+                        <div class="w-8 h-8 bg-yellow-500 rounded-full cursor-pointer border-2 border-white shadow-md profile-color" data-color="yellow-500"></div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <p class="font-medium text-dark">Allow Login</p>
+                            <p class="text-sm text-gray-600">Enable this profile to have login access</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="allowLogin" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <p class="font-medium text-dark">Shopping Permissions</p>
+                            <p class="text-sm text-gray-600">Allow adding items to shopping cart</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="shoppingPermissions" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium text-dark">Wardrobe Access</p>
+                            <p class="text-sm text-gray-600">Allow viewing and managing wardrobe</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="wardrobeAccess" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-3">
+                    <button type="button" class="bg-white text-gray-700 border border-gray-300 responsive-button rounded-lg font-bold hover:bg-gray-100 transition" id="cancelInvitation">
+                        Cancel
+                    </button>
+                    <button type="submit" class="bg-primary text-white responsive-button rounded-lg font-bold hover:bg-purple-700 transition flex items-center justify-center">
+                        <i class="fas fa-paper-plane mr-2"></i>Send Invitation
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content min-h-screen" id="mainContent">
+        <!-- Top Bar -->
+        <div class="bg-white shadow-sm py-5 px-6 flex justify-between items-center sticky top-0 z-40">
+            <div class="flex items-center">
+                <!-- Hamburger Menu for Mobile -->
+                <button class="text-gray-500 hover:text-primary md:hidden mr-4" id="openSidebar">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h1 class="text-xl font-bold text-dark">
+                    Account Management
+                </h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <button class="bg-white text-primary border border-primary px-2 py-1 rounded-full font-medium hover:bg-primary hover:text-white transition">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <span class="absolute -top-0.5 -right-0.5 bg-accent text-white text-[10px] rounded-full h-3 w-3 flex items-center justify-center">3</span>
+                </div>
+
+                <!-- Top Bar User Profile -->
+                <div class="topbar-profile relative">
+                    <div class="flex items-center space-x-2 cursor-pointer" id="topbarUser">
+                        <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                            U
+                        </div>
+                    </div>
+
+                    <!-- Top Bar Dropdown -->
+                    <div class="topbar-dropdown" id="topbarDropdown">
+                        <div class="profile-item active">
+                            <div class="profile-avatar bg-primary">
+                                U
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-dark">
+                                    User Name
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                    Premium Member
+                                </p>
+                            </div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="profile-avatar bg-secondary">
+                                A
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-dark">
+                                    Alex Johnson
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                    Family Account
+                                </p>
+                            </div>
+                        </div>
+                        <div class="profile-item">
+                            <div class="profile-avatar bg-accent">
+                                S
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-dark">
+                                    Sarah Wilson
+                                </p>
+                                <p class="text-xs text-gray-500">Guest</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-200 mt-2 pt-2">
+                            <div class="profile-item">
+                                <i class="fas fa-user-plus text-primary mr-3"></i>
+                                <span class="text-sm">Add Profile</span>
+                            </div>
+                            <div class="profile-item">
+                                <i class="fas fa-cog text-gray-500 mr-3"></i>
+                                <span class="text-sm">Manage Profiles</span>
+                            </div>
+                            <div class="profile-item">
+                                <i class="fas fa-sign-out-alt text-gray-500 mr-3"></i>
+                                <span class="text-sm">Logout</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Content -->
+        <div class="container mx-auto px-4 sm:px-6 py-8">
+            <!-- Welcome Section -->
+            <div class="mb-8">
+                <h1 class="responsive-heading font-bold text-dark">
+                    Account Management
+                </h1>
+                <p class="text-gray-600 responsive-text">
+                    Manage your main account and profiles
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+                <!-- Main Content - Account Details -->
+                <div class="lg:col-span-2">
+                    <!-- Main Account Profile -->
+                    <div class="bg-white rounded-2xl shadow-lg responsive-card mb-6 lg:mb-8">
+                        <h2 class="responsive-heading font-bold text-dark mb-4 sm:mb-6">
+                            Main Account
+                        </h2>
+
+                        <div class="flex flex-col md:flex-row items-start md:items-center gap-6 mb-6">
+                            <div class="w-24 h-24 bg-primary rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                                U
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-dark mb-2">User Name</h3>
+                                <p class="text-gray-600 mb-3">Premium Member</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm">Account Owner</span>
+                                    <span class="bg-secondary/20 text-secondary px-3 py-1 rounded-full text-sm">StyleHub Premium</span>
+                                </div>
+                            </div>
+                            <button class="bg-primary text-white responsive-button rounded-lg font-bold hover:bg-purple-700 transition flex items-center justify-center">
+                                <i class="fas fa-edit mr-2"></i>Edit Profile
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                            <div class="bg-gray-50 rounded-xl p-4">
+                                <h4 class="font-bold text-dark mb-2">Account Details</h4>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Email:</span>
+                                        <span class="font-medium">user@example.com</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Phone:</span>
+                                        <span class="font-medium">+1 (555) 123-4567</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Member Since:</span>
+                                        <span class="font-medium">Jan 2022</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 rounded-xl p-4">
+                                <h4 class="font-bold text-dark mb-2">Subscription</h4>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Plan:</span>
+                                        <span class="font-medium">Premium</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Renewal:</span>
+                                        <span class="font-medium">Dec 15, 2023</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Profiles:</span>
+                                        <span class="font-medium">3/5 Active</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add New Profile Section -->
+                    <div class="bg-white rounded-2xl shadow-lg responsive-card mb-6 lg:mb-8">
+                        <h2 class="responsive-heading font-bold text-dark mb-4 sm:mb-6">
+                            Add New Profile
+                        </h2>
+
+                        <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl responsive-card mb-4 sm:mb-6">
+                            <div class="flex flex-col md:flex-row items-center gap-6">
+                                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-primary border-2 border-dashed border-primary">
+                                    <i class="fas fa-plus text-2xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-bold text-dark mb-2">Invite New Profile</h3>
+                                    <p class="text-gray-600 mb-4">Send an invitation to add a new profile for family members or guests to share your StyleHub experience.</p>
+                                    <div class="flex flex-col sm:flex-row gap-3">
+                                        <button class="bg-primary text-white responsive-button rounded-lg font-bold hover:bg-purple-700 transition flex items-center justify-center" id="openInvitationModal">
+                                            <i class="fas fa-user-plus mr-2"></i>Send Invitation
+                                        </button>
+                                        <button class="bg-white text-primary border border-primary responsive-button rounded-lg font-bold hover:bg-primary hover:text-white transition flex items-center justify-center">
+                                            <i class="fas fa-info-circle mr-2"></i>Learn More
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Content -->
+                <div class="space-y-6 lg:space-y-8">
+                    <!-- Existing Profiles -->
+                    <div class="bg-white rounded-2xl shadow-lg responsive-card">
+                        <h2 class="text-xl font-bold text-dark mb-4 sm:mb-6">
+                            Existing Profiles
+                        </h2>
+                        <div class="profile-card-container">
+                            <!-- Profile 1 - Static HTML -->
+                            <div class="profile-card">
+                                <div class="profile-avatar-large bg-secondary">
+                                    A
+                                </div>
+                                <div class="profile-info">
+                                    <h3 class="font-bold text-dark">Alex Johnson</h3>
+                                    <p class="text-gray-600 text-sm">Family Member</p>
+                                    <div class="permission-badges">
+                                        <span class="permission-badge bg-gray-200 text-gray-700">Shopping</span>
+                                        <span class="permission-badge bg-gray-200 text-gray-700">Wardrobe</span>
+                                        <span class="permission-badge bg-gray-200 text-gray-700">Wishlist</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">Last active: 2 hours ago</p>
+                                </div>
+                                <div class="profile-actions">
+                                    <button class="text-gray-500 hover:text-primary">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Profile 2 - Static HTML -->
+                            <div class="profile-card">
+                                <div class="profile-avatar-large bg-accent">
+                                    S
+                                </div>
+                                <div class="profile-info">
+                                    <h3 class="font-bold text-dark">Sarah Wilson</h3>
+                                    <p class="text-gray-600 text-sm">Guest</p>
+                                    <div class="permission-badges">
+                                        <span class="permission-badge bg-gray-200 text-gray-700">Wardrobe</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">Last active: 1 day ago</p>
+                                </div>
+                                <div class="profile-actions">
+                                    <button class="text-gray-500 hover:text-primary">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Profile 3 - Static HTML -->
+                            <div class="profile-card">
+                                <div class="profile-avatar-large bg-success">
+                                    M
+                                </div>
+                                <div class="profile-info">
+                                    <h3 class="font-bold text-dark">Michael Brown</h3>
+                                    <p class="text-gray-600 text-sm">Child</p>
+                                    <div class="permission-badges">
+                                        <span class="permission-badge bg-gray-200 text-gray-700">Wishlist</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">Last active: 1 week ago</p>
+                                </div>
+                                <div class="profile-actions">
+                                    <button class="text-gray-500 hover:text-primary">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Actions -->
+                    <div class="bg-white rounded-2xl shadow-lg responsive-card">
+                        <h2 class="text-xl font-bold text-dark mb-4 sm:mb-6">
+                            Account Actions
+                        </h2>
+                        <div class="space-y-3">
+                            <button class="w-full bg-white text-primary border border-primary responsive-button rounded-lg font-bold hover:bg-primary hover:text-white transition flex items-center justify-center">
+                                <i class="fas fa-shield-alt mr-2"></i>Privacy Settings
+                            </button>
+                            <button class="w-full bg-white text-primary border border-primary responsive-button rounded-lg font-bold hover:bg-primary hover:text-white transition flex items-center justify-center">
+                                <i class="fas fa-bell mr-2"></i>Notification Preferences
+                            </button>
+                            <button class="w-full bg-white text-primary border border-primary responsive-button rounded-lg font-bold hover:bg-primary hover:text-white transition flex items-center justify-center">
+                                <i class="fas fa-download mr-2"></i>Export Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="bg-white rounded-2xl shadow-lg responsive-card">
+                        <h2 class="text-xl font-bold text-dark mb-4 sm:mb-6">
+                            Profile Stats
+                        </h2>
+                        <div class="space-y-3 sm:space-y-4">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center mr-2 sm:mr-3">
+                                        <i class="fas fa-user text-primary text-xs"></i>
+                                    </div>
+                                    <span class="text-sm text-gray-600">Total Profiles</span>
+                                </div>
+                                <span class="font-bold text-dark">3</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-secondary/20 rounded-lg flex items-center justify-center mr-2 sm:mr-3">
+                                        <i class="fas fa-users text-secondary text-xs"></i>
+                                    </div>
+                                    <span class="text-sm text-gray-600">Family Members</span>
+                                </div>
+                                <span class="font-bold text-dark">1</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-accent/20 rounded-lg flex items-center justify-center mr-2 sm:mr-3">
+                                        <i class="fas fa-user-friends text-accent text-xs"></i>
+                                    </div>
+                                    <span class="text-sm text-gray-600">Guest Profiles</span>
+                                </div>
+                                <span class="font-bold text-dark">1</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-success/20 rounded-lg flex items-center justify-center mr-2 sm:mr-3">
+                                        <i class="fas fa-child text-success text-xs"></i>
+                                    </div>
+                                    <span class="text-sm text-gray-600">Child Profiles</span>
+                                </div>
+                                <span class="font-bold text-dark">1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const toggleBtn = document.getElementById('toggleSidebar');
+        const openSidebarBtn = document.getElementById('openSidebar');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const sidebarUser = document.getElementById('sidebarUser');
+        const sidebarUserMenu = document.getElementById('sidebarUserMenu');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const topbarUser = document.getElementById('topbarUser');
+        const topbarDropdown = document.getElementById('topbarDropdown');
+        const openInvitationModal = document.getElementById('openInvitationModal');
+        const invitationModal = document.getElementById('invitationModal');
+        const closeModal = document.getElementById('closeModal');
+        const cancelInvitation = document.getElementById('cancelInvitation');
+        const invitationForm = document.getElementById('invitationForm');
+
+        // Sidebar state
+        let isSidebarCollapsed = false;
+
+        // Toggle sidebar on large screens
+        function toggleSidebarLG() {
+            isSidebarCollapsed = !isSidebarCollapsed;
+
+            if (window.innerWidth >= 1024) {
+                // Large devices
+                if (isSidebarCollapsed) {
+                    sidebar.classList.add('collapsed-lg');
+                    mainContent.classList.add('collapsed-lg');
+                    toggleBtn.innerHTML = '<i class="fas fa-chevron-right text-sm"></i>';
+                    toggleBtn.style.left = '80px';
+                } else {
+                    sidebar.classList.remove('collapsed-lg');
+                    mainContent.classList.remove('collapsed-lg');
+                    toggleBtn.innerHTML = '<i class="fas fa-chevron-left text-sm"></i>';
+                    toggleBtn.style.left = '280px';
+                }
+            }
+        }
+
+        // Update toggle button position based on sidebar state
+        function updateToggleButtonPosition() {
+            if (sidebar.classList.contains('collapsed-lg')) {
+                // When sidebar is collapsed
+                toggleBtn.style.left = '60px';
+            } else {
+                // When sidebar is expanded
+                toggleBtn.style.left = '260px';
+            }
+        }
+
+        // Open sidebar on mobile
+        function openSidebarMobile() {
+            sidebar.classList.add('mobile-open');
+            sidebarOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Update toggle button position when mobile sidebar opens
+            toggleBtn.style.left = '280px';
+        }
+
+        // Close sidebar on mobile
+        function closeSidebarMobile() {
+            sidebar.classList.remove('mobile-open');
+            sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            // Reset toggle button position when mobile sidebar closes
+            if (window.innerWidth >= 1024) {
+                updateToggleButtonPosition();
+            } else {
+                toggleBtn.style.display = 'none';
+            }
+        }
+
+        // Toggle profile dropdown
+        function toggleProfileDropdown(event) {
+            event.stopPropagation();
+            
+            // Close topbar dropdown if open
+            topbarDropdown.classList.remove('show');
+            
+            // Toggle profile dropdown
+            profileDropdown.classList.toggle('show');
+        }
+
+        // Toggle topbar dropdown
+        function toggleTopbarDropdown(event) {
+            event.stopPropagation();
+            
+            // Close profile dropdown if open
+            profileDropdown.classList.remove('show');
+            
+            // Toggle topbar dropdown
+            topbarDropdown.classList.toggle('show');
+        }
+
+        // Close all dropdowns
+        function closeAllDropdowns() {
+            profileDropdown.classList.remove('show');
+            topbarDropdown.classList.remove('show');
+        }
+
+        // Handle click outside dropdowns
+        function handleClickOutside(event) {
+            const isProfileDropdownClick = profileDropdown.contains(event.target);
+            const isTopbarDropdownClick = topbarDropdown.contains(event.target);
+            const isSidebarUserClick = sidebarUser.contains(event.target);
+            const isSidebarUserMenuClick = sidebarUserMenu.contains(event.target);
+            const isTopbarUserClick = topbarUser.contains(event.target);
+            
+            // Close dropdowns if click is outside of all dropdown elements and their triggers
+            if (!isProfileDropdownClick && !isSidebarUserClick && !isSidebarUserMenuClick) {
+                profileDropdown.classList.remove('show');
+            }
+            
+            if (!isTopbarDropdownClick && !isTopbarUserClick) {
+                topbarDropdown.classList.remove('show');
+            }
+        }
+
+        // Handle responsive behavior
+        function handleResponsive() {
+            if (window.innerWidth >= 768 && window.innerWidth < 1024) {
+                // Medium screens - icon-only sidebar, not expandable
+                closeSidebarMobile();
+                sidebar.classList.remove('collapsed-lg', 'mobile-open');
+                mainContent.classList.remove('collapsed-lg');
+                
+                // Hide toggle button on medium screens
+                toggleBtn.style.display = 'none';
+                
+                // Ensure three dots are hidden on medium screens
+                sidebarUserMenu.style.display = 'none';
+                
+            } else if (window.innerWidth >= 1024) {
+                // Large screens - expandable sidebar
+                closeSidebarMobile();
+                toggleBtn.style.display = 'flex';
+                
+                // Initialize positions
+                updateToggleButtonPosition();
+                
+                // Show/hide three dots based on sidebar state
+                if (sidebar.classList.contains('collapsed-lg')) {
+                    sidebarUserMenu.style.display = 'none';
+                } else {
+                    sidebarUserMenu.style.display = 'block';
+                }
+            } else {
+                // Small screens
+                sidebar.classList.remove('collapsed-lg');
+                mainContent.classList.remove('collapsed-lg');
+                closeSidebarMobile();
+                
+                // Hide toggle button on mobile
+                toggleBtn.style.display = 'none';
+                
+                // Show three dots on mobile when sidebar is open
+                sidebarUserMenu.style.display = 'block';
+            }
+        }
+
+        // Set up event listeners based on screen size
+        function setupEventListeners() {
+            // Remove all existing event listeners first
+            sidebarUser.removeEventListener('click', toggleProfileDropdown);
+            sidebarUserMenu.removeEventListener('click', toggleProfileDropdown);
+            
+            if (window.innerWidth >= 768 && window.innerWidth < 1024) {
+                // Medium screens: profile icon opens dropdown
+                sidebarUser.addEventListener('click', toggleProfileDropdown);
+            } else if (window.innerWidth >= 1024) {
+                // Large screens: 
+                if (sidebar.classList.contains('collapsed-lg')) {
+                    // When collapsed: profile icon opens dropdown
+                    sidebarUser.addEventListener('click', toggleProfileDropdown);
+                } else {
+                    // When expanded: three dots opens dropdown
+                    sidebarUserMenu.addEventListener('click', toggleProfileDropdown);
+                }
+            } else {
+                // Mobile screens: three dots opens dropdown when sidebar is open
+                sidebarUserMenu.addEventListener('click', toggleProfileDropdown);
+            }
+        }
+
+        // Event Listeners
+        toggleBtn.addEventListener('click', toggleSidebarLG);
+        openSidebarBtn.addEventListener('click', openSidebarMobile);
+        closeSidebarBtn.addEventListener('click', closeSidebarMobile);
+        sidebarOverlay.addEventListener('click', closeSidebarMobile);
+        topbarUser.addEventListener('click', toggleTopbarDropdown);
+
+        // Enhanced click outside detection - listen for clicks anywhere in the document
+        document.addEventListener('click', handleClickOutside);
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            handleResponsive();
+            setupEventListeners();
+        });
+
+        // Update event listeners when sidebar is toggled on large screens
+        toggleBtn.addEventListener('click', () => {
+            if (window.innerWidth >= 1024) {
+                setTimeout(() => {
+                    handleResponsive();
+                    setupEventListeners();
+                }, 300); // Wait for transition to complete
+            }
+        });
+
+        // Initialize
+        handleResponsive();
+        setupEventListeners();
+
+        // Close dropdowns on escape key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeAllDropdowns();
+            }
+        });
+
+        // Modal functionality
+        openInvitationModal.addEventListener('click', function() {
+            invitationModal.classList.add('active');
+        });
+
+        closeModal.addEventListener('click', function() {
+            invitationModal.classList.remove('active');
+        });
+
+        cancelInvitation.addEventListener('click', function() {
+            invitationModal.classList.remove('active');
+        });
+
+        invitationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // In a real app, you would send the invitation data to a server
+            alert('Invitation sent successfully!');
+            invitationModal.classList.remove('active');
+            invitationForm.reset();
+        });
+
+        // Profile color selection
+        const profileColors = document.querySelectorAll('.profile-color');
+        profileColors.forEach(color => {
+            color.addEventListener('click', function() {
+                // Remove active state from all colors
+                profileColors.forEach(c => {
+                    c.classList.remove('border-primary', 'border-4');
+                    c.classList.add('border-white', 'border-2');
+                });
+                
+                // Add active state to selected color
+                this.classList.remove('border-white', 'border-2');
+                this.classList.add('border-primary', 'border-4');
+            });
+        });
+    </script>
+</body>
+</html>
