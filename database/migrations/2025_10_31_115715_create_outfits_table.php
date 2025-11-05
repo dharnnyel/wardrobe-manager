@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('purpose')->nullable();
             $table->date('purpose_date')->nullable();
             $table->string('season')->nullable();
-            $table->date('last_worn')->nullable();
 
             $table->timestamps();
         });

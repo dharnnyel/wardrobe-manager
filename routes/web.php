@@ -19,4 +19,6 @@ Route::view('dashboard/interests', 'dashboard.interests');
 Route::view('dashboard/wishlist', 'dashboard.wishlist');
 Route::view('dashboard/shopping', 'dashboard.shopping');
 Route::view('dashboard/orders', 'dashboard.orders');
+Route::view('dashboard/settings', 'dashboard.settings');
+// Route::view('dashboard/notifications', 'dashboard.notifications');
 

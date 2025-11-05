@@ -14,6 +14,5 @@ class Outfit extends Model
         'purpose',
         'purpose_date',
         'season',
-        'last_worn',
     ];
 }

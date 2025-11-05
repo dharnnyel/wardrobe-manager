@@ -150,7 +150,7 @@
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         border: 1px solid #e5e7eb;
         z-index: 100;
-        padding: 8px 0;
+        // padding: 8px 0;
         left: 20px;
         bottom: 60px;
       }
@@ -297,7 +297,7 @@
       }
 
       .profile-item {
-        padding: 10px 16px;
+        padding: 14px 16px;
         display: flex;
         align-items: center;
         cursor: pointer;
@@ -341,7 +341,7 @@
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         border: 1px solid #e5e7eb;
         z-index: 60;
-        padding: 8px 0;
+        // padding: 8px 0;
       }
 
       .topbar-dropdown.show {
@@ -479,45 +479,16 @@
 
     <!-- Profile Dropdown - Positioned closer to trigger -->
     <div class="profile-dropdown" id="profileDropdown">
-      <div class="profile-item active">
-        <div class="profile-avatar bg-primary">U</div>
-        <div>
-          <p class="text-dark text-sm font-medium">
-            User Name
-          </p>
-          <p class="text-xs text-gray-500">
-            Premium Member
-          </p>
-        </div>
-      </div>
-      <div class="profile-item">
-        <div class="profile-avatar bg-secondary">A</div>
-        <div>
-          <p class="text-dark text-sm font-medium">
-            Alex Johnson
-          </p>
-          <p class="text-xs text-gray-500">
-            Family Account
-          </p>
-        </div>
-      </div>
-      <div class="profile-item">
-        <div class="profile-avatar bg-accent">S</div>
-        <div>
-          <p class="text-dark text-sm font-medium">
-            Sarah Wilson
-          </p>
-          <p class="text-xs text-gray-500">Guest</p>
-        </div>
-      </div>
-      <div class="mt-2 border-t border-gray-200 pt-2">
-        <div class="profile-item">
-          <i class="fas fa-user-plus text-primary mr-3"></i>
-          <span class="text-sm">Add Profile</span>
-        </div>
-        <div class="profile-item">
+      <a class="border-gray-200" href="{{ url('dashboard/settings') }}">
+        <div class="profile-item rounded-t-xl">
           <i class="fas fa-cog mr-3 text-gray-500"></i>
-          <span class="text-sm">Manage Profiles</span>
+          <span class="text-sm">Settings</span>
+        </div>
+      </a>
+      <div class="border-t border-gray-200">
+        <div class="profile-item rounded-b-xl">
+          <i class="fas fa-cog mr-3 text-gray-500"></i>
+          <span class="text-sm">Log Out</span>
         </div>
       </div>
     </div>
@@ -542,10 +513,10 @@
         </div>
         <div class="flex items-center space-x-4">
           <div class="relative">
-            <button
-              class="text-primary border-primary hover:bg-primary rounded-full border bg-white px-2 py-1 font-medium transition hover:text-white">
+            <button class="text-primary border-primary hover:bg-primary rounded-full border bg-white px-2 py-1 font-medium transition hover:text-white"
+              id="bellIcon">
               <i class="fas fa-bell"></i>
-            </button>
+          </button>
             <span
               class="bg-accent absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full text-[10px] text-white">3</span>
           </div>
@@ -561,55 +532,16 @@
 
             <!-- Top Bar Dropdown -->
             <div class="topbar-dropdown" id="topbarDropdown">
-              <div class="profile-item active">
-                <div class="profile-avatar bg-primary">
-                  U
-                </div>
-                <div>
-                  <p class="text-dark text-sm font-medium">
-                    User Name
-                  </p>
-                  <p class="text-xs text-gray-500">
-                    Premium Member
-                  </p>
-                </div>
-              </div>
-              <div class="profile-item">
-                <div class="profile-avatar bg-secondary">
-                  A
-                </div>
-                <div>
-                  <p class="text-dark text-sm font-medium">
-                    Alex Johnson
-                  </p>
-                  <p class="text-xs text-gray-500">
-                    Family Account
-                  </p>
-                </div>
-              </div>
-              <div class="profile-item">
-                <div class="profile-avatar bg-accent">
-                  S
-                </div>
-                <div>
-                  <p class="text-dark text-sm font-medium">
-                    Sarah Wilson
-                  </p>
-                  <p class="text-xs text-gray-500">Guest</p>
-                </div>
-              </div>
-              <div class="mt-2 border-t border-gray-200 pt-2">
-                <div class="profile-item">
-                  <i class="fas fa-user-plus text-primary mr-3"></i>
-                  <span class="text-sm">Add Profile</span>
-                </div>
-                <div class="profile-item">
+              <div class="border-gray-200">
+                <a class="profile-item rounded-t-xl" href="{{ url('dashboard/settings') }}">
                   <i class="fas fa-cog mr-3 text-gray-500"></i>
-                  <span class="text-sm">Manage Profiles</span>
-                </div>
-                <div class="profile-item">
+                  <span class="text-sm">Settings</span>
+                </a>
+              </div>
+              <div class="border-t border-gray-200">
+                <div class="profile-item rounded-b-xl">
                   <i class="fas fa-sign-out-alt mr-3 text-gray-500"></i>
-                  <span class="text-sm">Logout</span>
+                  <span class="text-sm">Log Out</span>
                 </div>
               </div>
             </div>
@@ -617,6 +549,7 @@
         </div>
       </div>
       @yield('content')
+      @include('components.notifications')
     </div>
     <script>
       // DOM Elements
