@@ -59,7 +59,7 @@ return new class extends Migration
             
             // Wishlist Notifications
             $table->boolean('wishlist_notifications')->default(true);
-            $table->enum('wishlist_frequency', ['immediate', 'daily', 'weekly'])->default('immediate');
+            $table->string('wishlist_frequency')->default('immediate'); //'immediate', 'daily', 'weekly'
             $table->boolean('price_drop_alerts')->default(true);
             $table->boolean('restock_alerts')->default(true);
             

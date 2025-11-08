@@ -9,13 +9,15 @@ class Interest extends Model
     //
     protected $fillable = [
         'name',
-        'material',
-        'size',
-        'size_unit',
-        'sleeves',
-        'color',
-        'collar',
-        'design',
+        'properties',
         'image',
     ];
+
+    protected $casts = [
+        'properties' => 'array',
+    ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

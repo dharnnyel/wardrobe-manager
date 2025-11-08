@@ -18,64 +18,8 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
         'email',
-        'phone',
-        'photo',
-        'bio',
-
-        // Body Measurements
-        'weight',
-        'height', 
-        'chest',
-        'waist',
-        'hips',
-        'inseam',
-        
-        // Fit Preferences
-        'top_fit',
-        'bottom_fit',
-        'sleeve_length',
-        'pant_length',
-        
-        // App Preferences
-        'language',
-        'region',
-        'theme',
-        'color_scheme',
-        'units',
-        
-        // Wardrobe Settings
-        'laundry_duration',
-        'laundry_reminder',
-        'auto_archive',
-        'archive_after',
-        
-        // Notification Preferences
-        'push_notifications',
-        'email_notifications',
-        'sms_notifications',
-        'laundry_reminders',
-        'outfit_suggestions',
-        'shopping_alerts',
-        'style_tips',
-        
-        // Wishlist Notifications
-        'wishlist_notifications',
-        'wishlist_frequency',
-        'price_drop_alerts',
-        'restock_alerts',
-        
-        // Quiet Hours
-        'quiet_start',
-        'quiet_end',
-        
-        // Privacy & Security
-        'public_profile',
-        'share_outfits',
-        'data_sharing',
-        'two_factor_auth',
-        'login_notifications',
+        'plan_id',
     ];
 
     /**
@@ -96,8 +40,23 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function plan() {
+        return $this->belongsTo(Plan::class);
+    }
+
+    public function clothings() {
+        return $this->hasMany(Clothing::class);
+    }
+
+    public function outfits() {
+        return $this->hasMany(Outfit::class);
+    }
+
+    public function interests() {
+        return $this->hasMany(Interest::class);
     }
 }

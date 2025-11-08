@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('outfit_clothings', function (Blueprint $table) {
+        Schema::create('laundries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('outfit_id')->constrained()->onDelete('cascade');
             $table->foreignId('clothing_id')->constrained()->onDelete('cascade');
+            // Not necessary as clothing has the user id
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            
+            $table->dateTime('expected_at')->nullable();
+            $table->dateTime('released_at')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('outfit_clothings');
+        Schema::dropIfExists('laundries');
     }
 };

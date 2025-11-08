@@ -19,4 +19,8 @@ class Plan extends Model
         'support',
         'analytics',
     ];
+
+    public function users() {
+        return $this->hasMany(User::class);
+    }
 }
