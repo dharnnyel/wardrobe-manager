@@ -7,12 +7,13 @@
 @endsection
 
 @section('content')
-  <form id="loginForm">
+  <form action="{{ route('login')}}" method="post">
+    @csrf
     <!-- Email Field -->
     <div class="mb-6">
       <div class="relative">
         <i class="fas fa-envelope absolute left-4 top-1/2 z-10 -translate-y-1/2 transform text-white text-opacity-70"></i>
-        <input class="form-input w-full rounded-xl py-4 pl-12 pr-4" placeholder="Email Address" required type="email" id="email">
+        <input class="form-input w-full rounded-xl py-4 pl-12 pr-4" placeholder="Email Address" required type="email" id="email" name="email">
       </div>
 
       <p class='mb-6 mt-1 hidden pl-2 text-sm text-white' id="verify">
