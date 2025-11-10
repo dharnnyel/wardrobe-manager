@@ -16,9 +16,8 @@ return new class extends Migration
             $table->foreignId('clothing_id')->constrained()->onDelete('cascade');
             // Not necessary as clothing has the user id
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            
-            $table->dateTime('expected_at')->nullable();
-            $table->dateTime('released_at')->nullable();
+            $table->timestamp('expected_at')->nullable();
+            $table->timestamp('released_at')->nullable();
             $table->timestamps();
         });
     }

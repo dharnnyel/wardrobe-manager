@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-// Extends Pivot since this is a pivot table model
 class ClothingOutfit extends Pivot
 {
     //

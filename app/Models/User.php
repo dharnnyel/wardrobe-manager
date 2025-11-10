@@ -18,8 +18,14 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'name',
+        'plan_id',
         'email',
         'plan_id',
+    ];
+
+    protected $casts = [
+        'password' => 'hashed',
     ];
 
     /**
@@ -32,31 +38,23 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'password' => 'hashed',
-        ];
-    }
-
-    public function plan() {
+    public function plan(){
         return $this->belongsTo(Plan::class);
     }
 
-    public function clothings() {
+    public function clothings(){
         return $this->hasMany(Clothing::class);
     }
-
-    public function outfits() {
+    public function laundries(){
+        return $this->hasMany(Laundry::class);
+    }
+    public function outfits(){
         return $this->hasMany(Outfit::class);
     }
-
-    public function interests() {
+    public function interests(){
         return $this->hasMany(Interest::class);
     }
+
+
+
 }

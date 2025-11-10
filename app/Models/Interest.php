@@ -11,13 +11,14 @@ class Interest extends Model
         'name',
         'properties',
         'image',
+        'user_id',
     ];
 
     protected $casts = [
-        'properties' => 'array',
+        'properties'=> 'array',
     ];
 
-    public function user() {
+    public function user(){
         return $this->belongsTo(User::class);
     }
 }
