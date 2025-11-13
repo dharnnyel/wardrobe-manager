@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-  <form action="{{ route('login') }}" method="POST">
+  <form action="{{ route('login') }}" method="post">
     @csrf
     <!-- Email Field -->
     <div class="mb-6 space-y-8">
@@ -111,6 +111,7 @@
           </div>
         `;
 
+<<<<<<< HEAD
         // Add event listener for the new OTP toggle button
         const toggleOtpBtn = document.getElementById('toggleOtp');
         const otpInput = document.getElementById('otpInput');
@@ -180,3 +181,74 @@
     });
   </script>
 @endpush
+=======
+      // Add event listener for the new OTP toggle button
+      const toggleOtpBtn = document.getElementById('toggleOtp');
+      const otpInput = document.getElementById('otpInput');
+
+      toggleOtpBtn.addEventListener('click', function() {
+        const type = otpInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        otpInput.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+      });
+
+      // Add event listener for the go back link
+      const goBackLink = document.getElementById('goBackLink');
+      goBackLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        switchToEmailForm();
+      });
+
+      // Update form submission for OTP verification
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Handle OTP verification logic here
+        const otp = otpInput.value;
+        if (otp) {
+          alert('OTP verification successful! Redirecting to dashboard...');
+          window.location.href = "{{ url('dashboard') }}";
+        } else {
+          alert('Please enter the OTP.');
+        }
+      });
+    }
+
+    function switchToEmailForm() {
+      // Restore the original form content
+      loginForm.innerHTML = originalFormContent;
+
+      // Re-initialize event listeners for the original form
+      initializeEmailForm();
+    }
+
+    function initializeEmailForm() {
+      // Re-get the elements since we recreated the form
+      const verify = document.getElementById('verify');
+      const verifyNowLink = document.getElementById('verifyNowLink');
+      const emailInput = document.getElementById('email');
+
+      // Re-attach event listeners
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        verify.classList.remove('hidden');
+        sessionStorage.setItem('userEmail', emailInput.value);
+      });
+
+      verifyNowLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        switchToOtpForm();
+      });
+
+      // Re-attach social button listeners
+      document.querySelectorAll('.social-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          const platform = this.textContent.trim();
+          alert(`${platform} sign in would be implemented here.`);
+        });
+      });
+    }
+  });
+</script>
+@endpush
+>>>>>>> 3e7605c621a37e31cf6148a739848ff812763e50

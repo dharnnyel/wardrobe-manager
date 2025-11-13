@@ -15,8 +15,7 @@ class Handout extends Model
         'handed_out_at' => 'datetime',
     ];
 
-    public function clothing()
-    {
+    public function clothing(){
         return $this->belongsTo(Clothing::class);
     }
 }

@@ -76,7 +76,7 @@ return new class extends Migration
             
 
             // References
-            $table->unsignedBigInteger('plan_id');
+            $table->unsignedBigInteger('plan_id');// cannot be null
             $table->foreign('plan_id')->references('id')->on('plans');
             $table->timestamps();
         });

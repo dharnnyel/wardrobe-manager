@@ -16,11 +16,18 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        //send otp to the user email
+        //return redirect to verify//
         return redirect()->route('verify', ['email' => $request->input('email')]);
     }
 
     public function otpVerification(Request $request)
     {
-        // OTP verification logic goes here
+        //get otp and email from user
+        //match otp
+        //if correct, obtain or create user
+        //login user
+        //return redirect to dashboard, 
+        //else, return back with error invalid otp
     }
 }

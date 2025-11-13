@@ -9,8 +9,9 @@ class Laundry extends Model
     //
     protected $fillable = [
         'clothing_id',
-        // 'expected_at',
-        // 'released_at',
+        'user_id',
+        'released_at',
+        'expected_at',
     ];
 
     protected $casts = [
@@ -18,12 +19,10 @@ class Laundry extends Model
         'released_at' => 'datetime',
     ];
 
-    public function clothing() {
+    public function clothing(){
         return $this->belongsTo(Clothing::class);
     }
-
-    // Can be reomved as the clothing has the user id attached to it's table
-    public function user() {
+    public function user(){
         return $this->belongsTo(User::class);
     }
 }

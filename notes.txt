@@ -1,0 +1,86 @@
+From User model
+/*
+        one to one
+        one to many
+        many to many
+
+        hasonethrough
+        hasmanythrough
+        polymorphic one to many
+        polymorphic many to many
+    */
+/*
+users table
+id | name| email
+1   | john| john@yahoo.com
+2   | mike| mike@yahoo.com
+3   | james| james@yahoo.com
+
+phone table
+id| phon_name | user_id
+1 | nokia     | 2
+2 | samsung   | 2
+
+
+//userController
+
+Creating Records 
+
+method 1
+$user = new User;
+$user->email = 'something@gmail.com';
+$user->name = 'mr asomething';
+$user->password = Hash::make('12345678');
+$user->image = 
+$user->save();
+
+method 2
+$user = User::create([
+    'email'=> 'something@gmail.com',
+    'name'=> 'mr asomething',
+    'password'=> Hash::make('12345678'),
+]);
+
+method 3
+
+DB::table('user')->->insert([
+    'email'=> 'something@gmail.com',
+    'name'=> 'mr asomething',
+    'password'=> Hash::make('12345678')
+]);
+DB::table('roles')->insert([
+    ['email' => 'something1@gmail.com', 'name' => 'Someone', 'password'=> ],
+    ['email' => 'something2@gmail.com', 'name' => 'Anyone', 'password'=> ],
+    ['email' => 'something3@gmail.com', 'name' => 'No one', 'password'=> ],
+]);
+
+//accessing records in userController
+$user = User::find(2); // find user with id 2
+$user = User::where('id',2)->first(); // find user with id 2
+$user = User::firstWhere('id',2); // find user with id 2
+
+return $user->phones;
+
+
+$phone = Phone::find(1);
+return $phone->user
+
+//in the phone model
+public function user(){
+    return $this->belongsTo(User::class);
+}
+*/
+
+//casting - json|text (array), 
+//casting - timestamp (datetime), 
+
+
+1. Frontend + Backend on same stack e.g 
+Laravel + Blade on same server
+Laravel + Livewire on same server
+Laravel + VueJs on same server --- 
+Laravel + React on same server  -- Laravel Inertia 
+
+2. Frontend on separate stack - e.g react, vuejs - 
+API connectivity
+Backend on separate stack - Laravel

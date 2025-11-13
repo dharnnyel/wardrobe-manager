@@ -20,7 +20,7 @@ class Plan extends Model
         'analytics',
     ];
 
-    public function users() {
+    public function users(){
         return $this->hasMany(User::class);
     }
 }
