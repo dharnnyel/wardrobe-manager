@@ -3,64 +3,42 @@
 @section('title', 'Login')
 
 @section('header')
-  <p class="mt-2 text-white opacity-80">Sign in to your StyleHub account</p>
+  <p class="mt-2 text-white opacity-80">Verify your account</p>
 @endsection
 
 @section('content')
-  <form action="{{ route('login') }}" method="post">
+  <form action="{{ route('login') }}" method="POST">
     @csrf
     <!-- Email Field -->
-    <div class="mb-6">
+    <div class="mb-6 space-y-8">
       <div class="relative">
         <i
           class="fas fa-envelope absolute left-4 top-1/2 z-10 -translate-y-1/2 transform text-white text-opacity-70"></i>
-        <input class="form-input w-full rounded-xl py-4 pl-12 pr-4" id="email" name="email"
-          placeholder="Email Address" required type="email">
+        <input class="form-input w-full cursor-not-allowed rounded-xl py-4 pl-12 pr-4" disabled id="email"
+          name="email" required type="email" value="{{ $email }}">
       </div>
 
-      <p class='mb-6 mt-1 hidden pl-2 text-sm text-white' id="verify">
-        Password sent.
-        <a class='text-blue-700 hover:underline' href='#' id="verifyNowLink">
-          Verify Now
-        </a>
-      </p>
-    </div>
+      <div class="relative">
+        <i
+          class="fas fa-lock absolute left-4 top-1/2 z-10 -translate-y-1/2 transform text-white text-opacity-70"></i>
+        <input class="form-input w-full rounded-xl py-4 pl-12 pr-4" placeholder="One Time Password"
+          required type="password">
+        <i
+          class="fas fa-eye absolute right-4 top-1/2 z-10 -translate-y-1/2 transform text-white opacity-70"></i>
+      </div>
 
-    <!-- Submit Button -->
-    <button
-      class="submit-btn mt-2 w-full cursor-pointer rounded-xl border-none bg-white bg-opacity-90 py-4 text-base font-medium text-purple-700 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:bg-white hover:shadow-lg"
-      type="submit">
-      Get OTP
-    </button>
-
-    <!-- Divider -->
-    <div class="my-6 flex items-center text-white text-opacity-70">
-      <div class="flex-1 border-b border-white border-opacity-30"></div>
-      <span class="px-4 text-sm font-normal">Or sign in with</span>
-      <div class="flex-1 border-b border-white border-opacity-30"></div>
-    </div>
-
-    <!-- Social Sign In -->
-    <div class="mb-6 flex gap-4">
+      <!-- Submit Button -->
       <button
-        class="social-btn flex flex-1 cursor-pointer items-center justify-center rounded-xl py-3 font-normal text-white transition-all duration-300 ease-in-out hover:-translate-y-1"
-        type="button">
-        <i class="fab fa-google mr-2 text-red-500"></i>
-        Google
+        class="w-full rounded-xl border-none bg-white/20 p-3.5 text-base  text-white font-semibold transition-all duration-75 ease-in cursor-not-allowed"
+        type="submit" disabled>
+        Verify
       </button>
-      <button
-        class="social-btn flex flex-1 cursor-pointer items-center justify-center rounded-xl py-3 font-normal text-white transition-all duration-300 ease-in-out hover:-translate-y-1"
-        type="button">
-        <i class="fab fa-facebook-f mr-2 text-blue-500"></i>
-        Facebook
-      </button>
-    </div>
 
-    <!-- Register Link -->
-    <div class="mt-6 text-center font-normal text-white text-opacity-80">
-      Don't have an account? <a class="font-medium text-white no-underline hover:underline"
-        href="{{ url('signup') }}">Create Account</a>
-    </div>
+      <!-- Login Link -->
+      <div class="flex items-center justify-center gap-2 text-white">
+        <i class="fas fa-arrow-left text-white opacity-70"></i>
+        <a href="#">Go back</a>
+      </div>
   </form>
 @endsection
 
