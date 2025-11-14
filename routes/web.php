@@ -1,6 +1,7 @@
 <?php
 
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -26,6 +27,10 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+  Route::post('logout', function () {
+    Auth::logout();
+    return redirect()->to('/');
+  })->name('logout');
   Route::view('dashboard', 'dashboard.home');
   Route::view('dashboard/wardrobe', 'dashboard.wardrobe');
   Route::view('dashboard/interests', 'dashboard.interests');
