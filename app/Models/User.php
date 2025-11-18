@@ -24,7 +24,8 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
-        'password' => 'hashed',
+        'style_tags' => 'array',
+        'clothing_categories' => 'array',
     ];
 
     /**
@@ -39,6 +40,26 @@ class User extends Authenticatable
 
     public function plan(){
         return $this->belongsTo(Plan::class);
+    }
+
+    public function subscription(){
+        return $this->hasOne(Subscription::class)->where('status', 'active')->latest();
+    }
+
+    public function subscriptions(){
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function paymentMethods(){
+        return $this->hasMany(PaymentMethod::class);
+    }
+
+    public function defaultPaymentMethod(){
+        return $this->hasOne(PaymentMethod::class)->where('is_default', true);
+    }
+
+    public function invoices(){
+        return $this->hasMany(Invoice::class);
     }
 
     public function clothings(){

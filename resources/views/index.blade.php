@@ -3,22 +3,22 @@
 @push('styles')
   <style>
     .clothing-image {
-        background-size: cover;
-        background-position: center;
-        transition: transform 0.3s ease;
-      }
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.3s ease;
+    }
 
-      .clothing-image:hover {
-        transform: scale(1.05);
-      }
+    .clothing-image:hover {
+      transform: scale(1.05);
+    }
 
-      .text-shadow {
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
+    .text-shadow {
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-      .text-shadow-lg {
-        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
+    .text-shadow-lg {
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
   </style>
 @endpush
 @section('content')
@@ -29,7 +29,8 @@
         <h1 class="mb-4 text-4xl font-bold md:text-5xl">Your Ultimate Digital Wardrobe</h1>
         <p class="mb-8 text-xl">Organize, shop, and declutter your wardrobe all in one place. Discover
           your perfect style with StyleHub.</p>
-        <div class="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+        <div
+          class="mx-auto flex max-w-md flex-col space-y-4 sm:max-w-full sm:flex-row sm:space-x-4 sm:space-y-0">
           <button
             class="text-primary rounded-lg bg-white px-6 py-3 font-bold transition hover:bg-gray-100">Get
             Started</button>
@@ -38,7 +39,7 @@
             Demo</button>
         </div>
       </div>
-      <div class="flex justify-center md:w-1/2">
+      <div class="flex w-full justify-center md:w-1/2">
         <div class="relative w-full max-w-md">
           <div class="rotate-3 transform rounded-2xl bg-white p-6 shadow-2xl">
             <div class="mb-4 flex items-center justify-between">

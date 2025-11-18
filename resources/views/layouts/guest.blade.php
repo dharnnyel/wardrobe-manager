@@ -10,6 +10,15 @@
       rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet">
+    <!-- Favicon -->
+    <link href="{{ asset('favicon/apple-touch-icon.png') }}" rel="apple-touch-icon" sizes="180x180">
+    <link href="{{ asset('favicon/favicon-32x32.png') }}" rel="icon" sizes="32x32"
+      type="image/png">
+    <link href="{{ asset('favicon/favicon-16x16.png') }}" rel="icon" sizes="16x16"
+      type="image/png">
+    <link href="{{ asset('favicon/site.webmanifest') }}" rel="manifest">
+    <link href="{{ asset('favicon/favicon.ico') }}" rel="shortcut icon">
+
     <script>
       tailwind.config = {
         theme: {
@@ -177,11 +186,8 @@
           href="{{ url('blog') }}">Blog</a>
       </div>
       <div class="flex items-center space-x-4">
-        <a class="text-primary border-primary hover:bg-primary hidden rounded-lg border bg-white px-4 py-2 font-medium transition hover:text-white sm:block"
+        <a class="text-primary border-primary hover:bg-primary hidden rounded-lg border bg-white px-4 py-2 font-medium transition hover:text-white md:block"
           href="{{ url('login') }}">Login</a>
-        <a class="bg-primary hidden rounded-lg px-4 py-2 font-medium text-white transition hover:bg-purple-700 sm:block"
-          href="{{ url('signup') }}">Sign
-          Up</a>
         <button class="text-dark md:hidden" id="mobile-menu-button">
           <i class="fas fa-bars text-xl"></i>
         </button>
@@ -237,13 +243,9 @@
           <div class="mt-8 border-t border-white/20 pt-6">
             <h4 class="text-dark mb-4 text-lg font-bold">Account</h4>
             <div class="flex flex-col space-y-4">
-              <a class="glass-button text-dark flex items-center justify-center rounded-lg px-4 py-3 font-medium"
+              <a class="bg-primary flex items-center justify-center rounded-lg px-4 py-3 font-medium text-white transition hover:bg-purple-700"
                 href="{{ url('login') }}">
                 <i class="fas fa-sign-in-alt mr-3"></i> Login
-              </a>
-              <a class="bg-primary flex items-center justify-center rounded-lg px-4 py-3 font-medium text-white transition hover:bg-purple-700"
-                href="{{ url('signup') }}">
-                <i class="fas fa-user-plus mr-3"></i> Sign Up
               </a>
             </div>
           </div>

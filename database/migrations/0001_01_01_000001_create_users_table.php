@@ -20,6 +20,14 @@ return new class extends Migration
             $table->string('phone')->nullable(); //why string and not integer
             $table->string('photo')->nullable(); // why string and not binary
             $table->text('bio')->nullable(); //For the user's letter with color around
+            $table->json('style_tags')->nullable(); // array of style tags
+
+            // Wardrobe Settings
+            $table->integer('laundry_duration')->default(2)->comment('days');
+            $table->integer('laundry_reminder')->default(2)->comment('days before due');
+            $table->boolean('auto_archive')->default(false);
+            $table->integer('archive_after')->default(6)->comment('months');
+            $table->json('clothing_categories')->nullable(); // array of categories
 
             // Body Measurements
             $table->decimal('weight', 5, 2)->nullable()->comment('in kg');
@@ -28,52 +36,46 @@ return new class extends Migration
             $table->decimal('waist', 5, 2)->nullable()->comment('in cm');
             $table->decimal('hips', 5, 2)->nullable()->comment('in cm');
             $table->decimal('inseam', 5, 2)->nullable()->comment('in cm');
-
-            // Fit Preferences
             $table->string('top_fit')->default('regular'); // slim, loose, regular
             $table->string('bottom_fit')->default('regular'); // slim, loose, regular
             $table->string('sleeve_length')->default('regular'); // short, long, regular
             $table->string('pant_length')->default('regular'); // slim, loose, regular
+            $table->string('body_shape')->default('rectangle'); // apple, pear, hourglass, rectangle
 
             // App Preferences
+            $table->string('theme')->default('light'); //light, dark, system
+            $table->boolean('high_contrast')->default(false);
+            $table->string('color_scheme')->default('primary'); //'primary', 'secondary', 'accent', 'success'
             $table->string('language')->default('en');
             $table->string('region')->default('us');
-            $table->string('theme')->default('light'); //light, dark, system
-            $table->string('color_scheme')->default('primary'); //'primary', 'secondary', 'accent', 'success'
-            $table->string('units')->default('metric'); //'metric', 'imperial'
-
-            // Wardrobe Settings
-            $table->integer('laundry_duration')->default(2)->comment('days');
-            $table->integer('laundry_reminder')->default(2)->comment('days before due');
-            $table->boolean('auto_archive')->default(false);
-            $table->integer('archive_after')->default(6)->comment('months');
+            $table->string('temperature_unit')->default('Celcius'); //'Celcius', 'Fahrenheit'
+            $table->string('Measurement_unit')->default('metric'); //'metric', 'imperial'
 
             // Notification Preferences
             $table->boolean('push_notifications')->default(true);
-            $table->boolean('email_notifications')->default(true);
-            $table->boolean('sms_notifications')->default(false);
+            $table->boolean('notification_sound')->default(true);
+            $table->boolean('notification_vibration')->default(true);
+            $table->boolean('marketing_emails')->default(true);
+            $table->boolean('weekly_digest')->default(false);
             $table->boolean('laundry_reminders')->default(true);
-            $table->boolean('outfit_suggestions')->default(true);
-            $table->boolean('shopping_alerts')->default(true);
+            $table->boolean('item_suggestions')->default(true);
+            $table->boolean('outfit_recommendations')->default(true);
             $table->boolean('style_tips')->default(false);
-            
-            // Wishlist Notifications
-            $table->boolean('wishlist_notifications')->default(true);
-            $table->string('wishlist_frequency')->default('immediate'); //'immediate', 'daily', 'weekly'
-            $table->boolean('price_drop_alerts')->default(true);
-            $table->boolean('restock_alerts')->default(true);
-            
-            // Quiet Hours
-            $table->time('quiet_start')->default('22:00');
-            $table->time('quiet_end')->default('07:00');
+            $table->boolean('quiet_hours')->default(true);
+            $table->time('quiet_start')->default(true);
+            $table->time('quiet_end')->default(true);
             
             // Privacy & Security
-            $table->boolean('public_profile')->default(false);
-            $table->boolean('share_outfits')->default(false);
-            $table->boolean('data_sharing')->default(true);
-            $table->boolean('two_factor_auth')->default(false);
             $table->boolean('login_notifications')->default(true);
-            
+            $table->string('profile_visibility')->default('friends_only'); //'public', 'friends_only', 'private'
+            $table->boolean('data_sharing')->default(true);
+            $table->boolean('personalized_ads')->default(true);
+            $table->boolean('camera_access')->default(true);
+            $table->boolean('location_access')->default(true);
+            $table->boolean('photo_library_access')->default(false);
+
+            $table->boolean('cloud_storage')->default(true)->after('photo_library_access');
+            $table->boolean('local_backup')->default(false)->after('cloud_storage');
 
             // References
             $table->unsignedBigInteger('plan_id');// cannot be null
