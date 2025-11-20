@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\User;
@@ -13,7 +13,7 @@ use App\Utils\NameGenerator;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Notification;
 
-class LoginController extends Controller
+class AuthController extends Controller
 {
     protected $redirectTo = '/dashboard';
 

@@ -1429,20 +1429,20 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @forelse($currentUser->invoices ?? [] as $invoice)
+                    @forelse($currentUser->payments ?? [] as $payment)
                       <tr class="border-b border-gray-100">
-                        <td class="px-4 py-3 text-sm">{{ $invoice->date->format('M d, Y') }}</td>
-                        <td class="px-4 py-3 text-sm">{{ $invoice->description }}</td>
+                        <td class="px-4 py-3 text-sm">{{ $payment->created_at->format('M d, Y') }}</td>
+                        <td class="px-4 py-3 text-sm">{{ $payment->description }}</td>
                         <td class="px-4 py-3 text-sm">
-                          ${{ number_format($invoice->amount / 100, 2) }}</td>
+                          ${{ number_format($payment->amount / 100, 2) }}</td>
                         <td class="px-4 py-3 text-sm">
                           <span class="bg-success/20 text-success rounded-full px-2 py-1 text-xs">
-                            {{ ucfirst($invoice->status) }}
+                            {{ ucfirst($payment->status) }}
                           </span>
                         </td>
                         <td class="px-4 py-3 text-sm">
                           <a class="text-primary hover:underline"
-                            href="{{ $invoice->invoice_pdf }}" target="_blank">Download</a>
+                            href="{{ $payment->invoice_pdf }}" target="_blank">Download</a>
                         </td>
                       </tr>
                     @empty

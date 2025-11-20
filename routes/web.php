@@ -4,11 +4,11 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\DataManagementController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\DataManagementController;
 
 Route::view('/', 'index');
 Route::view('features', 'features');
@@ -22,14 +22,14 @@ Route::middleware('guest')->group(function () {
     return view('auth.login');
   })->name('login');
 
-  Route::post('login', [LoginController::class, 'login'])->name('login');
+  Route::post('login', [AuthController::class, 'login'])->name('login');
 
   Route::get('verify/{email}', function ($encryptedEmail) {
     $email = Crypt::decryptString($encryptedEmail);
     return view('auth.verify')->with(['email' => $email]);
   })->name('verify');
 
-  Route::post('verification', [LoginController::class, 'otpVerification'])->name('verification');
+  Route::post('verification', [AuthController::class, 'otpVerification'])->name('verification');
 });
 
 Route::middleware('auth')->group(function () {
@@ -103,4 +103,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/invoices', [SubscriptionController::class, 'invoices'])->name('invoices');
     Route::get('/invoice/{invoice}', [SubscriptionController::class, 'downloadInvoice'])->name('invoice.download');
   });
+
+  Route::prefix('payment')->name('payment.')->group(function () {
+    Route::get('callback', [SubscriptionController::class, 'callback'])->name('callback');
+  });
+
 });

@@ -401,7 +401,7 @@
       }
 </style>
 @stack('styles')
-@vite('resources/js/app.js')
+{{-- @vite('resources/js/app.js') --}}
 </head>
 
 <body class="bg-light font-inter">
@@ -534,7 +534,7 @@ onclick="document.getElementById('logoutform').submit()">
   <div class="flex cursor-pointer items-center space-x-2" id="topbarUser">
     <div
       class="bg-primary flex h-8 w-8 items-center justify-center rounded-full font-bold text-white">
-      {{ strtoupper(auth()->user()->name[0]) }}
+      {{ strtoupper($currentUser->name[0]) }}
     </div>
   </div>
 

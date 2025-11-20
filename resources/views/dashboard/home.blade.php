@@ -79,7 +79,7 @@
     <!-- Welcome Section -->
     <div class="mb-8">
       <h1 class="responsive-heading text-dark font-bold">
-        Welcome back, {{ucfirst(auth()->user()->name)}}
+        Welcome back, {{ucfirst($currentUser->name)}}
       </h1>
       <p class="responsive-text text-gray-600">
         Here are your style suggestions for today
