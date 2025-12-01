@@ -23,4 +23,8 @@ class Plan extends Model
     public function users(){
         return $this->hasMany(User::class);
     }
+
+    public function subscriptions(){
+        return $this->hasMany(Subscription::class);
+    }
 }

@@ -49,7 +49,7 @@ return new class extends Migration
             $table->string('language')->default('en');
             $table->string('region')->default('us');
             $table->string('temperature_unit')->default('Celcius'); //'Celcius', 'Fahrenheit'
-            $table->string('Measurement_unit')->default('metric'); //'metric', 'imperial'
+            $table->string('measurement_unit')->default('metric'); //'metric', 'imperial'
 
             // Notification Preferences
             $table->boolean('push_notifications')->default(true);
@@ -62,8 +62,8 @@ return new class extends Migration
             $table->boolean('outfit_recommendations')->default(true);
             $table->boolean('style_tips')->default(false);
             $table->boolean('quiet_hours')->default(true);
-            $table->time('quiet_start')->default(true);
-            $table->time('quiet_end')->default(true);
+            $table->time('quiet_start')->nullable()->default('22:00:00');
+            $table->time('quiet_end')->nullable()->default('07:00:00');
             
             // Privacy & Security
             $table->boolean('login_notifications')->default(true);

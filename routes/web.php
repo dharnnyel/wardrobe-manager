@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
     // TODO: Subscription and Billing
     Route::prefix('subscription')->name('subscription.')->group(function () {
       Route::patch('/update', [SubscriptionController::class, 'update'])->name('update');
+      Route::patch('/update-reminder', [SubscriptionController::class, 'updateReminder'])->name('update-reminder');
       Route::post('/change-plan', [SubscriptionController::class, 'changePlan'])->name('change-plan');
       Route::post('/cancel', [SubscriptionController::class, 'cancel'])->name('cancel');
       Route::post('/resume', [SubscriptionController::class, 'resume'])->name('resume');

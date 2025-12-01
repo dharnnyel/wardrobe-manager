@@ -343,9 +343,10 @@
         <div class="flex items-center gap-4 md:flex-row md:justify-between">
           <div class="relative">
             <input
-              class="focus:ring-primary w-full rounded-lg border border-gray-300 py-2 pl-10 pr-4 focus:border-transparent focus:outline-none focus:ring-2 md:w-64"
+              class="focus:ring-primary w-full rounded-lg border-0 bg-gray-100 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 md:w-64"
               placeholder="Search items..." type="text">
             <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            {{-- focus:ring-primary w-full rounded-lg border-0 bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2 --}}
           </div>
           <div class="flex flex-row gap-4 sm:items-center">
             <button

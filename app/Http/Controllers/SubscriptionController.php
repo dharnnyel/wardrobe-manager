@@ -6,6 +6,20 @@ use Illuminate\Http\Request;
 
 class SubscriptionController extends Controller
 {
+    public function updateReminder(Request $request) {
+        $user = $request->user();
+        $request->validate([
+            'weeks_reminder' => 'boolean',
+            'days_reminder' => 'boolean',
+        ]);
+
+        $user->subscription->weeks_reminder = $request->input('weeks_reminder', false);
+        $user->subscription->days_reminder = $request->input('days_reminder', false);
+        $user->subscription->save();
+
+        return response()->json(['message' => 'Reminder settings updated successfully.']);
+    }
+
     public function update(Request $request) {
 
     }

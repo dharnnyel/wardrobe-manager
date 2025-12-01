@@ -30,8 +30,8 @@ return new class extends Migration
             $table->string('provider_subscription_id')->nullable()->comment('ID from payment provider');
             $table->string('provider_customer_id')->nullable()->comment('Customer ID from payment provider');
 
-            $table->boolean('auto_renew')->default(true)->comment('Whether the subscription auto-renews');
-            $table->boolean('email_receipt')->default(true)->comment('Whether to email receipts');
+            $table->boolean('weeks_reminder')->default(false)->comment('2 weeks reminder');
+            $table->boolean('days_reminder')->default(false)->comment('2 days reminder');
 
             // Metadata
             $table->json('metadata')->nullable()->comment('Additional subscription data');

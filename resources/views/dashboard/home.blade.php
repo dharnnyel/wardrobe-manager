@@ -5,11 +5,15 @@
   <style>
     .outfit-card {
       transition: all 0.3s ease;
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
     }
 
     .outfit-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
     }
 
     .calendar-day {
@@ -21,13 +25,15 @@
     }
 
     .calendar-day:hover {
-      background-color: #9f7aea;
+      background-color: var(--primary-color);
       color: white;
     }
 
     .calendar-day.has-outfit {
-      background-color: #4fd1c5;
-      color: white;
+      background-color: var(--primary-color);
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
     }
 
     .item-image {
@@ -79,7 +85,7 @@
     <!-- Welcome Section -->
     <div class="mb-8">
       <h1 class="responsive-heading text-dark font-bold">
-        Welcome back, {{ucfirst($currentUser->name)}}
+        Welcome back, {{ ucfirst($currentUser->name) }}
       </h1>
       <p class="responsive-text text-gray-600">
         Here are your style suggestions for today
@@ -97,7 +103,7 @@
 
           <!-- Outfit Display -->
           <div
-            class="outfit-card from-primary/10 to-secondary/10 responsive-card mb-4 rounded-2xl bg-gradient-to-br sm:mb-6">
+            class="outfit-card responsive-card mb-4 rounded-2xl sm:mb-6">
             <div class="outfit-grid mb-4 sm:mb-6">
               <!-- Top Item -->
               <div class="rounded-xl bg-white p-3 text-center sm:p-4">
@@ -209,7 +215,7 @@
 
           <!-- Outfit Display -->
           <div
-            class="outfit-card responsive-card mb-4 rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 sm:mb-6">
+            class="outfit-card responsive-card mb-4 rounded-2xl sm:mb-6">
             <div class="outfit-grid mb-4 sm:mb-6">
               <!-- Top Item -->
               <div class="rounded-xl bg-white p-3 text-center sm:p-4">
@@ -460,7 +466,7 @@
 
           <!-- AI Recommendation Display -->
           <div
-            class="outfit-card responsive-card mb-4 rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-50 sm:mb-6">
+            class="outfit-card responsive-card mb-4 rounded-2xl sm:mb-6">
             <div class="mb-4 flex items-center justify-between">
               <h3 class="text-dark responsive-text font-bold">
                 AI Recommended Outfit
@@ -674,7 +680,7 @@
           </div>
           <div class="mt-3 sm:mt-4">
             <div class="mb-2 flex items-center">
-              <div class="bg-secondary mr-2 h-3 w-3 rounded-full"></div>
+              <div class="bg-[var(--primary-color)] mr-2 h-3 w-3 rounded-full"></div>
               <span class="text-xs text-gray-600">Outfit planned</span>
             </div>
             <button

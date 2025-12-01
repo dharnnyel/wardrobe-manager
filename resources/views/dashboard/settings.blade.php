@@ -3,10 +3,81 @@
 @section('title', 'Settings')
 @push('styles')
   <style>
+    [data-theme="dark"] .settings-sidenav {
+      background: rgba(45, 45, 45, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Dark mode support for plan modal */
+    [data-theme="dark"] #changePlanModal .bg-white {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    [data-theme="dark"] #changePlanModal .text-gray-900 {
+      color: var(--text-primary);
+    }
+
+    [data-theme="dark"] #changePlanModal .text-gray-600 {
+      color: var(--text-secondary);
+    }
+
+    [data-theme="dark"] #changePlanModal .border-gray-200 {
+      border-color: var(--border-color);
+    }
+
+    [data-theme="dark"] #changePlanModal .bg-gray-50 {
+      background-color: var(--bg-secondary);
+    }
+
+    [data-theme="dark"] #changePlanModal .bg-gray-100 {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Toggle switch theming */
+    .toggle-slider {
+      background-color: var(--text-secondary);
+    }
+
+    input:checked+.toggle-slider {
+      background-color: var(--primary-color);
+    }
+
+    /* Table theming */
+    table {
+      color: var(--text-primary);
+    }
+
+    thead {
+      border-bottom-color: var(--border-color);
+    }
+
+    tbody tr {
+      border-bottom-color: var(--border-color);
+    }
+
+    /* Modal theming */
+    #emailModal .bg-white {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    #emailModal .border-gray-200 {
+      border-color: var(--border-color);
+    }
+
+    #emailModal label,
+    #emailModal p,
+    #emailModal .text-gray-900 {
+      color: var(--text-primary);
+    }
+
     /* Your existing CSS styles remain the same */
     .settings-section {
       transition: all 0.3s ease;
       display: none;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
     }
 
     .settings-section.active {
@@ -30,8 +101,8 @@
     }
 
     .tag {
-      background-color: #9F7AEA;
-      color: white;
+      background-color: rgba(var(--primary-color-rgb, 159, 122, 234), 0.12);
+      +color: var(--primary-color);
       padding: 0.25rem 0.75rem;
       border-radius: 1rem;
       font-size: 0.65rem;
@@ -45,20 +116,27 @@
     }
 
     .theme-option {
-      border: 2px solid #e5e7eb;
+      border: 2px solid var(--border-color);
+      background-color: var(--bg-primary);
       border-radius: 0.75rem;
+      color: var(--text-primary);
       padding: .5rem;
       cursor: pointer;
       transition: all 0.3s ease;
     }
 
     .theme-option:hover {
-      border-color: #9F7AEA;
+      border-color: var(--primary-color);
     }
 
     .theme-option.active {
-      border-color: #9F7AEA;
-      background-color: rgba(159, 122, 234, 0.05);
+      border-color: var(--primary-color) !important;
+      background-color: rgba(var(--primary-color-rgb), 0.05);
+    }
+
+    /* Body shape options */
+    .theme-option[data-shape].active {
+      border-color: var(--primary-color) !important;
     }
 
     .color-scheme-option {
@@ -66,7 +144,7 @@
       height: 3rem;
       border-radius: 0.5rem;
       cursor: pointer;
-      border: 3px solid transparent;
+      border: 3px solid var(--border-color);
       transition: all 0.2s ease-in-out;
       position: relative;
     }
@@ -77,7 +155,7 @@
     }
 
     .color-scheme-option.active {
-      border-color: #3b82f6;
+      border-color: var(--primary-color) !important;
       transform: scale(1.1);
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
@@ -95,6 +173,8 @@
     }
 
     /* Improved Toggle Switch with better responsiveness */
+    /* Toggle switches using CSS variables */
+    /* Toggle switches using CSS variables - FIXED VERSION */
     .toggle-switch {
       position: relative;
       display: inline-block;
@@ -102,12 +182,19 @@
       height: 24px;
       flex-shrink: 0;
       margin-left: 1rem;
+      cursor: pointer;
     }
 
     .toggle-switch input {
+      position: absolute;
+      inset: 0;
+      /* top:0; right:0; bottom:0; left:0; */
+      margin: 0;
       opacity: 0;
-      width: 0;
-      height: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      cursor: pointer;
     }
 
     .toggle-slider {
@@ -117,7 +204,8 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #ccc;
+      background-color: var(--text-secondary);
+      /* Gray when inactive */
       transition: .4s;
       border-radius: 24px;
     }
@@ -129,17 +217,56 @@
       width: 16px;
       left: 4px;
       bottom: 4px;
-      background-color: white;
+      background-color: var(--bg-primary);
       transition: .4s;
       border-radius: 50%;
+      border: 1px solid var(--border-color);
     }
 
+    /* Use class-based approach instead of inline styles */
+    .toggle-slider.active {
+      background-color: var(--primary-color);
+      /* Primary color when active */
+    }
+
+    .toggle-slider.active:before {
+      transform: translateX(26px);
+    }
+
+    /* Remove the old input:checked styles since we're using classes */
+
     input:checked+.toggle-slider {
-      background-color: #9F7AEA;
+      background-color: var(--primary-color);
+      /* Primary color when active */
     }
 
     input:checked+.toggle-slider:before {
       transform: translateX(26px);
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--primary-color) !important;
+      box-shadow: 0 0 0 4px rgba(var(--primary-color-rgb, 159, 122, 234), 0.08) !important;
+      outline: none !important;
+    }
+
+    label,
+    .mb-2.block.text-sm.font-medium.text-gray-700 {
+      color: var(--text-secondary);
+    }
+
+    [data-theme="dark"] label,
+    [data-high-contrast="true"] label {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Ensure toggle knob is visible in all themes */
+    .toggle-slider:before {
+      background-color: var(--bg-primary);
+      border: 1px solid var(--border-color);
     }
 
     /* Toggle container for better mobile layout */
@@ -177,6 +304,8 @@
       -webkit-backdrop-filter: blur(12px);
       border-radius: 12px;
       padding: 1rem;
+      background: rgba(255, 255, 255, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
     .settings-nav-btn {
@@ -189,7 +318,7 @@
       border-radius: .75rem;
       cursor: pointer;
       transition: all .28s cubic-bezier(.2, .9, .2, 1);
-      color: #2D3748;
+      color: var(--text-primary);
       border: 1px solid transparent;
       background: transparent;
       position: relative;
@@ -207,7 +336,7 @@
     .settings-nav-btn.active {
       background: rgba(159, 122, 234, 0.12);
       border-color: rgba(159, 122, 234, 0.18);
-      color: #4C2683;
+      color: var(--primary-color);
     }
 
     .settings-nav-btn.active:hover {
@@ -217,6 +346,56 @@
     .settings-nav-btn:hover {
       background: rgba(255, 255, 255, 0.6);
       border-color: rgba(159, 122, 234, 0.08);
+    }
+
+    [data-theme="dark"] .settings-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Subscription status colors using CSS variables */
+    .subscription-status[data-status="active"] {
+      color: var(--success-color) !important;
+    }
+
+    .subscription-status[data-status="inactive"] {
+      color: var(--text-secondary) !important;
+    }
+
+    /* Subscription button theming */
+    .subscription-btn {
+      background-color: var(--bg-primary) !important;
+      color: var(--text-primary) !important;
+      border: 1px solid var(--border-color) !important;
+    }
+
+    .subscription-btn:hover {
+      background-color: var(--bg-secondary) !important;
+      border-color: var(--primary-color) !important;
+    }
+
+    /* Dark mode specific subscription button styles */
+    [data-theme="dark"] .subscription-btn {
+      background-color: #2d3748 !important;
+      color: #ffffff !important;
+      border-color: #4a5568 !important;
+    }
+
+    [data-theme="dark"] .subscription-btn:hover {
+      background-color: #4a5568 !important;
+      border-color: var(--primary-color) !important;
+    }
+
+    /* High contrast subscription buttons */
+    [data-high-contrast="true"] .subscription-btn {
+      background-color: var(--bg-primary) !important;
+      color: var(--text-primary) !important;
+      border: 2px solid var(--border-color) !important;
+      font-weight: 600;
+    }
+
+    [data-high-contrast="true"] .subscription-btn:hover {
+      background-color: var(--bg-secondary) !important;
+      border-color: var(--primary-color) !important;
     }
 
     /* Responsive styles with improved toggle behavior */
@@ -409,7 +588,7 @@
             {{ ucfirst($currentUser->name) }}
           </h2>
           <div class="flex flex-wrap justify-center gap-2 md:justify-start">
-            @foreach ($currentUser->style_tags ?? [] as $tag)
+            @foreach (array_slice($currentUser->style_tags ?? [], 0, 3) as $tag)
               <span
                 class="bg-primary/20 text-primary rounded-full px-3 py-1 text-xs">{{ $tag }}</span>
             @endforeach
@@ -455,7 +634,8 @@
             </div>
             <div class="flex justify-between">
               <span class="text-gray-600">Status:</span>
-              <span class="text-success font-medium">
+              <span class="subscription-status font-medium"
+                data-status="{{ $currentUser->subscription ? 'active' : 'inactive' }}">
                 {{ $currentUser->subscription ? 'Active' : 'Inactive' }}
               </span>
             </div>
@@ -516,7 +696,8 @@
             <i class="fas fa-user text-primary mr-3"></i> Edit Profile
           </h2>
 
-          <form action="{{ route('settings.profile.update') }}" class="space-y-6" method="POST">
+          <form action="{{ route('settings.profile.update') }}" class="space-y-6" id="profileForm"
+            method="POST">
             @csrf
             @method('PATCH')
 
@@ -524,23 +705,13 @@
             <div class="setting-group">
               <h3 class="text-dark mb-3 text-lg font-semibold">Personal Information</h3>
               <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div class="col-span-1 md:col-span-2">
+                <div>
                   <label class="mb-2 block text-sm font-medium text-gray-700">Full Name</label>
                   <input
                     class="focus:ring-primary w-full rounded-lg border-0 bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2"
-                    id="fullName" name="name" placeholder="Enter your full name" type="text"
-                    value="{{ old('name', $currentUser->name) }}">
+                    id="fullName" name="name" placeholder="Enter your full name"
+                    type="text" value="{{ old('name', $currentUser->name) }}">
                   @error('name')
-                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                  @enderror
-                </div>
-                <div>
-                  <label class="mb-2 block text-sm font-medium text-gray-700">Email Address</label>
-                  <input
-                    class="focus:ring-primary w-full rounded-lg border-0 bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2"
-                    id="email" name="email" placeholder="Enter email address" type="email"
-                    value="{{ old('email', $currentUser->email) }}">
-                  @error('email')
                     <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                   @enderror
                 </div>
@@ -557,8 +728,9 @@
               </div>
             </div>
 
+            {{-- TODO: FIX USER PROFILE IMAGE UPDATE --}}
             <!-- Profile Avatar -->
-            <div class="setting-group">
+            {{-- <div class="setting-group">
               <h3 class="text-dark mb-3 text-lg font-semibold">Profile Avatar</h3>
               <div class="flex flex-col items-center gap-6 md:flex-row">
                 <div class="relative">
@@ -588,7 +760,7 @@
                     value="{{ $currentUser->avatar_color ?? 'primary' }}">
                 </div>
               </div>
-            </div>
+            </div> --}}
 
             <!-- Bio & Interests -->
             <div class="setting-group">
@@ -606,8 +778,8 @@
                 <label class="mb-2 block text-sm font-medium text-gray-700">Style Tags</label>
                 <div class="mb-4 flex flex-col items-start">
                   <div class='mb-5 flex flex-wrap gap-2' id="styleTags">
-                    @foreach ($currentUser->style_tags ?? [] as $styleTag)
-                      <span class="tag">
+                    @foreach ($currentUser->style_tags ?? [] as $index => $styleTag)
+                      <span class="tag" data-tag="{{ $styleTag }}">
                         {{ $styleTag }}
                         <span class="tag-remove" data-tag="{{ $styleTag }}">
                           &times;
@@ -619,19 +791,42 @@
                     <input
                       class="focus:ring-primary grow rounded-lg border-0 bg-gray-100 px-4 py-2 focus:outline-none focus:ring-2"
                       id="styleInput" placeholder="Add a style tag..." type="text">
+                    <input id="styleTagsInput" name="style_tags" type="hidden"
+                      value='{{ json_encode($currentUser->style_tags ?? []) }}'>
                     <x-button class="w-fit rounded-lg text-base" id="addStyleBtn" size='small'
                       type="button" variant='primary'>
                       Add
                     </x-button>
                   </div>
-                  <input id="styleTagsInput" name="style_tags" type="hidden"
-                    value="{{ json_encode($currentUser->style_tags ?? []) }}">
                 </div>
+                @error('style_tags')
+                  <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                @enderror
+                @error('style_tags.*')
+                  <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                @enderror
               </div>
             </div>
+
+            <!-- Email Section -->
+            <div class="setting-group">
+              <h3 class="text-dark mb-3 text-lg font-semibold">Email Address</h3>
+              <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div class="flex-1">
+                  <p class="text-dark font-medium">{{ $currentUser->email }}</p>
+                  <p class="text-sm text-gray-600">Your current email address</p>
+                </div>
+                <button
+                  class="bg-primary hover:bg-primary-dark w-fit rounded-lg px-4 py-3 text-base text-white transition duration-200"
+                  onclick="openEmailModal()" type="button">
+                  Change Email
+                </button>
+              </div>
+            </div>
+
             <div class="flex justify-end">
-              <x-button class="rounded-lg text-base" size='medium' type="submit"
-                variant='primary'>
+              <x-button class="rounded-lg text-base" id="saveProfileBtn" size='medium'
+                type="submit" variant='primary'>
                 Save Changes
               </x-button>
             </div>
@@ -644,7 +839,8 @@
             <i class="fas fa-archive text-primary mr-3"></i> Wardrobe Settings
           </h2>
 
-          <form action="{{ route('settings.wardrobe.update') }}" class="space-y-6" method="POST">
+          <form action="{{ route('settings.wardrobe.update') }}" class="space-y-6"
+            id="wardrobeForm" method="POST">
             @csrf
             @method('PATCH')
 
@@ -671,6 +867,9 @@
                       {{ old('laundry_duration', $currentUser->laundry_duration) == 5 ? 'selected' : '' }}
                       value="5">5 days (Very low urgency)</option>
                   </select>
+                  @error('laundry_duration')
+                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                  @enderror
                 </div>
                 <div>
                   <label class="mb-2 block text-sm font-medium text-gray-700">Laundry
@@ -691,6 +890,9 @@
                       {{ old('laundry_reminder', $currentUser->laundry_reminder) == 0 ? 'selected' : '' }}
                       value="0">No reminders</option>
                   </select>
+                  @error('laundry_reminder')
+                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                  @enderror
                 </div>
               </div>
             </div>
@@ -710,6 +912,9 @@
                   <span class="toggle-slider"></span>
                 </label>
               </div>
+              @error('auto_archive')
+                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+              @enderror
               <div class="mt-4">
                 <label class="mb-2 block text-sm font-medium text-gray-700">Archive after
                   (months)</label>
@@ -718,6 +923,9 @@
                   id="archiveAfter" max="24" min="1" name="archive_after"
                   type="number"
                   value="{{ old('archive_after', $currentUser->archive_after ?? 6) }}">
+                @error('archive_after')
+                  <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                @enderror
               </div>
             </div>
 
@@ -741,18 +949,25 @@
                   <input
                     class="focus:ring-primary grow rounded-lg border-0 bg-gray-100 px-4 py-2 focus:outline-none focus:ring-2"
                     id="categoryInput" placeholder="Add a category..." type="text">
+                  <input id="categoryTagsInput" name="clothing_categories" type="hidden"
+                    value="{{ json_encode($currentUser->clothing_categories ?? []) }}">
+                  @error('clothing_categories')
+                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                  @enderror
+                  @error('clothing_categories.*')
+                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                  @enderror
                   <x-button class="w-fit rounded-lg text-base" id="addCategoryBtn" size='small'
                     type="button" variant='primary'>
                     Add
                   </x-button>
                 </div>
-                <input id="categoryTagsInput" name="clothing_categories" type="hidden"
-                  value="{{ json_encode($currentUser->clothing_categories ?? []) }}">
+
               </div>
             </div>
             <div class="flex justify-end">
-              <x-button class="w-fit rounded-lg text-base" size='medium' type="submit"
-                variant='primary'>
+              <x-button class="w-fit rounded-lg text-base" id="saveWardrobeBtn" size='medium'
+                type="submit" variant='primary'>
                 Save Changes
               </x-button>
             </div>
@@ -908,18 +1123,18 @@
 
               <div class="grid grid-cols-2 gap-4 text-sm md:grid-cols-4">
                 @foreach (['hourglass' => 'Hourglass', 'rectangle' => 'Rectangle', 'pear' => 'Pear', 'apple' => 'Apple'] as $shape => $label)
-                  <div
-                    class="theme-option {{ old('body_shape', $currentUser->body_shape) == $shape ? 'active' : '' }} text-center"
+                  @php
+                    $isChecked = $currentUser->body_shape === $shape;
+                  @endphp
+                  <div class="theme-option {{ $isChecked ? 'active' : '' }} text-center"
                     data-shape="{{ $shape }}">
                     <div
                       class="bg-primary/20 mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full">
                       <i class="fas fa-user text-primary"></i>
                     </div>
                     <p class="font-medium">{{ $label }}</p>
-                    <input
-                      {{ old('body_shape', $currentUser->body_shape) == $shape ? 'checked' : '' }}
-                      class="hidden" name="body_shape" type="radio"
-                      value="{{ $shape }}">
+                    <input {{ $isChecked ? 'checked' : '' }} class="hidden" name="body_shape"
+                      type="radio" value="{{ $shape }}">
                   </div>
                 @endforeach
               </div>
@@ -943,7 +1158,7 @@
           </h2>
 
           <form action="{{ route('settings.app-preferences.update') }}" class="space-y-6"
-            method="POST">
+            id="appPreferencesForm" method="POST">
             @csrf
             @method('PATCH')
 
@@ -969,7 +1184,7 @@
                         'bg' => 'bg-gradient-to-r from-gray-200 to-gray-800'
                     ]
                 ];
-                $currentTheme = old('theme_preference', $currentUser->theme_preference ?? 'light');
+                $currentTheme = old('theme', $currentUser->theme ?? 'light');
                 $highContrast = old('high_contrast', $currentUser->high_contrast ?? false);
               @endphp
 
@@ -984,7 +1199,7 @@
                     </div>
                     <p class="font-medium">{{ ucfirst($themeValue) }}</p>
                     <input {{ $currentTheme == $themeValue ? 'checked' : '' }} class="hidden"
-                      name="theme_preference" type="radio" value="{{ $themeValue }}">
+                      name="theme" type="radio" value="{{ $themeValue }}">
                   </div>
                 @endforeach
               </div>
@@ -1009,23 +1224,27 @@
 
               @php
                 $colorSchemes = [
-                    'primary' => 'bg-primary',
-                    'secondary' => 'bg-secondary',
-                    'accent' => 'bg-accent',
-                    'success' => 'bg-success',
-                    'yellow-500' => 'bg-yellow-500',
-                    'pink-500' => 'bg-pink-500'
+                    'primary' => ['color' => '#9F7AEA', 'name' => 'Purple'],
+                    'secondary' => ['color' => '#4FD1C5', 'name' => 'Teal'],
+                    'accent' => ['color' => '#FC8181', 'name' => 'Red'],
+                    'success' => ['color' => '#68D391', 'name' => 'Green'],
+                    'yellow-500' => ['color' => '#EAB308', 'name' => 'Yellow'],
+                    'pink-500' => ['color' => '#EC4899', 'name' => 'Pink']
                 ];
                 $currentScheme = old('color_scheme', $currentUser->color_scheme ?? 'primary');
               @endphp
 
               <div class="flex flex-wrap gap-4">
-                @foreach ($colorSchemes as $schemeValue => $schemeClass)
-                  <div
-                    class="color-scheme-option {{ $schemeClass }} {{ $currentScheme == $schemeValue ? 'active' : '' }}"
-                    data-scheme="{{ $schemeValue }}">
-                    <input {{ $currentScheme == $schemeValue ? 'checked' : '' }} class="hidden"
-                      name="color_scheme" type="radio" value="{{ $schemeValue }}">
+                @foreach ($colorSchemes as $schemeValue => $schemeConfig)
+                  <div class="flex flex-col items-center">
+                    <div
+                      class="color-scheme-option {{ $currentScheme == $schemeValue ? 'active' : '' }}"
+                      data-scheme="{{ $schemeValue }}"
+                      style="background-color: {{ $schemeConfig['color'] }}">
+                      <input {{ $currentScheme == $schemeValue ? 'checked' : '' }} class="hidden"
+                        name="color_scheme" type="radio" value="{{ $schemeValue }}">
+                    </div>
+                    <span class="mt-2 text-xs text-gray-600">{{ $schemeConfig['name'] }}</span>
                   </div>
                 @endforeach
               </div>
@@ -1137,7 +1356,7 @@
           </h2>
 
           <form action="{{ route('settings.notifications.update') }}" class="space-y-6"
-            method="POST">
+            id="notificationsForm" method="POST">
             @csrf
             @method('PATCH')
 
@@ -1151,8 +1370,9 @@
                     <p class="text-sm text-gray-600">Receive notifications from the app</p>
                   </div>
                   <label class="toggle-switch">
+                    <input name="push_notifications" type="hidden" value="0">
                     <input
-                      {{ old('push_notifications', $currentUser->push_notifications ?? true) ? 'checked' : '' }}
+                      {{ old('push_notifications', $currentUser->push_notifications ?? false) ? 'checked' : '' }}
                       name="push_notifications" type="checkbox" value="1">
                     <span class="toggle-slider"></span>
                   </label>
@@ -1222,8 +1442,8 @@
                   </div>
                   <label class="toggle-switch">
                     <input
-                      {{ old('laundry_emails', $currentUser->laundry_emails ?? true) ? 'checked' : '' }}
-                      name="laundry_emails" type="checkbox" value="1">
+                      {{ old('laundry_reminders', $currentUser->laundry_reminders ?? true) ? 'checked' : '' }}
+                      name="laundry_reminders" type="checkbox" value="1">
                     <span class="toggle-slider"></span>
                   </label>
                 </div>
@@ -1284,27 +1504,26 @@
                   <p class="text-sm text-gray-600">Silence notifications during specified hours</p>
                 </div>
                 <label class="toggle-switch">
-                  <input
-                    {{ old('quiet_hours_enabled', $currentUser->quiet_hours) ? 'checked' : '' }}
-                    name="quiet_hours_enabled" type="checkbox" value="1">
+                  <input {{ old('quiet_hours', $currentUser->quiet_hours) ? 'checked' : '' }}
+                    name="quiet_hours" type="checkbox" value="1">
                   <span class="toggle-slider"></span>
                 </label>
               </div>
               <div class="mt-4 grid grid-cols-2 gap-4" id="quietHoursSettings"
-                style="{{ old('quiet_hours_enabled', $currentUser->quiet_hours) ? '' : 'display: none;' }}">
+                style="{{ old('quiet_hours', $currentUser->quiet_hours) ? '' : 'display: none;' }}">
                 <div>
                   <label class="mb-2 block text-sm font-medium text-gray-700">Start Time</label>
                   <input
                     class="focus:ring-primary w-full rounded-lg border-0 bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2"
                     id="quietStart" name="quiet_start" type="time"
-                    value="{{ old('quiet_start', $currentUser->quiet_start ?? '22:00') }}">
+                    value="{{ old('quiet_start', $currentUser->quiet_start ? $currentUser->quiet_start : '22:00') }}">
                 </div>
                 <div>
                   <label class="mb-2 block text-sm font-medium text-gray-700">End Time</label>
                   <input
                     class="focus:ring-primary w-full rounded-lg border-0 bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2"
                     id="quietEnd" name="quiet_end" type="time"
-                    value="{{ old('quiet_end', $currentUser->quiet_end ?? '07:00') }}">
+                    value="{{ old('quiet_end', $currentUser->quiet_end ? $currentUser->quiet_end : '07:00') }}">
                 </div>
               </div>
             </div>
@@ -1346,21 +1565,34 @@
                 <div class="mt-4 flex flex-col items-center justify-between md:flex-row">
                   <div>
                     <p class="text-sm text-white/80">
-                      @if ($currentUser->subscription)
-                        Next billing date: <span class="font-medium">
-                          {{ $currentUser->subscription->ends_at?->format('M d, Y') ?? 'Auto-renewal' }}
-                        </span>
+                      @if ($currentUser?->auto_renewal ?? false)
+                        Auto renewal enabled
                       @else
-                        No active subscription
+                        Auto renewal disabled
+                      @endif
+                    </p>
+
+                    <p class="mt-1 text-sm text-white/80">
+                      @php
+                        $planName = strtolower($currentUser->plan->name ?? 'free');
+                      @endphp
+
+                      @if ($planName === 'free')
+                        Expiry date: <span class="font-medium">Never</span>
+                      @elseif ($currentUser->subscription && $currentUser->subscription->ends_at)
+                        Expiry date: <span
+                          class="font-medium">{{ $currentUser->subscription->ends_at->format('M d, Y') }}</span>
                       @endif
                     </p>
                   </div>
+                  <!-- In the subscription-section, replace the buttons section -->
                   <div class="mt-2 md:mt-0">
-                    <x-button class="mr-2" size='small' type="button" variant='outline' class="rounded-lg">
+                    <x-button class="subscription-btn mr-2 rounded-lg"
+                      onclick="openChangePlanModal()" size='small' type="button">
                       Change Plan
                     </x-button>
                     @if ($currentUser->subscription)
-                      <x-button size='small' type="button" variant='outline' class="rounded-lg">
+                      <x-button class="subscription-btn rounded-lg" size='small' type="button">
                         Cancel Subscription
                       </x-button>
                     @endif
@@ -1369,53 +1601,17 @@
               </div>
             </div>
 
-            <!-- Billing Information -->
-            <div class="setting-group">
-              <h3 class="text-dark mb-3 text-lg font-semibold">Billing Information</h3>
-              <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div>
-                  <label class="mb-2 block text-sm font-medium text-gray-700">Cardholder Name</label>
-                  <input
-                    class="focus:ring-primary w-full rounded-lg border-0 bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2"
-                    id="cardholderName" placeholder="Enter cardholder name" type="text"
-                    value="{{ $currentUser->billing_name ?? '' }}">
-                </div>
-                <div>
-                  <label class="mb-2 block text-sm font-medium text-gray-700">Card Number</label>
-                  <div class="relative">
-                    <input
-                      class="focus:ring-primary w-full rounded-lg border-0 bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2"
-                      id="cardNumber" placeholder="Enter card number" type="text"
-                      value="{{ $currentUser->card_last_four ? '**** **** **** ' . $currentUser->card_last_four : '' }}">
-                    <div class="absolute right-3 top-3">
-                      <i class="fab fa-cc-visa text-gray-500"></i>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <label class="mb-2 block text-sm font-medium text-gray-700">Expiration Date</label>
-                  <input
-                    class="focus:ring-primary w-full rounded-lg border-0 bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2"
-                    id="expirationDate" placeholder="MM/YY" type="text"
-                    value="{{ $currentUser->card_expiry ?? '' }}">
-                </div>
-                <div>
-                  <label class="mb-2 block text-sm font-medium text-gray-700">Security Code</label>
-                  <input
-                    class="focus:ring-primary w-full rounded-lg border-0 bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2"
-                    id="securityCode" placeholder="CVV" type="text" value="***">
-                </div>
-              </div>
-              <div class="mt-4">
-                <x-button size='small' type="button" variant='primary' class="rounded-lg">
-                  Update Payment Method
-                </x-button>
-              </div>
-            </div>
-
             <!-- Billing History -->
             <div class="setting-group">
-              <h3 class="text-dark mb-3 text-lg font-semibold">Billing History</h3>
+              <div
+                class="mb-5 flex flex-col justify-between gap-4 min-[490px]:flex-row min-[490px]:items-center">
+                <h3 class="text-dark text-lg font-semibold">Billing History</h3>
+                <div>
+                  <x-button class="subscription-btn mr-2 rounded-lg" size='small' variant='outline' type="button">
+                    Download All Invoices
+                  </x-button>
+                </div>
+              </div>
               <div class="overflow-x-auto">
                 <table class="w-full">
                   <thead>
@@ -1431,7 +1627,8 @@
                   <tbody>
                     @forelse($currentUser->payments ?? [] as $payment)
                       <tr class="border-b border-gray-100">
-                        <td class="px-4 py-3 text-sm">{{ $payment->created_at->format('M d, Y') }}</td>
+                        <td class="px-4 py-3 text-sm">{{ $payment->created_at->format('M d, Y') }}
+                        </td>
                         <td class="px-4 py-3 text-sm">{{ $payment->description }}</td>
                         <td class="px-4 py-3 text-sm">
                           ${{ number_format($payment->amount / 100, 2) }}</td>
@@ -1460,45 +1657,36 @@
             <!-- Subscription Management -->
             <div class="setting-group">
               <h3 class="text-dark mb-3 text-lg font-semibold">Subscription Management</h3>
-              <form action="{{ route('settings.subscription.update') }}" method="POST">
+              <form action="{{ route('settings.subscription.update-reminder') }}" method="POST">
                 @csrf
                 @method('PATCH')
                 <div class="space-y-4">
                   <div class="flex items-center justify-between">
                     <div>
-                      <p class="text-dark font-medium">Auto-renewal</p>
-                      <p class="text-sm text-gray-600">Automatically renew your subscription each
-                        month</p>
+                      <p class="text-dark font-medium">2 weeks reminder</p>
+                      <p class="text-sm text-gray-600">Automatically remind me 2 weeks before
+                        subscription expires</p>
                     </div>
                     <label class="toggle-switch">
                       <input
-                        {{ old('auto_renewal', $currentUser->auto_renewal ?? true) ? 'checked' : '' }}
+                        {{ old('auto_renewal', $currentUser->subsciption->days_reminder ?? true) ? 'checked' : '' }}
                         name="auto_renewal" type="checkbox" value="1">
                       <span class="toggle-slider"></span>
                     </label>
                   </div>
                   <div class="flex items-center justify-between">
                     <div>
-                      <p class="text-dark font-medium">Email receipts</p>
-                      <p class="text-sm text-gray-600">Receive email receipts for all payments</p>
+                      <p class="text-dark font-medium">2 days reminder</p>
+                      <p class="text-sm text-gray-600">Remind me 2 days before subscription expires
+                      </p>
                     </div>
                     <label class="toggle-switch">
                       <input
-                        {{ old('email_receipts', $currentUser->email_receipts ?? true) ? 'checked' : '' }}
+                        {{ old('email_receipts', $currentUser->subsciption->days_reminder ?? true) ? 'checked' : '' }}
                         name="email_receipts" type="checkbox" value="1">
                       <span class="toggle-slider"></span>
                     </label>
                   </div>
-                </div>
-                <div class="mt-6">
-                  <x-button class="mr-2" size='small' type="button" variant='outline' class="rounded-lg">
-                    Download All Invoices
-                  </x-button>
-                  @if ($currentUser->subscription)
-                    <x-button size='small' type="button" variant='secondary' class="rounded-lg">
-                      Cancel Subscription
-                    </x-button>
-                  @endif
                 </div>
               </form>
             </div>
@@ -1660,7 +1848,7 @@
                   </div>
                   <form action="{{ route('settings.export.wardrobe') }}" method="POST">
                     @csrf
-                    <x-button size='small' type="submit" variant='primary' class="rounded-lg">
+                    <x-button class="rounded-lg" size='small' type="submit" variant='primary'>
                       Export
                     </x-button>
                   </form>
@@ -1672,7 +1860,7 @@
                   </div>
                   <form action="{{ route('settings.export.preferences') }}" method="POST">
                     @csrf
-                    <x-button size='small' type="submit" variant='primary' class="rounded-lg">
+                    <x-button class="rounded-lg" size='small' type="submit" variant='primary'>
                       Export
                     </x-button>
                   </form>
@@ -1684,7 +1872,7 @@
                   </div>
                   <form action="{{ route('settings.export.account') }}" method="POST">
                     @csrf
-                    <x-button size='small' type="submit" variant='primary' class="rounded-lg">
+                    <x-button class="rounded-lg" size='small' type="submit" variant='primary'>
                       Export
                     </x-button>
                   </form>
@@ -1707,7 +1895,7 @@
                     onsubmit="return confirm('Are you sure you want to delete all your wardrobe data? This action cannot be undone.')">
                     @csrf
                     @method('DELETE')
-                    <x-button size='small' type="submit" variant='danger' class="rounded-lg">
+                    <x-button class="rounded-lg" size='small' type="submit" variant='danger'>
                       Delete
                     </x-button>
                   </form>
@@ -1823,39 +2011,11 @@
     const themeOptions = document.querySelectorAll('.theme-option[data-theme]');
     const colorSchemeOptions = document.querySelectorAll('.color-scheme-option');
     const bodyShapeOptions = document.querySelectorAll('.theme-option[data-shape]');
-    const quietHours = document.querySelector('input[name="quiet_hours_enabled"]');
+    const quietHours = document.querySelector('input[name="quiet_hours"]');
     const quietHoursSettings = document.getElementById('quietHoursSettings');
     const avatarColorInput = document.getElementById('avatarColor');
-
-    // Settings navigation - FIXED VERSION
-    function initializeNavigation() {
-      settingsNavBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const targetSection = this.getAttribute('data-section');
-
-          console.log('Clicked nav button:', targetSection); // Debug log
-
-          // Update active nav button
-          settingsNavBtns.forEach(b => {
-            b.classList.remove('active');
-          });
-          this.classList.add('active');
-
-          // Show target section and hide others
-          settingsSections.forEach(section => {
-            section.classList.remove('active');
-          });
-
-          const targetElement = document.getElementById(`${targetSection}-section`);
-          if (targetElement) {
-            targetElement.classList.add('active');
-            console.log('Activated section:', targetSection); // Debug log
-          } else {
-            console.error('Target section not found:', `${targetSection}-section`);
-          }
-        });
-      });
-    }
+    const changeEmailModal = document.getElementById('emailModal');
+    const changePlanModal = document.getElementById('changePlanModal');
 
     // Auto-archive toggle
     if (autoArchive && archiveAfter) {
@@ -1878,7 +2038,8 @@
       });
 
       // Initialize state on page load
-      if (!quietHours.checked) {
+      const isQuietHoursEnabled = {{ $currentUser->quiet_hours ? 'true' : 'false' }};
+      if (!isQuietHoursEnabled) {
         quietHoursSettings.style.display = 'none';
       }
     }
@@ -1913,13 +2074,58 @@
       });
     });
 
-    // Style tags management
-    function updateStyleTagsInput() {
-      if (!styleTags || !styleTagsInput) return;
+    // Settings navigation - FIXED VERSION
+    function initializeNavigation() {
+      settingsNavBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const targetSection = this.getAttribute('data-section');
+          settingsNavBtns.forEach(b => {
+            b.classList.remove('active');
+          });
+          this.classList.add('active');
 
-      const tags = Array.from(styleTags.querySelectorAll('.tag'))
-        .map(tag => tag.textContent.trim().replace('×', '').trim());
-      styleTagsInput.value = JSON.stringify(tags);
+          settingsSections.forEach(section => {
+            section.classList.remove('active');
+          });
+
+          const targetElement = document.getElementById(`${targetSection}-section`);
+          if (targetElement) {
+            targetElement.classList.add('active');
+          }
+        });
+      });
+    }
+
+    function createTagElement(value, container, updateFunction) {
+      // Check if tag already exists
+      const existingTag = container.querySelector(`[data-tag="${value}"]`);
+      if (existingTag) return existingTag;
+
+      const tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.setAttribute('data-tag', value);
+      tag.innerHTML =
+        `${value.charAt(0).toUpperCase() + value.slice(1) } <span class="tag-remove" data-tag="${value}">&times;</span>`;
+
+      const root = getComputedStyle(document.documentElement);
+      const rgb = root.getPropertyValue('--primary-color-rgb').trim() || '159,122,234';
+      const primary = root.getPropertyValue('--primary-color').trim() || '#9F7AEA';
+      tag.style.backgroundColor = `rgba(${rgb}, 0.12)`;
+      tag.style.color = primary;
+
+      container.appendChild(tag);
+      updateFunction();
+
+      // Add remove functionality to new tag
+      const removeBtn = tag.querySelector('.tag-remove');
+      removeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        tag.remove();
+        updateFunction();
+      });
+
+      return tag;
     }
 
     function initializeStyleTags() {
@@ -1928,31 +2134,21 @@
       addStyleBtn.addEventListener('click', function() {
         const styleValue = styleInput.value.trim();
         if (styleValue && !styleTags.querySelector(`[data-tag="${styleValue}"]`)) {
-          const tag = document.createElement('span');
-          tag.className = 'tag';
-          tag.setAttribute('data-tag', styleValue);
-          tag.innerHTML =
-            `${styleValue} <span class="tag-remove" data-tag="${styleValue}">&times;</span>`;
-          styleTags.appendChild(tag);
+          createTagElement(styleValue, styleTags, updateStyleTagsInput);
           styleInput.value = '';
-          updateStyleTagsInput();
-
-          // Add remove functionality to new tag
-          tag.querySelector('.tag-remove').addEventListener('click', function() {
-            this.parentElement.remove();
-            updateStyleTagsInput();
-          });
         }
       });
-    }
 
-    // Category tags management
-    function updateCategoryTagsInput() {
-      if (!categoryTags || !categoryTagsInput) return;
+      // Allow adding tags with Enter key
+      styleInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          addStyleBtn.click();
+        }
+      });
 
-      const tags = Array.from(categoryTags.querySelectorAll('.tag'))
-        .map(tag => tag.textContent.trim().replace('×', '').trim());
-      categoryTagsInput.value = JSON.stringify(tags);
+      // Initialize existing tags removal
+      initializeExistingTagRemoval();
     }
 
     function initializeCategoryTags() {
@@ -1961,70 +2157,793 @@
       addCategoryBtn.addEventListener('click', function() {
         const categoryValue = categoryInput.value.trim();
         if (categoryValue && !categoryTags.querySelector(`[data-tag="${categoryValue}"]`)) {
-          const tag = document.createElement('span');
-          tag.className = 'tag';
-          tag.setAttribute('data-tag', categoryValue);
-          tag.innerHTML =
-            `${categoryValue} <span class="tag-remove" data-tag="${categoryValue}">&times;</span>`;
-          categoryTags.appendChild(tag);
+          createTagElement(categoryValue, categoryTags, updateCategoryTagsInput);
           categoryInput.value = '';
-          updateCategoryTagsInput();
-
-          // Add remove functionality to new tag
-          tag.querySelector('.tag-remove').addEventListener('click', function() {
-            this.parentElement.remove();
-            updateCategoryTagsInput();
-          });
         }
       });
+
+      // Allow adding tags with Enter key
+      categoryInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          addCategoryBtn.click();
+        }
+      });
+    }
+
+    // Enhanced selection handlers with proper deselection
+    function initializeSelectionHandlers() {
+      // Theme selection
+      document.querySelectorAll('.theme-option[data-theme]').forEach(option => {
+        option.addEventListener('click', function() {
+          const primaryColor = getComputedStyle(document.documentElement).getPropertyValue(
+            '--primary-color').trim();
+          const borderColor = getComputedStyle(document.documentElement).getPropertyValue(
+            '--border-color').trim();
+
+          // Remove active class and reset borders from all theme options
+          document.querySelectorAll('.theme-option[data-theme]').forEach(o => {
+            o.classList.remove('active');
+            o.style.borderColor = borderColor; // Reset to default border color
+          });
+
+          // Add active class and set primary color border to clicked option
+          this.classList.add('active');
+          this.style.borderColor = primaryColor;
+
+          const radio = this.querySelector('input[type="radio"]');
+          if (radio) {
+            radio.checked = true;
+          }
+        });
+      });
+
+      // Color scheme selection
+      document.querySelectorAll('.color-scheme-option').forEach(option => {
+        option.addEventListener('click', function() {
+          const primaryColor = getComputedStyle(document.documentElement).getPropertyValue(
+            '--primary-color').trim();
+          const borderColor = getComputedStyle(document.documentElement).getPropertyValue(
+            '--border-color').trim();
+
+          // Remove active class and reset borders from all color scheme options
+          document.querySelectorAll('.color-scheme-option').forEach(o => {
+            o.classList.remove('active');
+            o.style.borderColor = borderColor; // Reset to default border color
+          });
+
+          // Add active class and set primary color border to clicked option
+          this.classList.add('active');
+          this.style.borderColor = primaryColor;
+
+          const radio = this.querySelector('input[type="radio"]');
+          if (radio) {
+            radio.checked = true;
+          }
+        });
+      });
+
+      // Body shape selection
+      document.querySelectorAll('.theme-option[data-shape]').forEach(option => {
+        option.addEventListener('click', function() {
+          const primaryColor = getComputedStyle(document.documentElement).getPropertyValue(
+            '--primary-color').trim();
+          const borderColor = getComputedStyle(document.documentElement).getPropertyValue(
+            '--border-color').trim();
+
+          // Remove active class and reset borders from all body shape options
+          document.querySelectorAll('.theme-option[data-shape]').forEach(o => {
+            o.classList.remove('active');
+            o.style.borderColor = borderColor; // Reset to default border color
+          });
+
+          // Add active class and set primary color border to clicked option
+          this.classList.add('active');
+          this.style.borderColor = primaryColor;
+
+          const radio = this.querySelector('input[type="radio"]');
+          if (radio) {
+            radio.checked = true;
+          }
+        });
+      });
+    }
+
+    // Function to initialize dynamic input colors
+    function initializeDynamicInputColors() {
+      const primaryColor = getComputedStyle(document.documentElement).getPropertyValue(
+        '--primary-color').trim();
+      const borderColor = getComputedStyle(document.documentElement).getPropertyValue(
+        '--border-color').trim();
+
+      // Add event listeners to all form inputs
+      document.querySelectorAll('input, select, textarea').forEach(input => {
+        // Remove any existing listeners to avoid duplicates
+        input.removeEventListener('focus', handleInputFocus);
+        input.removeEventListener('blur', handleInputBlur);
+        input.removeEventListener('mouseenter', handleInputHover);
+        input.removeEventListener('mouseleave', handleInputHoverEnd);
+
+        // Add new listeners
+        input.addEventListener('focus', handleInputFocus);
+        input.addEventListener('blur', handleInputBlur);
+        input.addEventListener('mouseenter', handleInputHover);
+        input.addEventListener('mouseleave', handleInputHoverEnd);
+
+        // Initialize current state - reset to default border
+        if (input !== document.activeElement) {
+          input.style.borderColor = borderColor;
+          input.style.boxShadow = '';
+        }
+      });
+    }
+
+    function initializeExistingTagRemoval() {
+      // Style tags removal
+      document.querySelectorAll('#styleTags .tag-remove').forEach(removeBtn => {
+        const clone = removeBtn.cloneNode(true);
+        removeBtn.replaceWith(clone);
+      });
+
+      document.querySelectorAll('#styleTags .tag-remove').forEach(removeBtn => {
+        removeBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const tag = this.closest('.tag');
+          if (tag) {
+            tag.remove();
+            updateStyleTagsInput();
+          }
+        });
+      });
+
+      // Category tags removal
+      document.querySelectorAll('#categoryTags .tag-remove').forEach(removeBtn => {
+        const clone = removeBtn.cloneNode(true);
+        removeBtn.replaceWith(clone);
+      });
+
+      document.querySelectorAll('#categoryTags .tag-remove').forEach(removeBtn => {
+        removeBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const tag = this.closest('.tag');
+          if (tag) {
+            tag.remove();
+            updateCategoryTagsInput();
+          }
+        });
+      });
+    }
+
+    function handleInputFocus(event) {
+      const input = event.target;
+      const primaryColor = getComputedStyle(document.documentElement).getPropertyValue(
+        '--primary-color').trim();
+      input.style.borderColor = primaryColor;
+      input.style.boxShadow = `0 0 0 2px rgba(var(--primary-color-rgb), 0.2)`;
+    }
+
+    function handleInputBlur(event) {
+      const input = event.target;
+      const borderColor = getComputedStyle(document.documentElement).getPropertyValue(
+        '--border-color').trim();
+      input.style.borderColor = borderColor;
+      input.style.boxShadow = '';
+    }
+
+    function handleInputHover(event) {
+      const input = event.target;
+      if (input !== document.activeElement) {
+        const primaryColor = getComputedStyle(document.documentElement).getPropertyValue(
+          '--primary-color').trim();
+        input.style.borderColor = primaryColor;
+      }
+    }
+
+    function handleInputHoverEnd(event) {
+      const input = event.target;
+      if (input !== document.activeElement) {
+        const borderColor = getComputedStyle(document.documentElement).getPropertyValue(
+          '--border-color').trim();
+        input.style.borderColor = borderColor;
+      }
+    }
+
+    // ...existing code...
+    function updateStyleTagsInput() {
+      if (!styleTags) return;
+
+      const form = styleTags.closest('form') || document.getElementById('profileForm') || document
+        .body;
+
+      let jsonInput = document.getElementById('styleTagsInput');
+      if (!jsonInput) {
+        jsonInput = document.createElement('input');
+        jsonInput.type = 'hidden';
+        jsonInput.name = 'style_tags';
+        jsonInput.id = 'styleTagsInput';
+        form.appendChild(jsonInput);
+      }
+
+      // Remove previously injected compatibility inputs so we can re-create them
+      form.querySelectorAll('input.injected-style-tag').forEach(i => i.remove());
+      // Also remove any server-rendered indexed inputs to avoid duplicates
+      form.querySelectorAll('input[name^="style_tags["]').forEach(i => i.remove());
+
+      // Collect current tags
+      const tags = Array.from(styleTags.querySelectorAll('.tag'))
+        .map(tag => {
+          const raw = (tag.getAttribute('data-tag') || tag.textContent || '').replace('×', '')
+            .trim();
+          return raw ? (raw.charAt(0).toUpperCase() + raw.slice(1)) : '';
+        })
+        .filter(t => t.length > 0);
+
+      // Always write canonical JSON (so you can also use it from JS)
+      jsonInput.value = JSON.stringify(tags);
+
+      // Inject backwards-compatible array inputs (style_tags[]) so Laravel gets an array
+      if (tags.length > 0) {
+        tags.forEach((t, i) => {
+          const hi = document.createElement('input');
+          hi.type = 'hidden';
+          hi.name = 'style_tags[]';
+          hi.value = t;
+          hi.classList.add('injected-style-tag');
+          form.appendChild(hi);
+        });
+      } else {
+        // Ensure server still receives an array when there are no tags
+        const empty = document.createElement('input');
+        empty.type = 'hidden';
+        empty.name = 'style_tags[]';
+        empty.value = '';
+        empty.classList.add('injected-style-tag');
+        form.appendChild(empty);
+      }
+    }
+
+    function updateCategoryTagsInput() {
+      if (!categoryTags) return;
+
+      const form = categoryTags.closest('form') || document.getElementById('wardrobeForm') || document
+        .body;
+
+      let jsonInput = document.getElementById('categoryTagsInput');
+      if (!jsonInput) {
+        jsonInput = document.createElement('input');
+        jsonInput.type = 'hidden';
+        jsonInput.name = 'clothing_categories';
+        jsonInput.id = 'categoryTagsInput';
+        form.appendChild(jsonInput);
+      }
+
+      // Remove previously injected compatibility inputs so we can re-create them
+      form.querySelectorAll('input.injected-category-tag').forEach(i => i.remove());
+      // Also remove any server-rendered indexed inputs to avoid duplicates
+      form.querySelectorAll('input[name^="clothing_categories["]').forEach(i => i.remove());
+
+      // Collect current tags
+      const tags = Array.from(categoryTags.querySelectorAll('.tag'))
+        .map(tag => {
+          const raw = (tag.getAttribute('data-tag') || tag.textContent || '').replace('×', '')
+            .trim();
+          return raw ? (raw.charAt(0).toUpperCase() + raw.slice(1)) : '';
+        })
+        .filter(t => t.length > 0);
+
+      // Always write canonical JSON (so you can also use it from JS)
+      jsonInput.value = JSON.stringify(tags);
+
+      // Inject backwards-compatible array inputs (style_tags[]) so Laravel gets an array
+      if (tags.length > 0) {
+        tags.forEach((t, i) => {
+          const hi = document.createElement('input');
+          hi.type = 'hidden';
+          hi.name = 'clothing_categories[]';
+          hi.value = t;
+          hi.classList.add('injected-category-tag');
+          form.appendChild(hi);
+        });
+      } else {
+        // Ensure server still receives an array when there are no tags
+        const empty = document.createElement('input');
+        empty.type = 'hidden';
+        empty.name = 'clothing_categories[]';
+        empty.value = '';
+        empty.classList.add('injected-category-tag');
+        form.appendChild(empty);
+      }
+    }
+
+    function updateProfileHeader() {
+      const newName = document.getElementById('fullName').value;
+      const profileHeaderName = document.getElementById('profileHeaderName');
+      const profileHeaderAvatar = document.getElementById('profileHeaderAvatar');
+
+      if (profileHeaderName) {
+        profileHeaderName.textContent = newName;
+      }
+      if (profileHeaderAvatar) {
+        profileHeaderAvatar.textContent = newName.charAt(0).toUpperCase();
+      }
+
+      // Update style tags in the profile header
+      const styleTags = document.getElementById('styleTagsInput').value;
+      if (styleTags) {
+        const tagsArray = JSON.parse(styleTags);
+        const tagsContainer = document.querySelector('.flex-wrap.gap-2'); // Adjust selector as needed
+
+        if (tagsContainer) {
+          // Clear existing tags
+          tagsContainer.innerHTML = '';
+
+          // Add new tags
+          tagsArray.forEach(tag => {
+            const tagElement = document.createElement('span');
+            tagElement.className = 'bg-primary/20 text-primary rounded-full px-3 py-1 text-xs';
+            tagElement.textContent = tag;
+            tagsContainer.appendChild(tagElement);
+          });
+        }
+      }
+    }
+
+    function updateToggleColors() {
+      // Remove any inline styles and use CSS classes instead
+      document.querySelectorAll('.toggle-slider').forEach(slider => {
+        const input = slider.previousElementSibling;
+
+        // Remove any existing inline styles
+        slider.style.backgroundColor = '';
+
+        // Use classes to control active state
+        if (input.checked) {
+          slider.classList.add('active');
+        } else {
+          slider.classList.remove('active');
+        }
+      });
+    }
+
+    // Email Modal Functions
+    function openEmailModal() {
+      document.getElementById("emailModal").classList.remove("hidden");
+      document.getElementById("otpSection").classList.add("hidden");
+
+      // Reset all states
+      document.getElementById("emailError").classList.add("hidden");
+      document.getElementById("otpError").classList.add("hidden");
+      document.getElementById("modal_email").readOnly = false;
+
+      // Reset buttons to initial state
+      document.getElementById("requestOtpBtn").classList.remove("hidden");
+      document.getElementById("verifyOtpBtn").classList.add("hidden");
+      document.getElementById("requestOtpBtn").disabled = false;
+      document.getElementById("requestOtpBtn").innerText = "Send Verification Code";
+
+      // Clear form
+      document.getElementById("emailChangeForm").reset();
+
+      // Focus on email input
+      setTimeout(() => {
+        document.getElementById("modal_email").focus();
+      }, 100);
+    }
+
+    function requestOtp() {
+      let email = document.getElementById("modal_email").value.trim();
+      let btn = document.getElementById("requestOtpBtn");
+      let emailError = document.getElementById("emailError");
+
+      // Basic client-side validation
+      if (!email) {
+        emailError.textContent = 'Please enter an email address';
+        emailError.classList.remove("hidden");
+        return;
+      }
+
+      if (!isValidEmail(email)) {
+        emailError.textContent = 'Please enter a valid email address';
+        emailError.classList.remove("hidden");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+
+      fetch("{{ route('settings.profile.update') }}", {
+          method: "PATCH",
+          headers: {
+            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email
+          })
+        })
+        .then(async response => {
+          const data = await response.json();
+
+          if (!response.ok) {
+            // Handle validation errors
+            if (data.errors?.email) {
+              emailError.textContent = data.errors.email[0];
+              emailError.classList.remove("hidden");
+              showToast(data.errors.email[0], "error");
+            } else {
+              emailError.textContent = 'Failed to send verification code. Please try again.';
+              emailError.classList.remove("hidden");
+              showToast('Failed to send verification code. Please try again.', "error");
+            }
+            btn.disabled = false;
+            btn.innerHTML = 'Send Verification Code';
+            return;
+          }
+
+          // Success - show OTP section
+          showToast(data.message || 'Verification code sent to your email.', 'success');
+          emailError.classList.add("hidden");
+
+          // Show OTP section and update UI
+          document.getElementById("otpSection").classList.remove("hidden");
+          document.getElementById("targetEmail").textContent = email;
+          document.getElementById("modal_email").readOnly = true;
+
+          // Switch buttons
+          document.getElementById("requestOtpBtn").classList.add("hidden");
+          document.getElementById("verifyOtpBtn").classList.remove("hidden");
+
+          // Focus on OTP input
+          setTimeout(() => {
+            document.getElementById("modal_otp").focus();
+          }, 100);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          emailError.textContent = 'Network error. Please check your connection and try again.';
+          emailError.classList.remove("hidden");
+          showToast('Network error. Please try again.', "error");
+          btn.disabled = false;
+          btn.innerHTML = 'Send Verification Code';
+        });
+    }
+
+    function verifyOtp() {
+      let email = document.getElementById("modal_email").value;
+      let otp_code = document.getElementById("modal_otp").value.trim();
+      let btn = document.getElementById("verifyOtpBtn");
+      let otpError = document.getElementById("otpError");
+
+      // Basic OTP validation
+      if (!otp_code) {
+        otpError.textContent = 'Please enter the verification code';
+        otpError.classList.remove("hidden");
+        return;
+      }
+
+      if (otp_code.length !== 6 || !/^\d+$/.test(otp_code)) {
+        otpError.textContent = 'Please enter a valid 6-digit code';
+        otpError.classList.remove("hidden");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Verifying...';
+
+      fetch("{{ route('settings.profile.update') }}", {
+          method: "PATCH",
+          headers: {
+            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            otp_code: otp_code
+          })
+        })
+        .then(async response => {
+          const data = await response.json();
+
+          if (!response.ok) {
+            // Handle OTP verification errors
+            if (data.errors?.otp_code) {
+              otpError.textContent = data.errors.otp_code[0];
+              otpError.classList.remove("hidden");
+              showToast(data.errors.otp_code[0], "error");
+            } else {
+              otpError.textContent = 'Verification failed. Please try again.';
+              otpError.classList.remove("hidden");
+              showToast('Verification failed. Please try again.', "error");
+            }
+            btn.disabled = false;
+            btn.innerHTML = 'Verify';
+            return;
+          }
+
+          // Success - email updated
+          showToast(data.message || 'Email updated successfully!', 'success');
+
+          // Close modal
+          closeEmailModal();
+
+          // Refresh the page to show updated email after a short delay
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          otpError.textContent = 'Network error. Please check your connection and try again.';
+          otpError.classList.remove("hidden");
+          showToast('Network error. Please try again.', "error");
+          btn.disabled = false;
+          btn.innerHTML = 'Verify';
+        });
+    }
+
+    function closeEmailModal() {
+      document.getElementById("emailModal").classList.add("hidden");
+
+      // Reset form and UI state
+      document.getElementById("emailChangeForm").reset();
+      document.getElementById("otpSection").classList.add("hidden");
+      document.getElementById("emailError").classList.add("hidden");
+      document.getElementById("otpError").classList.add("hidden");
+      document.getElementById("modal_email").readOnly = false;
+
+      // Reset buttons
+      document.getElementById("requestOtpBtn").classList.remove("hidden");
+      document.getElementById("verifyOtpBtn").classList.add("hidden");
+      document.getElementById("requestOtpBtn").disabled = false;
+      document.getElementById("requestOtpBtn").innerHTML = 'Send Verification Code';
+      document.getElementById("verifyOtpBtn").disabled = false;
+      document.getElementById("verifyOtpBtn").innerHTML = 'Verify';
+    }
+
+    // Utility function for email validation
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    // Change Plan Modal Functions
+    function openChangePlanModal() {
+      document.getElementById('changePlanModal').classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeChangePlanModal() {
+      document.getElementById('changePlanModal').classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    function selectPlan(plan) {
+      const currentPlan = '{{ strtolower($currentUser->plan->name ?? 'free') }}';
+
+      if (plan === currentPlan) {
+        showToast('You are already on this plan!', 'info');
+        return;
+      }
+
+      // Show loading state
+      showToast(`Processing your ${plan} plan selection...`, 'info');
+
+      // Here you would typically make an API call to handle the plan change
+      // For now, we'll simulate the process
+      simulatePlanChange(plan);
+    }
+
+    function simulatePlanChange(plan) {
+      // Simulate API call delay
+      setTimeout(() => {
+        if (plan === 'premium') {
+          // Redirect to payment page or show payment form
+          showToast('Redirecting to secure payment...', 'success');
+          // In a real implementation, you would redirect to Stripe or your payment processor
+          // window.location.href = '/billing/upgrade';
+        } else {
+          // Downgrade to free plan
+          showToast('Plan changed successfully!', 'success');
+          closeChangePlanModal();
+          // Refresh the page to show updated plan
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        }
+      }, 1000);
     }
 
     // Theme selection
     themeOptions.forEach(option => {
       option.addEventListener('click', function() {
-        themeOptions.forEach(o => o.classList.remove('active'));
+        const theme = this.getAttribute('data-theme');
+
+        // Update visual selection
+        document.querySelectorAll('.theme-option[data-theme]').forEach(o => {
+          o.classList.remove('active');
+        });
         this.classList.add('active');
+
+        // Update radio button
         const radio = this.querySelector('input[type="radio"]');
-        if (radio) radio.checked = true;
+        if (radio) {
+          radio.checked = true;
+        }
+
+        // Apply theme visually (preview)
+        if (window.themeManager) {
+          window.themeManager.setTheme(theme);
+        }
+
+        if (window.playThemeTransition) {
+          window.playThemeTransition();
+        }
       });
     });
 
     // Color scheme selection
     colorSchemeOptions.forEach(option => {
       option.addEventListener('click', function() {
-        colorSchemeOptions.forEach(o => o.classList.remove('active'));
+        const scheme = this.getAttribute('data-scheme');
+
+        // Update visual selection
+        document.querySelectorAll('.color-scheme-option').forEach(o => {
+          o.classList.remove('active');
+        });
         this.classList.add('active');
+
+        // Update radio button
         const radio = this.querySelector('input[type="radio"]');
-        if (radio) radio.checked = true;
+        if (radio) {
+          radio.checked = true;
+        }
+
+        // Apply color scheme visually (preview)
+        if (window.themeManager) {
+          window.themeManager.setColorScheme(scheme);
+        }
       });
     });
 
-    // Body shape selection
-    bodyShapeOptions.forEach(option => {
-      option.addEventListener('click', function() {
-        bodyShapeOptions.forEach(o => o.classList.remove('active'));
-        this.classList.add('active');
-        const radio = this.querySelector('input[type="radio"]');
-        if (radio) radio.checked = true;
-      });
-    });
 
-    // Initialize tag removal functionality for existing tags
-    function initializeExistingTagRemoval() {
-      document.querySelectorAll('.tag-remove').forEach(removeBtn => {
-        removeBtn.addEventListener('click', function() {
-          const parentTag = this.parentElement;
-          parentTag.remove();
+    // Body shape selection - FIXED VERSION
+    function initializeBodyShapeSelection() {
+      const bodyShapeOptions = document.querySelectorAll('.theme-option[data-shape]');
+      const primaryColor = getComputedStyle(document.documentElement).getPropertyValue(
+        '--primary-color').trim();
+      const borderColor = getComputedStyle(document.documentElement).getPropertyValue(
+        '--border-color').trim();
 
-          // Update the appropriate hidden input
-          if (parentTag.parentElement === styleTags) {
-            updateStyleTagsInput();
-          } else if (parentTag.parentElement === categoryTags) {
-            updateCategoryTagsInput();
-          }
+      bodyShapeOptions.forEach(option => {
+        const radio = option.querySelector('input[type="radio"]');
+        if (!radio) return;
+
+        if (radio.checked) {
+          option.classList.add('active');
+          option.style.borderColor = primaryColor;
+        } else {
+          option.classList.remove('active');
+          option.style.borderColor = borderColor;
+        }
+
+        option.addEventListener('click', function() {
+          // Remove active class and reset borders from all body shape options
+          bodyShapeOptions.forEach(o => {
+            o.classList.remove('active');
+            o.style.borderColor = borderColor;
+            o.querySelector('input[type="radio"]').checked = false;
+          });
+
+          // Add active class and set primary color border to clicked option
+          this.classList.add('active');
+          this.style.borderColor = primaryColor;
+          this.querySelector('input[type="radio"]').checked = true;
         });
       });
+    };
+
+    const highContrastToggle = document.querySelector('input[name="high_contrast"]');
+    if (highContrastToggle) {
+      highContrastToggle.addEventListener('change', function() {
+        const previewEnabled = this.checked;
+        document.documentElement.setAttribute('data-high-contrast', previewEnabled);
+        updateToggleColors();
+      });
     }
+
+    document.querySelectorAll('.toggle-switch input[type="checkbox"]').forEach(cb => {
+      const slider = cb.nextElementSibling;
+      // initialize
+      cb.value = cb.checked ? '1' : '0';
+      if (slider) slider.classList.toggle('active', cb.checked);
+
+      cb.addEventListener('change', () => {
+        cb.value = cb.checked ? '1' : '0';
+        if (slider) slider.classList.toggle('active', cb.checked);
+      });
+    });
+
+    // Auto-archive toggle functionality (UI only)
+    function initializeAutoArchiveToggle() {
+      const autoArchive = document.getElementById('autoArchive');
+      const archiveAfter = document.getElementById('archiveAfter');
+
+      if (autoArchive && archiveAfter) {
+        autoArchive.addEventListener('change', function() {
+          archiveAfter.disabled = !this.checked;
+          if (!this.checked) {
+            archiveAfter.value = '';
+          }
+        });
+
+        // Initialize state on page load
+        archiveAfter.disabled = !autoArchive.checked;
+      }
+    }
+
+    function resetAllSelectionBorders() {
+      const borderColor = getComputedStyle(document.documentElement).getPropertyValue(
+        '--border-color').trim();
+
+      // Reset all non-active selection options
+      document.querySelectorAll('.theme-option:not(.active), .color-scheme-option:not(.active)')
+        .forEach(element => {
+          element.style.borderColor = borderColor;
+        });
+
+      // Update active selections with current primary color
+      const primaryColor = getComputedStyle(document.documentElement).getPropertyValue(
+        '--primary-color').trim();
+      document.querySelectorAll('.theme-option.active, .color-scheme-option.active').forEach(
+        element => {
+          element.style.borderColor = primaryColor;
+        });
+    }
+
+    /// Reset form to server state on page load - FIXED VERSION
+    function resetFormToServerState() {
+      // Only reset high contrast, not themes and color schemes
+      const serverHighContrast = {{ $currentUser->high_contrast ? 'true' : 'false' }};
+
+      // Reset high contrast toggle only
+      const highContrastToggle = document.querySelector('input[name="high_contrast"]');
+      if (highContrastToggle) {
+        highContrastToggle.checked = serverHighContrast;
+      }
+
+      // Don't reset themes and color schemes - let ThemeManager handle them
+      // They are auto-saved and should reflect the current state
+
+      // Update high contrast visual state to match server
+      if (window.themeManager) {
+        window.themeManager.setHighContrast(serverHighContrast);
+      }
+    }
+
+    // Handle form reset to sync with actual state
+    // Handle app preferences form submission
+    const appPreferencesForm = document.getElementById('appPreferencesForm');
+    if (appPreferencesForm) {
+      appPreferencesForm.addEventListener('submit', function(e) {
+        // Form will submit normally, changes will be saved to database
+        // The page will reload and show the updated state
+
+        // Optional: Show loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+        }
+      });
+    }
+
+    // Call this when color scheme changes
+    document.addEventListener('colorSchemeChanged', updateToggleColors);
+    document.addEventListener('themeChanged', updateToggleColors);
 
     // Handle responsive behavior
     function handleResize() {
@@ -2047,10 +2966,107 @@
       }
     }
 
+    // Synchronize theme with database on page load
+    function synchronizeWithDatabase() {
+      // Get database values from server
+      const dbTheme = '{{ $currentUser->theme ?? 'light' }}';
+      const dbColorScheme = '{{ $currentUser->color_scheme ?? 'primary' }}';
+      const dbHighContrast = {{ $currentUser->high_contrast ? 'true' : 'false' }};
+      // const dbBodyShape = '{{ $currentUser->body_shape ?? '' }}'
+
+      // Update ThemeManager with database values
+      if (window.themeManager) {
+        window.themeManager.setTheme(dbTheme);
+        window.themeManager.setColorScheme(dbColorScheme);
+        window.themeManager.setHighContrast(dbHighContrast);
+      }
+
+      // Update form fields to match database values
+      document.querySelectorAll('input[name="theme"]').forEach(radio => {
+        radio.checked = (radio.value === dbTheme);
+        const parentOption = radio.closest('.theme-option');
+        if (parentOption) {
+          if (radio.value === dbTheme) {
+            parentOption.classList.add('active');
+          } else {
+            parentOption.classList.remove('active');
+          }
+        }
+      });
+
+      document.querySelectorAll('input[name="color_scheme"]').forEach(radio => {
+        radio.checked = (radio.value === dbColorScheme);
+        const parentOption = radio.closest('.color-scheme-option');
+        if (parentOption) {
+          if (radio.value === dbColorScheme) {
+            parentOption.classList.add('active');
+          } else {
+            parentOption.classList.remove('active');
+          }
+        }
+      });
+
+      // const primaryColor = getComputedStyle(document.documentElement).getPropertyValue(
+      //   '--primary-color').trim();
+      // console.log(primaryColor);
+      // const borderColor = getComputedStyle(document.documentElement).getPropertyValue(
+      //   '--border-color').trim();
+
+      // document.querySelectorAll('.theme-option[data-shape]').forEach(option => {
+      //   const radio = option.querySelector('input[type="radio"]');
+      //   if (!radio) return;
+
+      //   radio.checked = (radio.value === dbBodyShape);
+      //   // set checked based on DB value
+
+      //   if (radio.checked) {
+      //     option.classList.add('active');
+      //     option.style.borderColor = primaryColor;
+      //   } else {
+      //     option.classList.remove('active');
+      //     option.style.borderColor = borderColor;
+      //   }
+      // });
+
+      const highContrastToggle = document.querySelector('input[name="high_contrast"]');
+      if (highContrastToggle) {
+        highContrastToggle.checked = dbHighContrast;
+      }
+    }
+
+    // function enforceBodyShapeActive() {
+    //   const primaryColor = getComputedStyle(document.documentElement).getPropertyValue(
+    //     '--primary-color').trim();
+    //   const borderColor = getComputedStyle(document.documentElement).getPropertyValue(
+    //     '--border-color').trim();
+    //   document.querySelectorAll('.theme-option[data-shape]').forEach(option => {
+    //     const radio = option.querySelector('input[type="radio"]');
+    //     if (!radio) return;
+    //     if (radio.checked) {
+    //       option.classList.add('active');
+    //       option.style.borderColor = primaryColor;
+    //     } else {
+    //       option.classList.remove('active');
+    //       option.style.borderColor = borderColor;
+    //     }
+    //   });
+    // }
+
     // Initialize everything when DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('Initializing settings page...'); // Debug log
+      const forms = document.querySelectorAll('form');
 
+      forms.forEach(form => {
+        form.addEventListener('submit', function() {
+          const submitBtn = this.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            // Simple loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+          }
+        });
+      });
       // Initialize navigation first
       initializeNavigation();
 
@@ -2058,6 +3074,58 @@
       initializeStyleTags();
       initializeCategoryTags();
       initializeExistingTagRemoval();
+      initializeBodyShapeSelection();
+
+      updateStyleTagsInput();
+      updateCategoryTagsInput();
+
+      setTimeout(updateToggleColors, 100);
+
+      initializeSelectionHandlers();
+
+
+
+      // Initialize dynamic input colors
+      setTimeout(() => {
+        initializeDynamicInputColors();
+        resetAllSelectionBorders(); // Reset all borders on load
+
+        // Set active element borders
+        const primaryColor = getComputedStyle(document.documentElement)
+          .getPropertyValue('--primary-color').trim();
+        document.querySelectorAll('.theme-option.active, .color-scheme-option.active')
+          .forEach(activeElement => {
+            activeElement.style.borderColor = primaryColor;
+          });
+      }, 200);
+
+      // Re-initialize when color scheme changes
+      document.addEventListener('colorSchemeChanged', function() {
+        setTimeout(() => {
+          initializeDynamicInputColors();
+          resetAllSelectionBorders();
+        }, 100);
+      });
+
+      document.addEventListener('themeChanged', function() {
+        setTimeout(() => {
+          initializeDynamicInputColors();
+          resetAllSelectionBorders();
+        }, 100);
+      });
+
+      // setTimeout(() => {
+      //   if (window.themeManager) {
+      //     window.themeManager.syncHighContrastState();
+      //   }
+      // }, 200);
+
+      // // Add beforeunload listener to handle page refresh
+      // window.addEventListener('beforeunload', function() {
+      //   if (window.themeManager) {
+      //     window.themeManager.syncHighContrastState();
+      //   }
+      // });
 
       // Set initial state for toggles
       if (autoArchive && archiveAfter) {
@@ -2074,15 +3142,91 @@
       // Update on resize
       window.addEventListener('resize', handleResize);
 
-      console.log('Settings page initialized successfully'); // Debug log
+      @if (session('success'))
+        showToast("{{ session('success') }}", 'success');
+      @endif
+
+      // Check for general errors
+      @if ($errors->any())
+        // Show first error only to avoid spam
+        showToast("{{ $errors->first() }}", 'error');
+      @endif
+
+      const emailInput = document.getElementById('modal_email');
+      if (emailInput) {
+        emailInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            requestOtp();
+          }
+        });
+      }
+
+      const otpInput = document.getElementById('modal_otp');
+      if (otpInput) {
+        otpInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            verifyOtp();
+          }
+        });
+
+        // Auto-advance and format OTP input
+        otpInput.addEventListener('input', function(e) {
+          // Remove non-digits
+          this.value = this.value.replace(/\D/g, '');
+
+          // Auto-submit when 6 digits are entered
+          if (this.value.length === 6) {
+            verifyOtp();
+          }
+        });
+      }
+
+      // Close modal when clicking outside
+      document.addEventListener('click', function(e) {
+        // if (e.target === modal) {
+        //   closeChangePlanModal();
+        // }
+        switch (e.target) {
+          case changeEmailModal:
+            closeEmailModal();
+            break;
+          case changePlanModal:
+            closeChangePlanModal();
+            break;
+        }
+      });
+      // const emailModal = document.getElementById('emailModal');
+      // if (emailModal) {
+      //   emailModal.addEventListener('click', function(e) {
+      //     if (e.target === this) {
+      //       closeEmailModal();
+      //     }
+      //   });
+      // }
+
+      // Close modal with Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !changeEmailModal.classList.contains('hidden')) {
+          closeEmailModal();
+        }
+        if (e.key === 'Escape' && !changePlanModal.classList.contains('hidden')) {
+          closeChangePlanModal();
+        }
+      });
+
+      // setTimeout(() => {
+      //   synchronizeWithDatabase();
+
+      //   setTimeout(enforceBodyShapeActive(), 120)
+      // }, 100);
     });
 
     // Form submission handling (optional - for debugging)
-    document.querySelectorAll('form').forEach(form => {
-      form.addEventListener('submit', function(e) {
-        console.log('Submitting form:', this.action);
-        // You can add additional validation here if needed
-      });
-    });
+    // document.querySelectorAll('form').forEach(form => {
+    //   form.addEventListener('submit', function(e) {
+    //   });
+    // });
   </script>
 @endpush

@@ -7,7 +7,7 @@
 
 @php
   $baseClasses =
-      'font-medium transition focus:outline-none focus:ring-2 focus:ring-opacity-50 rounded-lg';
+      'font-medium transition focus:outline-none focus:ring-2 focus:ring-opacity-50';
 
   $variantClasses = [
       'none' => '',
@@ -22,9 +22,9 @@
 
   $sizeClasses = [
       'none' => '',
-      'small' => 'px-4 py-2',
-      'medium' => 'px-6 py-3',
-      'large' => 'px-8 py-4'
+      'small' => 'px-4 py-2 rounded-lg',
+      'medium' => 'px-6 py-3 rounded-lg',
+      'large' => 'px-8 py-4 rounded-lg'
   ];
 
     // component defaults
