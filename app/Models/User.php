@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'plan_id',
         'email',
+        'country_id',
     ];
 
     protected $casts = [
@@ -74,6 +75,21 @@ class User extends Authenticatable
     }
     public function interests(){
         return $this->hasMany(Interest::class);
+    }
+    public function country(){
+        return $this->belongsTo(Country::class);
+    }
+    public function getCurrencySymbolAttribute(){
+        if($this->country && $this->country->currency_symbol){
+            return $this->country->currency_symbol;
+        }
+        return '₦';
+    }
+    public function getCurrencyCodeAttribute(){
+        if($this->country && $this->country->currency){
+            return $this->country->currency;
+        }
+        return 'NGN';
     }
 
 

