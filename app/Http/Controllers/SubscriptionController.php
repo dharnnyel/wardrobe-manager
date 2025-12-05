@@ -13,6 +13,10 @@ class SubscriptionController extends Controller
             'days_reminder' => 'boolean',
         ]);
 
+        if (!$user->subscription) {
+            return response()->json(['message' => 'No active subscription found.'], 404);
+        }
+
         $user->subscription->weeks_reminder = $request->input('weeks_reminder', false);
         $user->subscription->days_reminder = $request->input('days_reminder', false);
         $user->subscription->save();

@@ -1,5 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+@php
+  $colorSchemes = [
+      'primary' => [
+          '--primary-color' => '#9F7AEA',
+          '--secondary-color' => '#4FD1C5',
+          '--accent-color' => '#FC8181',
+          '--success-color' => '#68D391'
+      ],
+      'secondary' => [
+          '--primary-color' => '#4FD1C5',
+          '--secondary-color' => '#9F7AEA',
+          '--accent-color' => '#FC8181',
+          '--success-color' => '#68D391'
+      ],
+      'accent' => [
+          '--primary-color' => '#FC8181',
+          '--secondary-color' => '#4FD1C5',
+          '--accent-color' => '#9F7AEA',
+          '--success-color' => '#68D391'
+      ],
+      'success' => [
+          '--primary-color' => '#68D391',
+          '--secondary-color' => '#4FD1C5',
+          '--accent-color' => '#FC8181',
+          '--success-color' => '#9F7AEA'
+      ],
+      'yellow-500' => [
+          '--primary-color' => '#EAB308',
+          '--secondary-color' => '#4FD1C5',
+          '--accent-color' => '#FC8181',
+          '--success-color' => '#68D391'
+      ],
+      'pink-500' => [
+          '--primary-color' => '#EC4899',
+          '--secondary-color' => '#4FD1C5',
+          '--accent-color' => '#FC8181',
+          '--success-color' => '#68D391'
+      ]
+  ];
+
+  $userColorScheme = $currentUser->color_scheme ?? 'primary';
+  $userTheme = $currentUser->theme ?? 'light';
+  $userHighContrast = $currentUser->high_contrast ? 'true' : 'false';
+
+  $currentColors = $colorSchemes[$userColorScheme] ?? $colorSchemes['primary'];
+
+  // Calculate RGB for primary color
+  $primaryColor = $currentColors['--primary-color'];
+  $rgb = [];
+  if (preg_match('/#([a-fA-F0-9]{6})/', $primaryColor, $matches)) {
+      $hex = $matches[1];
+      $rgb = [hexdec(substr($hex, 0, 2)), hexdec(substr($hex, 2, 2)), hexdec(substr($hex, 4, 2))];
+  } else {
+      $rgb = [159, 122, 234]; // default purple
+  }
+  $primaryColorRgb = implode(', ', $rgb);
+@endphp
+<html data-color-scheme="{{ $userColorScheme }}" data-high-contrast="{{ $userHighContrast }}"
+  data-theme="{{ $userTheme }}" lang="en">
 
   <head>
     <meta charset="UTF-8" />
@@ -41,15 +99,16 @@
     </script>
     <style>
       :root {
-        --primary-color: #9F7AEA;
-        --secondary-color: #4FD1C5;
-        --accent-color: #FC8181;
-        --success-color: #68D391;
+        --primary-color: {{ $currentColors['--primary-color'] }};
+        --secondary-color: {{ $currentColors['--secondary-color'] }};
+        --accent-color: {{ $currentColors['--accent-color'] }};
+        --success-color: {{ $currentColors['--success-color'] }};
         --bg-primary: #ffffff;
         --bg-secondary: #F7FAFC;
         --text-primary: #2D3748;
         --text-secondary: #6B7280;
         --border-color: #E5E7EB;
+        --primary-color-rgb: {{ $primaryColorRgb }};
       }
 
       [data-theme="light"] {
@@ -69,6 +128,26 @@
         --border-color: #404040;
       }
 
+      [data-theme="auto"] {
+        --bg-primary: #ffffff;
+        --bg-secondary: #F7FAFC;
+        --text-primary: #2D3748;
+        --text-secondary: #6B7280;
+        --border-color: #E5E7EB;
+      }
+
+      [data-high-contrast="true"] {
+        --bg-primary: #000000;
+        --bg-secondary: #111111;
+        --text-primary: #ffffff;
+        --text-secondary: #ffffff;
+        --border-color: #ffffff;
+        --primary-color: #ffff00;
+        --secondary-color: #00ffff;
+        --accent-color: #ff00ff;
+        --success-color: #00ff00;
+      }
+
       /* Dark mode support for dropdowns */
       [data-theme="dark"] .profile-dropdown,
       [data-theme="dark"] .topbar-dropdown,
@@ -79,12 +158,14 @@
         color: var(--text-primary);
       }
 
-      [data-theme="dark"] .profile-item {
+      [data-theme="dark"] .profile-item,
+      [data-theme="auto"] .profile-item {
         color: var(--text-primary);
       }
 
-      [data-theme="dark"] .profile-item:hover {
-        background-color: var(--bg-secondary);
+      [data-theme="dark"] .profile-item:hover,
+      [data-theme="auto"] .profile-item:hover {
+        background-color: rgba(var(--primary-color-rgb), 0.08);
       }
 
       [data-theme="dark"] .profile-item i {
@@ -92,7 +173,7 @@
       }
 
       [data-theme="dark"] .profile-item:hover i {
-        color: var(--primary-color);
+        color: rgba(var(--primary-color-rgb), 0.08);
       }
 
       /* High contrast mode for dropdowns */
@@ -109,21 +190,11 @@
       }
 
       [data-high-contrast="true"] .profile-item:hover {
-        background-color: var(--bg-secondary);
-        border: 1px solid var(--primary-color);
+        background-color: rgba(var(--primary-color-rgb), 0.08);
       }
 
       [data-high-contrast="true"] .profile-item i {
         color: var(--text-primary);
-      }
-
-      /* System Theme - will use prefers-color-scheme */
-      [data-theme="auto"] {
-        --bg-primary: #ffffff;
-        --bg-secondary: #F7FAFC;
-        --text-primary: #2D3748;
-        --text-secondary: #6B7280;
-        --border-color: #E5E7EB;
       }
 
       @media (prefers-color-scheme: dark) {
@@ -139,20 +210,6 @@
           background-color: var(--bg-primary);
           color: var(--text-primary);
         }
-      }
-
-      /* High Contrast Mode */
-      /* High Contrast Mode */
-      [data-high-contrast="true"] {
-        --bg-primary: #000000;
-        --bg-secondary: #111111;
-        --text-primary: #ffffff;
-        --text-secondary: #ffffff;
-        --border-color: #ffffff;
-        --primary-color: #ffff00;
-        --secondary-color: #00ffff;
-        --accent-color: #ff00ff;
-        --success-color: #00ff00;
       }
 
       /* Global dark mode text visibility */
@@ -255,6 +312,28 @@
         transition: background-color 0.3s ease, color 0.3s ease;
       }
 
+      input,
+      textarea,
+      select {
+        background-color: var(--bg-primary) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid transparent;
+        transition: border-color 0.4s ease, box-shadow 0.3s ease;
+      }
+
+      input:focus,
+      textarea:focus,
+      select:focus {
+        border: 1px solid var(--primary-color) !important;
+        box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb, 159, 122, 234), 0.08) !important;
+        outline: none !important;
+      }
+
+      /* Stronger visibility for keyboard users */
+      /* :focus-visible {
+        box-shadow: 0 0 0 6px rgba(var(--primary-color-rgb, 159, 122, 234), 0.12) !important;
+      } */
+
       /* select {
         padding-right: 2.5rem !important;
       }  */
@@ -275,7 +354,7 @@
 
       .text-gray-500,
       .text-gray-600 {
-        color: var(--text-secondary) !important;
+        color: var(--text-secondary);
       }
 
       .border-gray-200 {
@@ -288,26 +367,19 @@
       }
 
       /* Card and form elements */
-      .responsive-card,
-      {
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      border-color: var(--border-color);
+      .responsive-card {
+        /* background-color: var(--bg-primary); */
+        color: var(--text-primary);
+        border-color: var(--border-color);
       }
 
       .responsive-card input[type="text"],
-      .responsive-card select {
+      .responsive-card select,
+      .responsive-card textarea {
         background-color: var(--bg-primary) !important;
         color: var(--text-primary) !important;
-        border-color: var(--border-color) !important;
       }
 
-      /* form:focus {
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 0.2rem rgba(159, 122, 234, 0.25);
-      } */
-
-      /* Update your existing color classes to use CSS variables */
       .bg-primary {
         background-color: var(--primary-color) !important;
       }
@@ -357,7 +429,6 @@
         opacity: 0.9;
       }
 
-      /* Sidebar and navigation theming */
       .sidebar {
         background-color: var(--bg-primary);
         border-right-color: var(--border-color);
@@ -384,10 +455,6 @@
         color: var(--text-primary);
       }
 
-      .profile-item:hover {
-        background: var(--bg-secondary);
-      }
-
       /* Shadow adjustments for dark mode */
       [data-theme="dark"] .shadow-lg,
       [data-theme="dark"] .shadow-sm {
@@ -406,12 +473,12 @@
       }
 
       .nav-link:hover {
-        background-color: rgba(159, 122, 234, 0.1);
+        background-color: rgba(var(--primary-color-rgb), 0.08);
       }
 
       .nav-link.active {
-        background-color: rgba(159, 122, 234, 0.15);
-        border-right: 3px solid #9f7aea;
+        background-color: rgba(var(--primary-color-rgb), 0.08);
+        border-right: 3px solid rgba(var(--primary-color-rgb), 0.08);
       }
 
       /* Sidebar Styles */
@@ -803,7 +870,7 @@
       }
 
       .profile-item:hover {
-        background: #f9fafb;
+        background-color: rgba(var(--primary-color-rgb), 0.08);
       }
 
       .profile-item.active {
@@ -834,7 +901,7 @@
         top: 50px;
         right: 0;
         width: 200px;
-        background: white;
+        /* background: white; */
         border-radius: 12px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         border: 1px solid #e5e7eb;
@@ -969,7 +1036,7 @@
               </p>
             </div>
           </div>
-          <button class="hover:text-primary user-menu-toggle text-gray-500" id="sidebarUserMenu">
+          <button class="hover:text-[var(--primary-color)] w-3" id="sidebarUserMenu">
             <i class="fas fa-ellipsis-v"></i>
           </button>
         </div>
@@ -1020,12 +1087,12 @@
         <div class="flex items-center space-x-4">
           <div class="relative">
             <button
-              class="text-primary border-primary hover:bg-primary rounded-full border bg-white px-2 py-1 font-medium transition hover:text-white"
+              class="text-primary border-primary rounded-full border px-2 py-1 font-medium transition hover:bg-[rgba(var(--primary-color-rgb),0.3)]"
               id="bellIcon">
               <i class="fas fa-bell"></i>
             </button>
             <span
-              class="bg-accent absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full text-[10px] text-white">3</span>
+              class="bg-primary absolute -right-0.5 top-0.5 flex h-2.5 w-2.5 items-center justify-center rounded-full text-[10px]"></span>
           </div>
 
           <!-- Top Bar User Profile -->
@@ -1062,242 +1129,6 @@
       </div>
       @yield('content')
       @include('components.notifications')
-
-      <!-- Change Email Modal -->
-      <div
-        class="fixed inset-0 z-[9999] hidden overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm"
-        id="emailModal">
-        <div class="mx-auto mt-28 w-full max-w-md rounded-2xl bg-white shadow-xl">
-          <!-- Header -->
-          <div class="flex items-center justify-between border-b border-gray-200 p-6">
-            <h3 class="text-xl font-bold text-gray-900">Change Email Address</h3>
-            <button class="text-gray-400 hover:text-gray-600" onclick="closeEmailModal()">
-              <i class="fas fa-times text-lg"></i>
-            </button>
-          </div>
-
-          <!-- Modal Body -->
-          <div class="p-6">
-            <form id="emailChangeForm" method="POST">
-              @csrf
-              @method('PATCH')
-
-              <!-- Current Email -->
-              <div class="mb-6">
-                <label class="mb-2 block text-sm font-medium text-gray-700">Current
-                  Email</label>
-                <div class="rounded-lg bg-gray-50 p-3">
-                  <p class="text-gray-900">{{ $currentUser->email }}</p>
-                </div>
-              </div>
-
-              <!-- New Email Input -->
-              <div class="mb-4">
-                <label class="mb-2 block text-sm font-medium text-gray-700">New Email
-                  Address</label>
-                <input
-                  class="focus:ring-primary w-full rounded-lg bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2"
-                  id="modal_email" name="email" placeholder="Enter new email address" required
-                  type="email">
-                <div class="mt-1 hidden text-sm text-red-500" id="emailError"></div>
-              </div>
-
-              <!-- OTP Section -->
-              <div class="hidden" id="otpSection">
-                <div class="mb-4">
-                  <label class="mb-2 block text-sm font-medium text-gray-700"
-                    for="modal_otp">Verification Code</label>
-
-                  <input
-                    class="focus:ring-primary w-full rounded-lg bg-gray-100 px-4 py-3 text-center font-mono text-xl focus:outline-none focus:ring-2"
-                    id="modal_otp" maxlength="6" name="otp_code" placeholder="000000"
-                    type="text">
-                  <div class="mt-1 hidden text-sm text-red-500" id="otpError"></div>
-
-                  <p class="mt-2 text-center text-sm text-gray-600">
-                    Enter the code sent to <span class="font-medium" id="targetEmail"></span>
-                  </p>
-                </div>
-              </div>
-
-              <!-- Buttons -->
-              <div class="mt-6 flex justify-end gap-4">
-                <button class="rounded-lg px-4 py-2 text-gray-600 hover:bg-gray-100"
-                  onclick="closeEmailModal()" type="button">
-                  Cancel
-                </button>
-
-                <!-- Request OTP -->
-                <button
-                  class="bg-primary hover:bg-primary/90 rounded-lg px-4 py-2 font-semibold text-white"
-                  id="requestOtpBtn" onclick="requestOtp()" type="button">
-                  Send Verification Code
-                </button>
-
-                <!-- Verify OTP -->
-                <button
-                  class="bg-primary hover:bg-primary/90 hidden rounded-lg px-4 py-2 font-semibold text-white"
-                  id="verifyOtpBtn" onclick="verifyOtp()" type="button">
-                  Verify
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      {{-- fixed inset-0 z-[9999] hidden overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm --}}
-      <!-- Change Plan Modal -->
-      <div
-        class="fixed inset-0 z-[9999] hidden overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm"
-        id="changePlanModal">
-        <div
-          class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <!-- Background overlay -->
-          <div aria-hidden="true"
-            class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-
-          <!-- Modal panel -->
-          <div
-            class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl">
-            <!-- Header -->
-            <div class="border-b border-gray-200 bg-white px-6 py-4">
-              <div class="flex items-center justify-between">
-                <h3 class="text-xl font-semibold text-gray-900">Change Your Plan</h3>
-                <button class="text-gray-400 hover:text-gray-600" onclick="closeChangePlanModal()"
-                  type="button">
-                  <i class="fas fa-times text-xl"></i>
-                </button>
-              </div>
-              <p class="mt-1 text-sm text-gray-600">Choose the plan that works best for you</p>
-            </div>
-
-            <!-- Plans -->
-            <div class="bg-white px-6 py-6">
-              <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <!-- Free Plan -->
-                <div
-                  class="relative rounded-2xl border-2 border-gray-200 p-6 transition-all hover:border-purple-300 hover:shadow-lg">
-                  <div class="flex items-center justify-between">
-                    <h4 class="text-lg font-bold text-gray-900">Free Plan</h4>
-                    <span
-                      class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-800">Current</span>
-                  </div>
-                  <p class="mt-2 text-sm text-gray-600">Basic access to StyleHub features</p>
-                  <div class="mt-4">
-                    <span class="text-3xl font-bold text-gray-900">$0.00</span>
-                    <span class="text-gray-600">/month</span>
-                  </div>
-                  <ul class="mt-6 space-y-3">
-                    <li class="flex items-center text-sm text-gray-600">
-                      <i class="fas fa-check mr-2 text-green-500"></i>
-                      Basic wardrobe management
-                    </li>
-                    <li class="flex items-center text-sm text-gray-600">
-                      <i class="fas fa-check mr-2 text-green-500"></i>
-                      Up to 50 clothing items
-                    </li>
-                    <li class="flex items-center text-sm text-gray-600">
-                      <i class="fas fa-check mr-2 text-green-500"></i>
-                      Manual outfit creation
-                    </li>
-                    <li class="flex items-center text-sm text-gray-600">
-                      <i class="fas fa-times mr-2 text-gray-400"></i>
-                      AI outfit recommendations
-                    </li>
-                    <li class="flex items-center text-sm text-gray-600">
-                      <i class="fas fa-times mr-2 text-gray-400"></i>
-                      Advanced analytics
-                    </li>
-                  </ul>
-                  <button
-                    class="mt-6 w-full rounded-lg bg-gray-100 px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-200"
-                    onclick="selectPlan('free')" type="button">
-                    {{ $currentUser->plan->name === 'Free' ? 'Current Plan' : 'Select Free Plan' }}
-                  </button>
-                </div>
-
-                <!-- Premium Plan -->
-                <div
-                  class="relative rounded-2xl border-2 border-purple-500 p-6 transition-all hover:shadow-lg">
-                  <div class="flex items-center justify-between">
-                    <h4 class="text-lg font-bold text-gray-900">Premium Plan</h4>
-                    <span
-                      class="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-800">Popular</span>
-                  </div>
-                  <p class="mt-2 text-sm text-gray-600">Advanced features for fashion enthusiasts
-                  </p>
-                  <div class="mt-4">
-                    <span class="text-3xl font-bold text-gray-900">$9.99</span>
-                    <span class="text-gray-600">/month</span>
-                  </div>
-                  <ul class="mt-6 space-y-3">
-                    <li class="flex items-center text-sm text-gray-600">
-                      <i class="fas fa-check mr-2 text-green-500"></i>
-                      Unlimited clothing items
-                    </li>
-                    <li class="flex items-center text-sm text-gray-600">
-                      <i class="fas fa-check mr-2 text-green-500"></i>
-                      AI outfit recommendations
-                    </li>
-                    <li class="flex items-center text-sm text-gray-600">
-                      <i class="fas fa-check mr-2 text-green-500"></i>
-                      Advanced style analytics
-                    </li>
-                    <li class="flex items-center text-sm text-gray-600">
-                      <i class="fas fa-check mr-2 text-green-500"></i>
-                      Weather-based suggestions
-                    </li>
-                    <li class="flex items-center text-sm text-gray-600">
-                      <i class="fas fa-check mr-2 text-green-500"></i>
-                      Priority support
-                    </li>
-                  </ul>
-                  <button
-                    class="mt-6 w-full rounded-lg bg-purple-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-purple-700"
-                    onclick="selectPlan('premium')" type="button">
-                    {{ $currentUser->plan->name === 'Premium' ? 'Current Plan' : 'Upgrade to Premium' }}
-                  </button>
-                </div>
-              </div>
-
-              <!-- Additional Features Comparison -->
-              <div class="mt-8 border-t border-gray-200 pt-6">
-                <h5 class="text-sm font-semibold text-gray-900">All plans include:</h5>
-                <div class="mt-3 grid grid-cols-2 gap-4 text-sm text-gray-600">
-                  <div class="flex items-center">
-                    <i class="fas fa-check mr-2 text-xs text-green-500"></i>
-                    Cross-platform sync
-                  </div>
-                  <div class="flex items-center">
-                    <i class="fas fa-check mr-2 text-xs text-green-500"></i>
-                    Data backup
-                  </div>
-                  <div class="flex items-center">
-                    <i class="fas fa-check mr-2 text-xs text-green-500"></i>
-                    Basic support
-                  </div>
-                  <div class="flex items-center">
-                    <i class="fas fa-check mr-2 text-xs text-green-500"></i>
-                    Regular updates
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="border-t border-gray-200 bg-gray-50 px-6 py-4">
-              <div class="flex justify-end space-x-3">
-                <button
-                  class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
-                  onclick="closeChangePlanModal()" type="button">
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="fixed right-4 top-4 z-[9999] space-y-2" id="toast-container"></div>

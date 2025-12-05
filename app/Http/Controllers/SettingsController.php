@@ -183,12 +183,12 @@ class SettingsController extends Controller
     {
         $user = $request->user();
         $validated = $request->validate([
-            'weight' => 'sometimes|nullable|numeric|min:30|max:300',
-            'height' => 'sometimes|nullable|numeric|min:100|max:250',
-            'chest' => 'sometimes|nullable|numeric|min:50|max:200',
-            'waist' => 'sometimes|nullable|numeric|min:40|max:150',
-            'hips' => 'sometimes|nullable|numeric|min:50|max:200',
-            'inseam' => 'sometimes|nullable|numeric|min:50|max:120',
+            'weight' => 'sometimes|nullable|numeric',
+            'height' => 'sometimes|nullable|numeric',
+            'chest' => 'sometimes|nullable|numeric',
+            'waist' => 'sometimes|nullable|numeric',
+            'hips' => 'sometimes|nullable|numeric',
+            'inseam' => 'sometimes|nullable|numeric',
             'top_fit' => 'sometimes|nullable|string|in:slim,regular,relaxed,oversized',
             'bottom_fit' => 'sometimes|nullable|string|in:skinny,slim,regular,relaxed',
             'sleeve_length' => 'sometimes|nullable|string|in:short,long,any',

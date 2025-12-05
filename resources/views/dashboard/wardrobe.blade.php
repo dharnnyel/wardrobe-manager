@@ -19,30 +19,25 @@
       min-width: 800px;
     }
 
-    .wardrobe-table thead {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .wardrobe-table th {
-      background-color: #f7fafc;
-      padding: 14px 16px;
-      text-align: left;
-      font-weight: 600;
-      color: #2d3748;
-      border-bottom: 1px solid #e2e8f0;
+    .wardrobe-table thead th {
+      background-color: var(--bg-secondary) !important;
+      color: var(--text-primary) !important;
+      border-bottom: 1px solid var(--border-color) !important;
       position: sticky;
       top: 0;
       z-index: 20;
+      padding: 14px 16px;
+      text-align: left;
+      font-weight: 600;
       font-size: 15px;
     }
 
     .wardrobe-table td {
       padding: 14px 16px;
-      border-bottom: 1px solid #e2e8f0;
+      border-bottom: 1px solid var(--border-color);
       font-size: 14px;
       font-weight: 400;
+      background-color: transparent;
     }
 
     .wardrobe-table tr:last-child td {
@@ -50,7 +45,8 @@
     }
 
     .wardrobe-table tr:hover {
-      background-color: #f7fafc;
+      background-color: rgba(var(--primary-color-rgb), 0.08) !important;
+      color: var(--text-primary) !important;
     }
 
     /* Hide scrollbars */
@@ -71,18 +67,76 @@
       font-weight: 500;
       transition: all 0.2s ease;
       cursor: pointer;
-      border: 1px solid #e2e8f0;
-      background-color: white;
+      border: 1px solid rgba(var(--primary-color-rgb), 1);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
     }
 
     .filter-btn:hover {
-      background-color: #f7fafc;
+      background-color: rgba(var(--primary-color-rgb), 0.06);
+      border-color: rgba(var(--primary-color-rgb), 0.18);
+      color: var(--text-primary);
+      transform: translateY(-1px);
     }
 
     .filter-btn.active {
-      background-color: #9f7aea;
-      color: white;
-      border-color: #9f7aea;
+      background-color: var(--primary-color);
+      color: #fff;
+      border-color: var(--primary-color);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+    }
+
+    .filter-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .filter-dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: var(--bg-primary);
+      min-width: 160px;
+      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      padding: 8px 0;
+      top: 100%;
+      right: 0;
+      margin-top: 4px;
+    }
+
+    .filter-dropdown-content.show {
+      display: block;
+    }
+
+    .filter-dropdown-item {
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      font-size: 0.875rem;
+      /* background-color: var(--bg-primary); */
+      color: var(--text-primary);
+    }
+
+    .filter-dropdown-item:hover,
+    .filter-dropdown-item.active {
+      background-color: rgba(var(--primary-color-rgb), 0.1);
+      border-left: 3px solid rgba(var(--primary-color-rgb), 0.16);
+      color: var(--text-primary);
+    }
+
+    /* .filter-dropdown-item.active {
+                  background-color: rgba(159, 122, 234, 0.1);
+                  color: #9f7aea;
+                } */
+
+    .filter-dropdown-item i {
+      margin-right: 8px;
+      width: 16px;
+      text-align: center;
     }
 
     .status-badge {
@@ -154,6 +208,7 @@
       align-items: center;
       margin-top: 1rem;
       gap: 0.5rem;
+      background: transparent;
     }
 
     .pagination-btn {
@@ -162,74 +217,29 @@
       width: 40px;
       font-size: 0.875rem;
       font-weight: 500;
-      transition: all 0.2s ease;
+      transition: all 0.4s ease;
       cursor: pointer;
-      border: 1px solid #e2e8f0;
-      background-color: white;
+      border: 1px solid var(--primary-color);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
     }
 
     .pagination-btn:hover {
-      background-color: #f7fafc;
+      background-color: rgba(var(--primary-color-rgb), 0.06);
+      border-color: rgba(var(--primary-color-rgb), 0.18);
+      color: var(--primary-color);
     }
 
     .pagination-btn.active {
-      background-color: #9f7aea;
-      color: white;
-      border-color: #9f7aea;
+      background-color: rgba(var(--primary-color-rgb), 0.12);
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
     }
 
     .pagination-btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
-    }
-
-    /* Filter dropdown styles */
-    .filter-dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    .filter-dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: white;
-      min-width: 160px;
-      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1);
-      z-index: 100;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-      padding: 8px 0;
-      top: 100%;
-      right: 0;
-      margin-top: 4px;
-    }
-
-    .filter-dropdown-content.show {
-      display: block;
-    }
-
-    .filter-dropdown-item {
-      padding: 8px 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      font-size: 0.875rem;
-    }
-
-    .filter-dropdown-item:hover {
-      background-color: #f7fafc;
-    }
-
-    .filter-dropdown-item.active {
-      background-color: rgba(159, 122, 234, 0.1);
-      color: #9f7aea;
-    }
-
-    .filter-dropdown-item i {
-      margin-right: 8px;
-      width: 16px;
-      text-align: center;
     }
 
     /* Modal styles */
@@ -343,10 +353,10 @@
         <div class="flex items-center gap-4 md:flex-row md:justify-between">
           <div class="relative">
             <input
-              class="focus:ring-primary w-full rounded-lg border-0 bg-gray-100 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 md:w-64"
+              class="w-full rounded-lg py-2 pl-10 pr-4 md:w-64"
               placeholder="Search items..." type="text">
             <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-            {{-- focus:ring-primary w-full rounded-lg border-0 bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2 --}}
+
           </div>
           <div class="flex flex-row gap-4 sm:items-center">
             <button
@@ -811,7 +821,7 @@
       </div>
     </div>
   </div>
-    <!-- View Clothing Modal -->
+  <!-- View Clothing Modal -->
   <div class="modal" id="viewClothingModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -867,98 +877,98 @@
 @endsection
 
 @push('scripts')
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Modal elements
-    const viewClothingModal = document.getElementById('viewClothingModal');
-    const closeModalBtn = document.getElementById('closeModal');
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Modal elements
+      const viewClothingModal = document.getElementById('viewClothingModal');
+      const closeModalBtn = document.getElementById('closeModal');
 
-    // Open modal
-    function openItemModal() {
-      // Just show the modal with the static content
-      viewClothingModal.classList.add('show');
-      document.body.style.overflow = 'hidden';
-    }
-
-    // Close modal
-    function closeModal() {
-      viewClothingModal.classList.remove('show');
-      document.body.style.overflow = '';
-    }
-
-    // Add event listeners to all "View Details" buttons
-    document.querySelectorAll('.view-item-btn').forEach(button => {
-      button.addEventListener('click', openItemModal);
-    });
-
-    // Close modal when clicking close button
-    closeModalBtn.addEventListener('click', closeModal);
-
-    // Close modal when clicking outside the modal content
-    viewClothingModal.addEventListener('click', function(event) {
-      if (event.target === viewClothingModal) {
-        closeModal();
+      // Open modal
+      function openItemModal() {
+        // Just show the modal with the static content
+        viewClothingModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
       }
-    });
 
-    // Close modal with Escape key
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape' && viewClothingModal.classList.contains('show')) {
-        closeModal();
+      // Close modal
+      function closeModal() {
+        viewClothingModal.classList.remove('show');
+        document.body.style.overflow = '';
       }
-    });
 
-    // Filter functionality (existing code)
-    const filterDropdownBtn = document.getElementById('filterDropdownBtn');
-    const filterDropdown = document.getElementById('filterDropdown');
-    const filterBtns = document.querySelectorAll('.filter-btn[data-status]');
-
-    // Toggle filter dropdown
-    if (filterDropdownBtn) {
-      filterDropdownBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        filterDropdown.classList.toggle('show');
+      // Add event listeners to all "View Details" buttons
+      document.querySelectorAll('.view-item-btn').forEach(button => {
+        button.addEventListener('click', openItemModal);
       });
-    }
 
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function() {
-      if (filterDropdown) {
-        filterDropdown.classList.remove('show');
+      // Close modal when clicking close button
+      closeModalBtn.addEventListener('click', closeModal);
+
+      // Close modal when clicking outside the modal content
+      viewClothingModal.addEventListener('click', function(event) {
+        if (event.target === viewClothingModal) {
+          closeModal();
+        }
+      });
+
+      // Close modal with Escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && viewClothingModal.classList.contains('show')) {
+          closeModal();
+        }
+      });
+
+      // Filter functionality (existing code)
+      const filterDropdownBtn = document.getElementById('filterDropdownBtn');
+      const filterDropdown = document.getElementById('filterDropdown');
+      const filterBtns = document.querySelectorAll('.filter-btn[data-status]');
+
+      // Toggle filter dropdown
+      if (filterDropdownBtn) {
+        filterDropdownBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          filterDropdown.classList.toggle('show');
+        });
       }
-    });
 
-    // Filter button functionality
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', function() {
-        const status = this.getAttribute('data-status');
-        
-        // Update active state
-        filterBtns.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        
-        // Filter logic would go here
-        console.log('Filter by:', status);
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function() {
+        if (filterDropdown) {
+          filterDropdown.classList.remove('show');
+        }
+      });
+
+      // Filter button functionality
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const status = this.getAttribute('data-status');
+
+          // Update active state
+          filterBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+
+          // Filter logic would go here
+          console.log('Filter by:', status);
+        });
+      });
+
+      // Filter dropdown items
+      const filterDropdownItems = document.querySelectorAll('.filter-dropdown-item');
+      filterDropdownItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const filterType = this.getAttribute('data-filter');
+
+          // Update active state
+          filterDropdownItems.forEach(i => i.classList.remove('active'));
+          this.classList.add('active');
+
+          // Filter logic would go here
+          console.log('Advanced filter by:', filterType);
+
+          // Close dropdown
+          filterDropdown.classList.remove('show');
+        });
       });
     });
-
-    // Filter dropdown items
-    const filterDropdownItems = document.querySelectorAll('.filter-dropdown-item');
-    filterDropdownItems.forEach(item => {
-      item.addEventListener('click', function() {
-        const filterType = this.getAttribute('data-filter');
-        
-        // Update active state
-        filterDropdownItems.forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-        
-        // Filter logic would go here
-        console.log('Advanced filter by:', filterType);
-        
-        // Close dropdown
-        filterDropdown.classList.remove('show');
-      });
-    });
-  });
-</script>
+  </script>
 @endpush

@@ -48,8 +48,8 @@
 
     .form-input:focus {
       outline: none;
-      border-color: #9f7aea;
-      box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.1);
+      /* border-color: #9f7aea;
+      box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.1); */
     }
 
     .form-label {

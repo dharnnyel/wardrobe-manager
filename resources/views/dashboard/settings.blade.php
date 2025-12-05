@@ -39,10 +39,6 @@
       background-color: var(--text-secondary);
     }
 
-    input:checked+.toggle-slider {
-      background-color: var(--primary-color);
-    }
-
     /* Table theming */
     table {
       color: var(--text-primary);
@@ -70,6 +66,13 @@
     #emailModal p,
     #emailModal .text-gray-900 {
       color: var(--text-primary);
+    }
+
+    /* Remove white background for autofilled inputs */
+    input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px var(--bg-primary) inset !important;
+      -webkit-text-fill-color: var(--text-primary) !important;
+      background-color: var(--bg-primary) !important;
     }
 
     /* Your existing CSS styles remain the same */
@@ -172,9 +175,6 @@
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     }
 
-    /* Improved Toggle Switch with better responsiveness */
-    /* Toggle switches using CSS variables */
-    /* Toggle switches using CSS variables - FIXED VERSION */
     .toggle-switch {
       position: relative;
       display: inline-block;
@@ -205,7 +205,6 @@
       right: 0;
       bottom: 0;
       background-color: var(--text-secondary);
-      /* Gray when inactive */
       transition: .4s;
       border-radius: 24px;
     }
@@ -223,34 +222,29 @@
       border: 1px solid var(--border-color);
     }
 
-    /* Use class-based approach instead of inline styles */
     .toggle-slider.active {
       background-color: var(--primary-color);
-      /* Primary color when active */
     }
 
     .toggle-slider.active:before {
       transform: translateX(26px);
     }
 
-    /* Remove the old input:checked styles since we're using classes */
-
     input:checked+.toggle-slider {
       background-color: var(--primary-color);
-      /* Primary color when active */
     }
 
     input:checked+.toggle-slider:before {
       transform: translateX(26px);
     }
 
-    input:focus,
-    textarea:focus,
-    select:focus {
-      border-color: var(--primary-color) !important;
-      box-shadow: 0 0 0 4px rgba(var(--primary-color-rgb, 159, 122, 234), 0.08) !important;
-      outline: none !important;
-    }
+    /* input:focus,
+                textarea:focus,
+                select:focus {
+                  border-color: var(--primary-color) !important;
+                  box-shadow: 0 0 0 4px rgba(var(--primary-color-rgb, 159, 122, 234), 0.08) !important;
+                  outline: none !important;
+                } */
 
     label,
     .mb-2.block.text-sm.font-medium.text-gray-700 {
@@ -334,22 +328,24 @@
     }
 
     .settings-nav-btn.active {
-      background: rgba(159, 122, 234, 0.12);
+      background: rgba(var(--primary-color-rgb), 0.05);
       border-color: rgba(159, 122, 234, 0.18);
       color: var(--primary-color);
     }
 
     .settings-nav-btn.active:hover {
-      background: rgba(159, 122, 234, 0.12);
+      background: rgba(var(--primary-color-rgb), 0.05);
+      border-color: rgba(159, 122, 234, 0.18);
     }
 
     .settings-nav-btn:hover {
-      background: rgba(255, 255, 255, 0.6);
-      border-color: rgba(159, 122, 234, 0.08);
+      background: rgba(var(--primary-color-rgb), 0.05);
+      border-color: rgba(159, 122, 234, 0.18);
     }
 
     [data-theme="dark"] .settings-nav-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(var(--primary-color-rgb), 0.05);
+      border-color: rgba(159, 122, 234, 0.18);
     }
 
     /* Subscription status colors using CSS variables */
@@ -362,41 +358,39 @@
     }
 
     /* Subscription button theming */
-    .subscription-btn {
-      background-color: var(--bg-primary) !important;
-      color: var(--text-primary) !important;
-      border: 1px solid var(--border-color) !important;
-    }
+    /* .subscription-btn {
+              background-color: var(--bg-primary) !important;
+              color: var(--text-primary) !important;
+              border: 1px solid var(--border-color) !important;
+            } */
 
-    .subscription-btn:hover {
-      background-color: var(--bg-secondary) !important;
-      border-color: var(--primary-color) !important;
-    }
+    /* .subscription-btn:hover {
+              background-color: var(--bg-secondary) !important;
+              border-color: var(--primary-color) !important;
+            }
 
-    /* Dark mode specific subscription button styles */
-    [data-theme="dark"] .subscription-btn {
-      background-color: #2d3748 !important;
-      color: #ffffff !important;
-      border-color: #4a5568 !important;
-    }
+            [data-theme="dark"] .subscription-btn {
+              background-color: #2d3748 !important;
+              color: #ffffff !important;
+              border-color: #4a5568 !important;
+            }
 
-    [data-theme="dark"] .subscription-btn:hover {
-      background-color: #4a5568 !important;
-      border-color: var(--primary-color) !important;
-    }
+            [data-theme="dark"] .subscription-btn:hover {
+              background-color: #4a5568 !important;
+              border-color: var(--primary-color) !important;
+            }
 
-    /* High contrast subscription buttons */
-    [data-high-contrast="true"] .subscription-btn {
-      background-color: var(--bg-primary) !important;
-      color: var(--text-primary) !important;
-      border: 2px solid var(--border-color) !important;
-      font-weight: 600;
-    }
+            [data-high-contrast="true"] .subscription-btn {
+              background-color: var(--bg-primary) !important;
+              color: var(--text-primary) !important;
+              border: 2px solid var(--border-color) !important;
+              font-weight: 600;
+            }
 
-    [data-high-contrast="true"] .subscription-btn:hover {
-      background-color: var(--bg-secondary) !important;
-      border-color: var(--primary-color) !important;
-    }
+            [data-high-contrast="true"] .subscription-btn:hover {
+              background-color: var(--bg-secondary) !important;
+              border-color: var(--primary-color) !important;
+            } */
 
     /* Responsive styles with improved toggle behavior */
     @media (max-width: 639px) {
@@ -477,13 +471,13 @@
         position: absolute;
         left: 80px;
         top: -10px;
-        background: white;
+        background: rgba(var(--primary-color-rgb), 0.5);
         padding: 0.5rem 1rem;
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        z-index: 10;
+        z-index: 9999;
         white-space: nowrap;
-        transform: translateY(-10px);
+        transform: translateY(10px);
         transition: all 0.3s ease;
         pointer-events: none;
       }
@@ -707,19 +701,17 @@
               <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
                   <label class="mb-2 block text-sm font-medium text-gray-700">Full Name</label>
-                  <input
-                    class="focus:ring-primary w-full rounded-lg border-0 bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2"
-                    id="fullName" name="name" placeholder="Enter your full name"
-                    type="text" value="{{ old('name', $currentUser->name) }}">
+                  <input class="w-full rounded-lg bg-gray-50 px-4 py-3" id="fullName"
+                    name="name" placeholder="Enter your full name" type="text"
+                    value="{{ old('name', $currentUser->name) }}">
                   @error('name')
                     <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                   @enderror
                 </div>
                 <div>
                   <label class="mb-2 block text-sm font-medium text-gray-700">Phone Number</label>
-                  <input
-                    class="focus:ring-primary w-full rounded-lg border-0 bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2"
-                    id="phone" name="phone" placeholder="Enter phone number" type="tel"
+                  <input class="w-full rounded-lg bg-gray-50 px-4 py-3" id="phone"
+                    name="phone" placeholder="Enter phone number" type="tel"
                     value="{{ old('phone', $currentUser->phone) }}">
                   @error('phone')
                     <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
@@ -1587,8 +1579,10 @@
                   </div>
                   <!-- In the subscription-section, replace the buttons section -->
                   <div class="mt-2 md:mt-0">
-                    <x-button class="subscription-btn mr-2 rounded-lg"
-                      onclick="openChangePlanModal()" size='small' type="button">
+                    <x-button
+                      class="subscription-btn mr-2 hover:border hover:border-[rgba(var(--primary-color-rgb),1)] hover:bg-[rgba(var(--primary-color-rgb),1)]"
+                      onclick="openChangePlanModal()" size='small' type="button"
+                      variant='outline'>
                       Change Plan
                     </x-button>
                     @if ($currentUser->subscription)
@@ -1607,7 +1601,8 @@
                 class="mb-5 flex flex-col justify-between gap-4 min-[490px]:flex-row min-[490px]:items-center">
                 <h3 class="text-dark text-lg font-semibold">Billing History</h3>
                 <div>
-                  <x-button class="subscription-btn mr-2 rounded-lg" size='small' variant='outline' type="button">
+                  <x-button class="subscription-btn mr-2 rounded-lg" size='small' type="button"
+                    variant='outline'>
                     Download All Invoices
                   </x-button>
                 </div>
@@ -1655,36 +1650,49 @@
             </div>
 
             <!-- Subscription Management -->
-            <div class="setting-group">
-              <h3 class="text-dark mb-3 text-lg font-semibold">Subscription Management</h3>
+            @php
+              $isFreePlan = strtolower($currentUser->plan->name ?? 'free') === 'free';
+            @endphp
+            <div class="setting-group {{ $isFreePlan ? 'opacity-50' : '' }}">
+              <h3
+                class="text-dark {{ $isFreePlan ? 'text-gray-400' : '' }} mb-3 text-lg font-semibold">
+                Subscription Management</h3>
+              @if ($isFreePlan)
+                <p class="mb-3 text-xs italic text-gray-500">Upgrade to a paid plan to access
+                  subscription reminders</p>
+              @endif
               <form action="{{ route('settings.subscription.update-reminder') }}" method="POST">
                 @csrf
                 @method('PATCH')
                 <div class="space-y-4">
                   <div class="flex items-center justify-between">
                     <div>
-                      <p class="text-dark font-medium">2 weeks reminder</p>
-                      <p class="text-sm text-gray-600">Automatically remind me 2 weeks before
+                      <p class="text-dark {{ $isFreePlan ? 'text-gray-400' : '' }} font-medium">2
+                        weeks reminder</p>
+                      <p class="{{ $isFreePlan ? 'text-gray-500' : 'text-gray-600' }} text-sm">
+                        Automatically remind me 2 weeks before
                         subscription expires</p>
                     </div>
-                    <label class="toggle-switch">
-                      <input
-                        {{ old('auto_renewal', $currentUser->subsciption->days_reminder ?? true) ? 'checked' : '' }}
-                        name="auto_renewal" type="checkbox" value="1">
-                      <span class="toggle-slider"></span>
+                    <label class="toggle-switch {{ $isFreePlan ? 'cursor-not-allowed' : '' }}">
+                      <input {{ $isFreePlan ? 'disabled' : '' }}
+                        {{ old('weeks_reminder', $currentUser->subscription->weeks_reminder ?? false) ? 'checked' : '' }}
+                        name="weeks_reminder" type="checkbox" value="1">
+                      <span class="toggle-slider {{ $isFreePlan ? 'bg-gray-300' : '' }}"></span>
                     </label>
                   </div>
                   <div class="flex items-center justify-between">
                     <div>
-                      <p class="text-dark font-medium">2 days reminder</p>
-                      <p class="text-sm text-gray-600">Remind me 2 days before subscription expires
+                      <p class="text-dark {{ $isFreePlan ? 'text-gray-400' : '' }} font-medium">2
+                        days reminder</p>
+                      <p class="{{ $isFreePlan ? 'text-gray-500' : 'text-gray-600' }} text-sm">
+                        Remind me 2 days before subscription expires
                       </p>
                     </div>
-                    <label class="toggle-switch">
-                      <input
-                        {{ old('email_receipts', $currentUser->subsciption->days_reminder ?? true) ? 'checked' : '' }}
-                        name="email_receipts" type="checkbox" value="1">
-                      <span class="toggle-slider"></span>
+                    <label class="toggle-switch {{ $isFreePlan ? 'cursor-not-allowed' : '' }}">
+                      <input {{ $isFreePlan ? 'disabled' : '' }}
+                        {{ old('days_reminder', $currentUser->subscription->days_reminder ?? false) ? 'checked' : '' }}
+                        name="days_reminder" type="checkbox" value="1">
+                      <span class="toggle-slider {{ $isFreePlan ? 'bg-gray-300' : '' }}"></span>
                     </label>
                   </div>
                 </div>
@@ -1985,6 +1993,279 @@
                 </div>
               </form>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Email Modal -->
+  <div class="z-9999 fixed inset-0 overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm"
+    id="emailModal">
+    <div class="mx-auto mt-28 w-full max-w-md rounded-2xl bg-white shadow-xl">
+      <!-- Header -->
+      <div class="flex items-center justify-between border-b border-gray-200 p-6">
+        <h3 class="text-xl font-bold text-gray-900">Change Email Address</h3>
+        <button class="text-gray-400 hover:text-gray-600" onclick="closeEmailModal()">
+          <i class="fas fa-times text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6">
+        <form id="emailChangeForm" method="POST">
+          @csrf
+          @method('PATCH')
+
+          <!-- Current Email -->
+          <div class="mb-6">
+            <label class="mb-2 block text-sm font-medium text-gray-700">Current
+              Email</label>
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-gray-900">{{ $currentUser->email }}</p>
+            </div>
+          </div>
+
+          <!-- New Email Input -->
+          <div class="mb-4">
+            <label class="mb-2 block text-sm font-medium text-gray-700">New Email
+              Address</label>
+            <input
+              class="focus:ring-primary w-full rounded-lg bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2"
+              id="modal_email" name="email" placeholder="Enter new email address" required
+              type="email">
+            <div class="mt-1 hidden text-sm text-red-500" id="emailError"></div>
+          </div>
+
+          <!-- OTP Section -->
+          <div class="hidden" id="otpSection">
+            <div class="mb-4">
+              <label class="mb-2 block text-sm font-medium text-gray-700"
+                for="modal_otp">Verification Code</label>
+
+              <input
+                class="focus:ring-primary w-full rounded-lg px-4 py-3 text-center font-mono text-xl focus:outline-none focus:ring-2"
+                id="modal_otp" maxlength="6" name="otp_code" placeholder="000000"
+                type="text">
+              <div class="mt-1 hidden text-sm text-red-500" id="otpError"></div>
+
+              <p class="mt-2 text-center text-sm text-gray-600">
+                Enter the code sent to <span class="font-medium" id="targetEmail"></span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="mt-8 flex justify-end gap-4">
+            <x-button
+              class="rounded-lg border border-transparent bg-transparent px-4 py-2 transition-all duration-300 ease-in-out hover:border-[rgba(var(--primary-color-rgb),1)] hover:bg-transparent hover:text-[rgba(var(--primary-color-rgb),1)]"
+              onclick="closeEmailModal()" type="button">
+              Cancel
+            </x-button>
+
+            <!-- Request OTP -->
+            <x-button
+              class="bg-primary hover:bg-primary/90 rounded-lg px-4 py-2 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+              disabled id="requestOtpBtn" onclick="requestOtp()" type="button">
+              Send Verification Code
+            </x-button>
+
+            {{-- class="mt-2 w-full cursor-pointer rounded-xl border-none bg-white/70 py-4 text-base font-medium text-purple-700 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg active:translate-y-0 disabled:transform-none disabled:cursor-not-allowed disabled:bg-white/40 disabled:opacity-50 disabled:hover:shadow-none" --}}
+
+            <!-- Verify OTP -->
+            <button
+              class="bg-primary hover:bg-primary/90 hidden rounded-lg px-4 py-2 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+              disabled id="verifyOtpBtn" onclick="verifyOtp()" type="button">
+              Verify
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {{-- Change Plan Modal --}}
+  <div class="fixed inset-0 z-[9999] hidden overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm"
+    id="changePlanModal">
+    <div class="flex min-h-screen items-center justify-center p-4">
+      <!-- Modal panel -->
+      <div
+        class="relative w-full max-w-4xl transform overflow-hidden rounded-2xl border border-gray-200 bg-white text-left shadow-2xl transition-all">
+        <!-- Header -->
+        <div class="border-b border-gray-200 bg-white px-6 py-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xl font-semibold text-gray-900">Change Your Plan</h3>
+            <button class="text-gray-400 hover:text-gray-600" onclick="closeChangePlanModal()"
+              type="button">
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+          <p class="mt-1 text-sm text-gray-600">Choose the plan that works best for you</p>
+        </div>
+
+        <!-- Plans -->
+        <div class="bg-white px-6 py-6">
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <!-- Free Plan -->
+            <div
+              class="relative rounded-2xl border-2 border-gray-200 p-6 transition-all hover:border-purple-300 hover:shadow-lg">
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold text-gray-900">Free Plan</h4>
+                <span
+                  class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-800">Current</span>
+              </div>
+              <p class="mt-2 text-sm text-gray-600">Basic access to StyleHub features</p>
+              <div class="mt-4">
+                <span class="text-3xl font-bold text-gray-900">$0.00</span>
+                <span class="text-gray-600">/month</span>
+              </div>
+              <ul class="mt-6 space-y-3">
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Basic wardrobe management
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Up to 50 clothing items
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Manual outfit creation
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-times mr-2 text-gray-400"></i>
+                  AI outfit recommendations
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-times mr-2 text-gray-400"></i>
+                  Advanced analytics
+                </li>
+              </ul>
+              <button
+                class="mt-6 w-full rounded-lg bg-gray-100 px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-200"
+                onclick="selectPlan('free')" type="button">
+                {{ $currentUser->plan->name === 'Free' ? 'Current Plan' : 'Select Free Plan' }}
+              </button>
+            </div>
+
+            <!-- Pro Plan -->
+            <div
+              class="border-primary relative rounded-2xl border-2 p-6 transition-all hover:shadow-lg">
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold text-gray-900">Pro Plan</h4>
+                <span
+                  class="text-primary rounded-full bg-purple-100 px-3 py-1 text-xs font-medium">Popular</span>
+              </div>
+              <p class="mt-2 text-sm text-gray-600">Advanced features for fashion enthusiasts
+              </p>
+              <div class="mt-4">
+                <span class="text-3xl font-bold text-gray-900">$5.99</span>
+                <span class="text-gray-600">/month</span>
+              </div>
+              <ul class="mt-6 space-y-3">
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Unlimited clothing items
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  AI outfit recommendations
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Advanced style analytics
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Weather-based suggestions
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Priority support
+                </li>
+              </ul>
+              <button
+                class="mt-6 w-full rounded-lg bg-[var(--primary-color)] px-4 py-3 text-sm font-medium text-white opacity-80 transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-100 hover:shadow-lg active:scale-95"
+                onclick="selectPlan('premium')" type="button">
+                {{ $currentUser->plan->name === 'Premium' ? 'Current Plan' : 'Upgrade to Premium' }}
+              </button>
+            </div>
+
+            <!-- Premium Plan -->
+            <div
+              class="relative rounded-2xl border-2 border-purple-500 p-6 transition-all hover:shadow-lg">
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold text-gray-900">Premium Plan</h4>
+
+              </div>
+              <p class="mt-2 text-sm text-gray-600">Advanced features for fashion enthusiasts
+              </p>
+              <div class="mt-4">
+                <span class="text-3xl font-bold text-gray-900">$9.99</span>
+                <span class="text-gray-600">/month</span>
+              </div>
+              <ul class="mt-6 space-y-3">
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Unlimited clothing items
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  AI outfit recommendations
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Advanced style analytics
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Weather-based suggestions
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Priority support
+                </li>
+              </ul>
+              <button
+                class="mt-6 w-full rounded-lg bg-purple-800 px-4 py-3 text-sm font-medium text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-purple-600 hover:shadow-lg active:scale-95"
+                onclick="selectPlan('premium')" type="button">
+                {{ $currentUser->plan->name === 'Premium' ? 'Current Plan' : 'Upgrade to Premium' }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Additional Features Comparison -->
+          <div class="mt-8 border-t border-gray-200 pt-6">
+            <h5 class="text-sm font-semibold text-gray-900">All plans include:</h5>
+            <div class="mt-3 grid grid-cols-2 gap-4 text-sm text-gray-600">
+              <div class="flex items-center">
+                <i class="fas fa-check mr-2 text-xs text-green-500"></i>
+                Cross-platform sync
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-check mr-2 text-xs text-green-500"></i>
+                Data backup
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-check mr-2 text-xs text-green-500"></i>
+                Basic support
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-check mr-2 text-xs text-green-500"></i>
+                Regular updates
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="border-t border-gray-200 bg-gray-50 px-6 py-4">
+          <div class="flex justify-end space-x-3">
+            <button
+              class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+              onclick="closeChangePlanModal()" type="button">
+              Cancel
+            </button>
           </div>
         </div>
       </div>
@@ -2537,6 +2818,10 @@
       let btn = document.getElementById("requestOtpBtn");
       let emailError = document.getElementById("emailError");
 
+      if (btn.disabled) {
+        return;
+      }
+
       // Basic client-side validation
       if (!email) {
         emailError.textContent = 'Please enter an email address';
@@ -2616,6 +2901,10 @@
       let otp_code = document.getElementById("modal_otp").value.trim();
       let btn = document.getElementById("verifyOtpBtn");
       let otpError = document.getElementById("otpError");
+
+      if (btn.disabled) {
+        return;
+      }
 
       // Basic OTP validation
       if (!otp_code) {
@@ -3157,7 +3446,10 @@
         emailInput.addEventListener('keypress', function(e) {
           if (e.key === 'Enter') {
             e.preventDefault();
-            requestOtp();
+            const btn = document.getElementById('requestOtpBtn');
+            if (!btn.disabled) {
+              requestOtp();
+            }
           }
         });
       }
@@ -3167,7 +3459,10 @@
         otpInput.addEventListener('keypress', function(e) {
           if (e.key === 'Enter') {
             e.preventDefault();
-            verifyOtp();
+            const btn = document.getElementById('verifyOtpBtn');
+            if (!btn.disabled) {
+              verifyOtp();
+            }
           }
         });
 
@@ -3178,7 +3473,10 @@
 
           // Auto-submit when 6 digits are entered
           if (this.value.length === 6) {
-            verifyOtp();
+            const btn = document.getElementById('verifyOtpBtn');
+            if (!btn.disabled) {
+              verifyOtp();
+            }
           }
         });
       }

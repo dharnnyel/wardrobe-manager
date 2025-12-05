@@ -6,18 +6,15 @@
 ])
 
 @php
-  $baseClasses =
-      'font-medium transition focus:outline-none focus:ring-2 focus:ring-opacity-50';
+  $baseClasses = 'font-medium transition duration-75 ease-in-out focus:outline-none focus:ring-2 focus:ring-opacity-50';
 
   $variantClasses = [
       'none' => '',
       'primary' => 'bg-primary text-white hover:bg-purple-700',
       'secondary' => 'bg-secondary text-white hover:bg-opacity-80',
       'ghost' => 'bg-transparent text-gray-700 hover:bg-gray-100',
-      'danger' =>
-          'bg-red-400 text-white hover:bg-red-500 focus:ring-red-500',
-      'outline' =>
-          'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+      'danger' => 'bg-red-400 text-white hover:bg-red-500 focus:ring-red-500',
+      'outline' => 'border border-gray-300 text-gray-700 hover:bg-gray-50'
   ];
 
   $sizeClasses = [
@@ -27,7 +24,7 @@
       'large' => 'px-8 py-4 rounded-lg'
   ];
 
-    // component defaults
+  // component defaults
   $componentClasses = implode(' ', [
       $baseClasses,
       $variantClasses[$variant] ?? $variantClasses['primary'],
@@ -39,8 +36,21 @@
   $userClasses = $attributes->get('class') ?? '';
   $attributes = $attributes->except('class');
 
-  // append user classes so they can override where appropriate
-  $classes = trim($componentClasses . $userClasses);
+  // merge classes with replacement logic
+  $componentArray = array_filter(explode(' ', $componentClasses));
+  $userArray = array_filter(explode(' ', $userClasses));
+  $classMap = [];
+  foreach ($componentArray as $class) {
+      $parts = explode('-', $class, 2);
+      $prefix = $parts[0] . (count($parts) > 1 ? '-' : '');
+      $classMap[$prefix] = $class;
+  }
+  foreach ($userArray as $class) {
+      $parts = explode('-', $class, 2);
+      $prefix = $parts[0] . (count($parts) > 1 ? '-' : '');
+      $classMap[$prefix] = $class;
+  }
+  $classes = implode(' ', array_values($classMap));
 @endphp
 
 <button {{ $disabled ? 'disabled' : '' }} {{ $attributes->merge(['class' => $classes]) }}

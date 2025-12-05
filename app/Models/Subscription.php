@@ -9,6 +9,8 @@ class Subscription extends Model
     protected $fillable = [
         'user_id',
         'plan_id',
+        'weeks_reminder',
+        'days_reminder',
     ];
 
     protected $casts = [
