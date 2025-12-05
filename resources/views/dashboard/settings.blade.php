@@ -1998,6 +1998,279 @@
       </div>
     </div>
   </div>
+
+  <!-- Change Email Modal -->
+  <div class="z-9999 fixed inset-0 overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm"
+    id="emailModal">
+    <div class="mx-auto mt-28 w-full max-w-md rounded-2xl bg-white shadow-xl">
+      <!-- Header -->
+      <div class="flex items-center justify-between border-b border-gray-200 p-6">
+        <h3 class="text-xl font-bold text-gray-900">Change Email Address</h3>
+        <button class="text-gray-400 hover:text-gray-600" onclick="closeEmailModal()">
+          <i class="fas fa-times text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6">
+        <form id="emailChangeForm" method="POST">
+          @csrf
+          @method('PATCH')
+
+          <!-- Current Email -->
+          <div class="mb-6">
+            <label class="mb-2 block text-sm font-medium text-gray-700">Current
+              Email</label>
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-gray-900">{{ $currentUser->email }}</p>
+            </div>
+          </div>
+
+          <!-- New Email Input -->
+          <div class="mb-4">
+            <label class="mb-2 block text-sm font-medium text-gray-700">New Email
+              Address</label>
+            <input
+              class="focus:ring-primary w-full rounded-lg bg-gray-100 px-4 py-3 focus:outline-none focus:ring-2"
+              id="modal_email" name="email" placeholder="Enter new email address" required
+              type="email">
+            <div class="mt-1 hidden text-sm text-red-500" id="emailError"></div>
+          </div>
+
+          <!-- OTP Section -->
+          <div class="hidden" id="otpSection">
+            <div class="mb-4">
+              <label class="mb-2 block text-sm font-medium text-gray-700"
+                for="modal_otp">Verification Code</label>
+
+              <input
+                class="focus:ring-primary w-full rounded-lg px-4 py-3 text-center font-mono text-xl focus:outline-none focus:ring-2"
+                id="modal_otp" maxlength="6" name="otp_code" placeholder="000000"
+                type="text">
+              <div class="mt-1 hidden text-sm text-red-500" id="otpError"></div>
+
+              <p class="mt-2 text-center text-sm text-gray-600">
+                Enter the code sent to <span class="font-medium" id="targetEmail"></span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="mt-8 flex justify-end gap-4">
+            <x-button
+              class="rounded-lg border border-transparent bg-transparent px-4 py-2 transition-all duration-300 ease-in-out hover:border-[rgba(var(--primary-color-rgb),1)] hover:bg-transparent hover:text-[rgba(var(--primary-color-rgb),1)]"
+              onclick="closeEmailModal()" type="button">
+              Cancel
+            </x-button>
+
+            <!-- Request OTP -->
+            <x-button
+              class="bg-primary hover:bg-primary/90 rounded-lg px-4 py-2 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+              disabled id="requestOtpBtn" onclick="requestOtp()" type="button">
+              Send Verification Code
+            </x-button>
+
+            {{-- class="mt-2 w-full cursor-pointer rounded-xl border-none bg-white/70 py-4 text-base font-medium text-purple-700 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg active:translate-y-0 disabled:transform-none disabled:cursor-not-allowed disabled:bg-white/40 disabled:opacity-50 disabled:hover:shadow-none" --}}
+
+            <!-- Verify OTP -->
+            <button
+              class="bg-primary hover:bg-primary/90 hidden rounded-lg px-4 py-2 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+              disabled id="verifyOtpBtn" onclick="verifyOtp()" type="button">
+              Verify
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {{-- Change Plan Modal --}}
+  <div class="fixed inset-0 z-[9999] hidden overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm"
+    id="changePlanModal">
+    <div class="flex min-h-screen items-center justify-center p-4">
+      <!-- Modal panel -->
+      <div
+        class="relative w-full max-w-4xl transform overflow-hidden rounded-2xl border border-gray-200 bg-white text-left shadow-2xl transition-all">
+        <!-- Header -->
+        <div class="border-b border-gray-200 bg-white px-6 py-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xl font-semibold text-gray-900">Change Your Plan</h3>
+            <button class="text-gray-400 hover:text-gray-600" onclick="closeChangePlanModal()"
+              type="button">
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+          <p class="mt-1 text-sm text-gray-600">Choose the plan that works best for you</p>
+        </div>
+
+        <!-- Plans -->
+        <div class="bg-white px-6 py-6">
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <!-- Free Plan -->
+            <div
+              class="relative rounded-2xl border-2 border-gray-200 p-6 transition-all hover:border-purple-300 hover:shadow-lg">
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold text-gray-900">Free Plan</h4>
+                <span
+                  class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-800">Current</span>
+              </div>
+              <p class="mt-2 text-sm text-gray-600">Basic access to StyleHub features</p>
+              <div class="mt-4">
+                <span class="text-3xl font-bold text-gray-900">$0.00</span>
+                <span class="text-gray-600">/month</span>
+              </div>
+              <ul class="mt-6 space-y-3">
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Basic wardrobe management
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Up to 50 clothing items
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Manual outfit creation
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-times mr-2 text-gray-400"></i>
+                  AI outfit recommendations
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-times mr-2 text-gray-400"></i>
+                  Advanced analytics
+                </li>
+              </ul>
+              <button
+                class="mt-6 w-full rounded-lg bg-gray-100 px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-200"
+                onclick="selectPlan('free')" type="button">
+                {{ $currentUser->plan->name === 'Free' ? 'Current Plan' : 'Select Free Plan' }}
+              </button>
+            </div>
+
+            <!-- Pro Plan -->
+            <div
+              class="border-primary relative rounded-2xl border-2 p-6 transition-all hover:shadow-lg">
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold text-gray-900">Pro Plan</h4>
+                <span
+                  class="text-primary rounded-full bg-purple-100 px-3 py-1 text-xs font-medium">Popular</span>
+              </div>
+              <p class="mt-2 text-sm text-gray-600">Advanced features for fashion enthusiasts
+              </p>
+              <div class="mt-4">
+                <span class="text-3xl font-bold text-gray-900">$5.99</span>
+                <span class="text-gray-600">/month</span>
+              </div>
+              <ul class="mt-6 space-y-3">
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Unlimited clothing items
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  AI outfit recommendations
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Advanced style analytics
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Weather-based suggestions
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Priority support
+                </li>
+              </ul>
+              <button
+                class="mt-6 w-full rounded-lg bg-[var(--primary-color)] px-4 py-3 text-sm font-medium text-white opacity-80 transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-100 hover:shadow-lg active:scale-95"
+                onclick="selectPlan('premium')" type="button">
+                {{ $currentUser->plan->name === 'Premium' ? 'Current Plan' : 'Upgrade to Premium' }}
+              </button>
+            </div>
+
+            <!-- Premium Plan -->
+            <div
+              class="relative rounded-2xl border-2 border-purple-500 p-6 transition-all hover:shadow-lg">
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold text-gray-900">Premium Plan</h4>
+
+              </div>
+              <p class="mt-2 text-sm text-gray-600">Advanced features for fashion enthusiasts
+              </p>
+              <div class="mt-4">
+                <span class="text-3xl font-bold text-gray-900">$9.99</span>
+                <span class="text-gray-600">/month</span>
+              </div>
+              <ul class="mt-6 space-y-3">
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Unlimited clothing items
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  AI outfit recommendations
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Advanced style analytics
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Weather-based suggestions
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <i class="fas fa-check mr-2 text-green-500"></i>
+                  Priority support
+                </li>
+              </ul>
+              <button
+                class="mt-6 w-full rounded-lg bg-purple-800 px-4 py-3 text-sm font-medium text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-purple-600 hover:shadow-lg active:scale-95"
+                onclick="selectPlan('premium')" type="button">
+                {{ $currentUser->plan->name === 'Premium' ? 'Current Plan' : 'Upgrade to Premium' }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Additional Features Comparison -->
+          <div class="mt-8 border-t border-gray-200 pt-6">
+            <h5 class="text-sm font-semibold text-gray-900">All plans include:</h5>
+            <div class="mt-3 grid grid-cols-2 gap-4 text-sm text-gray-600">
+              <div class="flex items-center">
+                <i class="fas fa-check mr-2 text-xs text-green-500"></i>
+                Cross-platform sync
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-check mr-2 text-xs text-green-500"></i>
+                Data backup
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-check mr-2 text-xs text-green-500"></i>
+                Basic support
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-check mr-2 text-xs text-green-500"></i>
+                Regular updates
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="border-t border-gray-200 bg-gray-50 px-6 py-4">
+          <div class="flex justify-end space-x-3">
+            <button
+              class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+              onclick="closeChangePlanModal()" type="button">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 
 @push('scripts')
