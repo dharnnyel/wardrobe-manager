@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\ClothingController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\DataManagementController;
@@ -44,7 +45,14 @@ Route::middleware('auth')->group(function () {
     return redirect()->to('/');
   })->name('logout');
   Route::view('dashboard', 'dashboard.home');
-  Route::view('wardrobe', 'dashboard.wardrobe');
+  // Route::view('wardrobe', 'dashboard.wardrobe');
+  Route::group(['prefix'=> 'wardrobe','as'=> 'wardrobe.'],function(){
+      Route::get('/',[ClothingController::class, 'index'])->name('index');
+
+      Route::group(['prefix'=> 'outfits','as'=> 'outfits.'],function(){
+        Route::get('/',OutfitController::class, 'index'])->name('index');
+      });
+  });
   Route::view('interests', 'dashboard.interests');
   Route::view('wishlist', 'dashboard.wishlist');
   Route::view('shopping', 'dashboard.shopping');
