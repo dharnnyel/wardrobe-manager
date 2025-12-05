@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\User;
+use App\Models\Country;
 use Tzsk\Otp\Facades\Otp;
 use Illuminate\Http\Request;
+use Ixudra\Curl\Facades\Curl;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -77,14 +79,32 @@ class AuthController extends Controller
         $otp = $validated['otp'];
         if (Otp::match($otp, $email)) {
             $plan = Plan::where('name', 'Free')->first();
-            $user = User::firstOrCreate(
-                ['email' => $email],
-                ['name' => $this->fromEmail($email), 'plan_id' => $plan->id]
-            );
+            $user = User::where('email', $email)->first();
+            if (!$user) {
+                $country_id = $this->obtainCountryFromIp($request->ip());
+                if(!$country_id){
+                    $country_id = Country::where('iso2','NG')->first()->id;
+                }
+                $user = User::create(
+                    ['email' => $email,'name' => $this->fromEmail($email), 'plan_id' => $plan->id,'country_id' => $country_id]
+                );
+            }
             Auth::login($user); //true for remember me
             return redirect()->intended($this->redirectTo);
         } else {
             return back()->withErrors(['otp' => 'Invalid One Time Password. Please try again.']);
         }
+    }
+
+    public function obtainCountryFromIp($ip)
+    {
+        $result = Curl::to("http://ip-api.com/json/" . $ip)->asJsonResponse()->get(); 
+        
+        if(!$result || $result->status == 'fail'){
+            return 0;
+        }
+        $country = Country::where('iso2', $result->countryCode)->first();
+        // Placeholder function - in real implementation, use a geoIP service
+        return $country->id; // Default to US for this example
     }
 }

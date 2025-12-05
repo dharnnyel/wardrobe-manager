@@ -23,9 +23,9 @@ return new class extends Migration
             $table->string('currency_name');
             $table->string('currency_symbol');
             $table->string('tld');
-            $table->string('native');
+            $table->string('native')->nullable();
             $table->string('region');
-            $table->integer('region_id');
+            $table->integer('region_id')->nullable();
             $table->string('subregion')->nullable();
             $table->integer('subregion_id')->nullable();
             $table->string('nationality');

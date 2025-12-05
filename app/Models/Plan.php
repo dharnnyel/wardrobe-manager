@@ -10,8 +10,6 @@ class Plan extends Model
     protected $fillable = [
         'name',
         'outfit_planning',
-        'monthly_cost',
-        'annual_cost',
         'number_of_clothing',
         'basic_recommendation',
         'ai_recommendation',
