@@ -29,7 +29,7 @@
     }
 
     .image-upload-container:hover {
-      border-color: #9f7aea;
+      border-color: var(--primary-color);
     }
 
     .image-upload-container.dragover {
@@ -49,7 +49,7 @@
     .form-input:focus {
       outline: none;
       /* border-color: #9f7aea;
-      box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.1); */
+                box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.1); */
     }
 
     .form-label {
@@ -93,7 +93,7 @@
     }
 
     .modal-content {
-      background-color: white;
+      background-color: var(--bg-primary, white);
       border-radius: 16px;
       width: 90%;
       max-width: 600px;
@@ -111,7 +111,7 @@
       align-items: center;
       position: sticky;
       top: 0;
-      background-color: white;
+      background-color: var(--bg-primary, white);
       z-index: 10;
       border-radius: 16px 16px 0 0;
     }
@@ -154,7 +154,7 @@
 
     .detail-value {
       font-weight: 400;
-      color: #111827;
+      color: var(--text-primary);
       font-size: 1rem;
     }
 
@@ -220,8 +220,7 @@
         Add New Interest
       </h2>
 
-      <form class="grid grid-cols-1 gap-6 lg:grid-cols-2" id="interestForm">
-        <!-- Left Column -->
+      <form class="grid grid-cols-1 gap-6" id="interestForm">
         <div class="space-y-6">
           <!-- Item Name -->
           <div>
@@ -230,99 +229,101 @@
               type="text">
           </div>
 
-          <!-- Size and Size Unit -->
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label class="form-label">Size</label>
-              <input class="form-input" id="itemSize" placeholder="e.g., M, 32, 10" type="text">
-            </div>
-            <div>
-              <label class="form-label">Size Unit</label>
-              <select class="form-select" id="sizeUnit">
-                <option value="">Select Unit</option>
-                <option value="US">US</option>
-                <option value="EU">EU</option>
-                <option value="UK">UK</option>
-                <option value="cm">cm</option>
-                <option value="inches">inches</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Color -->
+          <!-- Image Upload -->
           <div>
-            <label class="form-label">Color</label>
-            <input class="form-input" id="itemColor" placeholder="e.g., Navy Blue, Red"
-              type="text">
-          </div>
-
-          <!-- Design -->
-          <div>
-            <label class="form-label">Design</label>
-            <input class="form-input" id="itemDesign" placeholder="e.g., Floral, Striped, Solid"
-              type="text">
+            <label class="form-label">Item Images</label>
+            <div class="image-upload-container cursor-pointer p-6 text-center" id="imageUpload">
+              <input accept="image/*" class="hidden" id="itemImage" multiple type="file">
+              <i class="fas fa-cloud-upload-alt mb-2 text-3xl text-gray-400"></i>
+              <p class="font-medium text-gray-600">Click to upload images</p>
+              <p class="text-sm text-gray-500">or drag and drop</p>
+              <p class="mt-1 text-xs text-gray-400">PNG, JPG, JPEG up to 5MB each</p>
+            </div>
+            <div class="mt-4 hidden" id="imagePreview">
+              <!-- Images will be appended here -->
+            </div>
           </div>
         </div>
 
-        <!-- Right Column -->
-        <div class="space-y-6">
-          <!-- Material -->
-          <div>
-            <label class="form-label">Material</label>
-            <input class="form-input" id="itemMaterial" placeholder="e.g., Cotton, Silk, Denim"
-              type="text">
-          </div>
-
-          <!-- Sleeves -->
-          <div>
-            <label class="form-label">Sleeves</label>
-            <select class="form-select" id="itemSleeves">
-              <option value="">Select Sleeve Type</option>
-              <option value="sleeveless">Sleeveless</option>
-              <option value="short">Short Sleeves</option>
-              <option value="three-quarter">Three-Quarter</option>
-              <option value="long">Long Sleeves</option>
-            </select>
-          </div>
-
-          <!-- Collar -->
-          <div>
-            <label class="form-label">Collar</label>
-            <select class="form-select" id="itemCollar">
-              <option value="">Select Collar Type</option>
-              <option value="round">Round Neck</option>
-              <option value="v-neck">V-Neck</option>
-              <option value="polo">Polo Collar</option>
-              <option value="button-down">Button-Down</option>
-              <option value="turtleneck">Turtleneck</option>
-              <option value="hood">Hood</option>
-            </select>
-          </div>
-
-          <!-- Image Upload -->
-          <div>
-            <label class="form-label">Item Image</label>
-            <div class="image-upload-container cursor-pointer p-6 text-center" id="imageUpload">
-              <input accept="image/*" class="hidden" id="itemImage" type="file">
-              <i class="fas fa-cloud-upload-alt mb-2 text-3xl text-gray-400"></i>
-              <p class="font-medium text-gray-600">Click to upload image</p>
-              <p class="text-sm text-gray-500">or drag and drop</p>
-              <p class="mt-1 text-xs text-gray-400">PNG, JPG, JPEG up to 5MB</p>
+        <!-- Additional Fields -->
+        <div class="additional-fields grid hidden grid-cols-1 gap-6 lg:grid-cols-2">
+          <!-- Left Column -->
+          <div class="space-y-6">
+            <!-- Size and Size Unit -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="form-label">Size</label>
+                <input class="form-input" id="itemSize" placeholder="e.g., M, 32, 10" type="text">
+              </div>
+              <div>
+                <label class="form-label">Size Unit</label>
+                <select class="form-select" id="sizeUnit">
+                  <option value="">Select Unit</option>
+                  <option value="US">US</option>
+                  <option value="EU">EU</option>
+                  <option value="UK">UK</option>
+                  <option value="cm">cm</option>
+                  <option value="inches">inches</option>
+                </select>
+              </div>
             </div>
-            <div class="mt-4 hidden" id="imagePreview">
-              <img class="mx-auto h-48 max-w-full rounded-lg object-cover" id="previewImage">
-              <button class="mt-2 text-sm text-red-500 hover:text-red-700" id="removeImage"
-                type="button">
-                <i class="fas fa-times mr-1"></i>Remove Image
-              </button>
+
+            <!-- Color -->
+            <div>
+              <label class="form-label">Color</label>
+              <input class="form-input" id="itemColor" placeholder="e.g., Navy Blue, Red"
+                type="text">
+            </div>
+
+            <!-- Design -->
+            <div>
+              <label class="form-label">Design</label>
+              <input class="form-input" id="itemDesign" placeholder="e.g., Floral, Striped, Solid"
+                type="text">
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="space-y-6">
+            <!-- Material -->
+            <div>
+              <label class="form-label">Material</label>
+              <input class="form-input" id="itemMaterial" placeholder="e.g., Cotton, Silk, Denim"
+                type="text">
+            </div>
+
+            <!-- Sleeves -->
+            <div>
+              <label class="form-label">Sleeves</label>
+              <select class="form-select" id="itemSleeves">
+                <option value="">Select Sleeve Type</option>
+                <option value="sleeveless">Sleeveless</option>
+                <option value="short">Short Sleeves</option>
+                <option value="three-quarter">Three-Quarter</option>
+                <option value="long">Long Sleeves</option>
+              </select>
+            </div>
+
+            <!-- Collar -->
+            <div>
+              <label class="form-label">Collar</label>
+              <select class="form-select" id="itemCollar">
+                <option value="">Select Collar Type</option>
+                <option value="round">Round Neck</option>
+                <option value="v-neck">V-Neck</option>
+                <option value="polo">Polo Collar</option>
+                <option value="button-down">Button-Down</option>
+                <option value="turtleneck">Turtleneck</option>
+                <option value="hood">Hood</option>
+              </select>
             </div>
           </div>
         </div>
 
         <!-- Submit Button -->
-        <div class="lg:col-span-2">
+        <div>
           <button
-            class="bg-primary responsive-button flex w-full max-w-2xl mx-auto items-center justify-center rounded-lg font-bold text-white transition hover:bg-purple-700"
+            class="bg-primary responsive-button mx-auto flex w-full max-w-2xl items-center justify-center rounded-lg font-bold text-white transition hover:bg-purple-700"
             type="submit">
             <i class="fas fa-plus mr-2"></i>Add to Interests
           </button>
@@ -338,20 +339,19 @@
 
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" id="interestsGrid">
         <!-- Static Interest Item 1 -->
-        <div class="interest-card bg-white border border-gray-200 rounded-xl overflow-hidden">
-          <div class="h-48 bg-gray-100 overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
-                 alt="Casual Summer Dress" 
-                 class="w-full h-full object-cover item-image">
+        <div class="interest-card overflow-hidden rounded-xl border border-gray-200 bg-white">
+          <div class="h-48 overflow-hidden bg-gray-100">
+            <img alt="Casual Summer Dress" class="item-image h-full w-full object-cover"
+              src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80">
           </div>
           <div class="p-4">
-            <h3 class="font-bold text-dark mb-2">Casual Summer Dress</h3>
+            <h3 class="text-dark mb-2 font-bold">Casual Summer Dress</h3>
             <div class="space-y-1 text-sm text-gray-600">
               <p><span class="font-medium">Size:</span> M US</p>
               <p><span class="font-medium">Color:</span> Navy Blue</p>
               <p><span class="font-medium">Design:</span> Floral Print</p>
             </div>
-            <div class="flex justify-between items-center mt-4">
+            <div class="mt-4 flex items-center justify-between">
               <span class="text-xs text-gray-500">Added 2 days ago</span>
               <div class="flex space-x-2">
                 <button class="action-btn view-btn view-interest" data-id="1">
@@ -366,20 +366,19 @@
         </div>
 
         <!-- Static Interest Item 2 -->
-        <div class="interest-card bg-white border border-gray-200 rounded-xl overflow-hidden">
-          <div class="h-48 bg-gray-100 overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1583496661160-fb5886a13d77?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
-                 alt="Denim Jacket" 
-                 class="w-full h-full object-cover item-image">
+        <div class="interest-card overflow-hidden rounded-xl border border-gray-200 bg-white">
+          <div class="h-48 overflow-hidden bg-gray-100">
+            <img alt="Denim Jacket" class="item-image h-full w-full object-cover"
+              src="https://images.unsplash.com/photo-1583496661160-fb5886a13d77?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80">
           </div>
           <div class="p-4">
-            <h3 class="font-bold text-dark mb-2">Classic Denim Jacket</h3>
+            <h3 class="text-dark mb-2 font-bold">Classic Denim Jacket</h3>
             <div class="space-y-1 text-sm text-gray-600">
               <p><span class="font-medium">Size:</span> L US</p>
               <p><span class="font-medium">Color:</span> Light Blue</p>
               <p><span class="font-medium">Design:</span> Solid</p>
             </div>
-            <div class="flex justify-between items-center mt-4">
+            <div class="mt-4 flex items-center justify-between">
               <span class="text-xs text-gray-500">Added 1 week ago</span>
               <div class="flex space-x-2">
                 <button class="action-btn view-btn view-interest" data-id="2">
@@ -394,20 +393,20 @@
         </div>
 
         <!-- Static Interest Item 3 -->
-        <div class="interest-card bg-white border border-gray-200 rounded-xl overflow-hidden">
-          <div class="h-48 bg-gray-100 overflow-hidden">
-            <div class="w-full h-full flex items-center justify-center text-gray-400">
+        <div class="interest-card overflow-hidden rounded-xl border border-gray-200 bg-white">
+          <div class="h-48 overflow-hidden bg-gray-100">
+            <div class="flex h-full w-full items-center justify-center text-gray-400">
               <i class="fas fa-image text-4xl"></i>
             </div>
           </div>
           <div class="p-4">
-            <h3 class="font-bold text-dark mb-2">Running Shoes</h3>
+            <h3 class="text-dark mb-2 font-bold">Running Shoes</h3>
             <div class="space-y-1 text-sm text-gray-600">
               <p><span class="font-medium">Size:</span> 10 US</p>
               <p><span class="font-medium">Color:</span> Black/Red</p>
               <p><span class="font-medium">Design:</span> Athletic</p>
             </div>
-            <div class="flex justify-between items-center mt-4">
+            <div class="mt-4 flex items-center justify-between">
               <span class="text-xs text-gray-500">Added today</span>
               <div class="flex space-x-2">
                 <button class="action-btn view-btn view-interest" data-id="3">
@@ -422,7 +421,7 @@
         </div>
 
         <!-- This will be hidden when there are items -->
-        <div class="col-span-3 py-8 text-center text-gray-500 hidden" id="noInterestsMessage">
+        <div class="col-span-3 hidden py-8 text-center text-gray-500" id="noInterestsMessage">
           <i class="fas fa-heart mb-3 text-3xl text-gray-300"></i>
           <p>No interest items yet. Add your first item above!</p>
         </div>
@@ -440,9 +439,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
-             alt="Casual Summer Dress" 
-             class="item-image-large">
+        <img alt="Casual Summer Dress" class="item-image-large"
+          src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80">
         <div class="item-details-grid">
           <div class="detail-item">
             <div class="detail-label">Brand</div>
@@ -487,7 +485,8 @@
         </div>
         <div class="detail-item mt-4">
           <div class="detail-label">Additional Notes</div>
-          <div class="detail-value">Perfect for summer outings and casual events. Looking for this in navy blue with floral pattern.</div>
+          <div class="detail-value">Perfect for summer outings and casual events. Looking for this in
+            navy blue with floral pattern.</div>
         </div>
         <div class="mt-6 flex justify-end space-x-3">
           <button class="action-btn delete-btn">
@@ -512,11 +511,10 @@
     const imageUpload = document.getElementById('imageUpload');
     const itemImageInput = document.getElementById('itemImage');
     const imagePreview = document.getElementById('imagePreview');
-    const previewImage = document.getElementById('previewImage');
-    const removeImage = document.getElementById('removeImage');
+    const additionalFields = document.querySelector('.additional-fields');
     const interestsGrid = document.getElementById('interestsGrid');
     const noInterestsMessage = document.getElementById('noInterestsMessage');
-    
+
     // Modal elements
     const viewInterestModal = document.getElementById('viewInterestModal');
     const closeModalBtn = document.getElementById('closeModal');
@@ -525,10 +523,19 @@
     document.addEventListener('DOMContentLoaded', function() {
       // Since we have static items, ensure the no interests message is hidden
       noInterestsMessage.classList.add('hidden');
-      
+
       // Add event listeners for view buttons
       document.querySelectorAll('.view-interest').forEach(button => {
         button.addEventListener('click', openInterestModal);
+      });
+
+      // Add event listener for removing images
+      imagePreview.addEventListener('click', function(e) {
+        if (e.target.closest('.remove-image')) {
+          const index = parseInt(e.target.closest('.remove-image').getAttribute(
+            'data-index'));
+          removeImageAtIndex(index);
+        }
       });
     });
 
@@ -545,8 +552,18 @@
     }
 
     // Handle form submission
-    function handleFormSubmit(e) {
+    async function handleFormSubmit(e) {
       e.preventDefault();
+
+      const imagePromises = Array.from(itemImageInput.files).map(file => {
+        return new Promise(resolve => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(file);
+        });
+      });
+
+      const images = await Promise.all(imagePromises);
 
       const formData = {
         id: Date.now(),
@@ -558,7 +575,7 @@
         material: document.getElementById('itemMaterial').value,
         sleeves: document.getElementById('itemSleeves').value,
         collar: document.getElementById('itemCollar').value,
-        image: previewImage.src || '',
+        images: images,
         createdAt: new Date().toISOString()
       };
 
@@ -570,7 +587,7 @@
 
       // Reset form
       interestForm.reset();
-      removeUploadedImage();
+      removeUploadedImages();
 
       // Update UI
       renderInterests();
@@ -581,23 +598,48 @@
 
     // Handle image upload
     function handleImageUpload() {
-      const file = itemImageInput.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          previewImage.src = e.target.result;
-          imagePreview.classList.remove('hidden');
-          imageUpload.classList.add('hidden');
-        };
-        reader.readAsDataURL(file);
+      const files = itemImageInput.files;
+      if (files.length > 0) {
+        imagePreview.innerHTML = '';
+        Array.from(files).forEach((file, index) => {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const imgContainer = document.createElement('div');
+            imgContainer.className = 'relative inline-block mr-2 mb-2';
+            imgContainer.innerHTML = `
+              <img src="${e.target.result}" class="h-24 w-24 object-cover rounded-lg">
+              <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs remove-image" data-index="${index}">
+                <i class="fas fa-times"></i>
+              </button>
+            `;
+            imagePreview.appendChild(imgContainer);
+          };
+          reader.readAsDataURL(file);
+        });
+        imagePreview.classList.remove('hidden');
+        additionalFields.classList.remove('hidden');
+      } else {
+        imagePreview.classList.add('hidden');
+        additionalFields.classList.add('hidden');
       }
     }
 
-    // Remove uploaded image
-    function removeUploadedImage() {
+    // Remove image at specific index
+    function removeImageAtIndex(index) {
+      const dt = new DataTransfer();
+      const files = Array.from(itemImageInput.files);
+      files.splice(index, 1); // Remove the file at index
+      files.forEach(file => dt.items.add(file));
+      itemImageInput.files = dt.files;
+      handleImageUpload(); // Re-render previews
+    }
+
+    // Remove all uploaded images
+    function removeUploadedImages() {
       itemImageInput.value = '';
+      imagePreview.innerHTML = '';
       imagePreview.classList.add('hidden');
-      imageUpload.classList.remove('hidden');
+      additionalFields.classList.add('hidden');
     }
 
     // Render interests grid
@@ -612,11 +654,11 @@
       interestsGrid.innerHTML = interests.map(interest => `
                 <div class="interest-card bg-white border border-gray-200 rounded-xl overflow-hidden">
                     <div class="h-48 bg-gray-100 overflow-hidden">
-                        ${interest.image ? 
-                            `<img src="${interest.image}" alt="${interest.name}" class="w-full h-full object-cover item-image">` :
+                        ${interest.images && interest.images.length > 0 ?
+                            `<img src="${interest.images[0]}" alt="${interest.name}" class="w-full h-full object-cover item-image">` :
                             `<div class="w-full h-full flex items-center justify-center text-gray-400">
-                                    <i class="fas fa-image text-4xl"></i>
-                                </div>`
+                                              <i class="fas fa-image text-4xl"></i>
+                                          </div>`
                         }
                     </div>
                     <div class="p-4">
@@ -667,7 +709,6 @@
     interestForm.addEventListener('submit', handleFormSubmit);
     imageUpload.addEventListener('click', () => itemImageInput.click());
     itemImageInput.addEventListener('change', handleImageUpload);
-    removeImage.addEventListener('click', removeUploadedImage);
     closeModalBtn.addEventListener('click', closeModal);
 
     // Close modal when clicking outside

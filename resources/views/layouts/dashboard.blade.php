@@ -965,7 +965,7 @@
       }
     </style>
     @stack('styles')
-    {{--@vite('resources/js/app.js')--}}
+    {{-- @vite('resources/js/app.js') --}}
   </head>
 
   <body class="bg-light font-inter">
@@ -996,6 +996,11 @@
           href="{{ url('wardrobe') }}">
           <i class="fas fa-archive text-primary mr-4 text-lg"></i>
           <span class="nav-text">My Wardrobe</span>
+        </a>
+        <a class="nav-link text-dark @if (request()->path() === 'outfits') active @endif flex items-center px-6 py-3 font-medium"
+          href="{{ url('outfits') }}">
+          <i class="fas fa-archive text-primary mr-4 text-lg"></i>
+          <span class="nav-text">My Outfits</span>
         </a>
         <a class="nav-link text-dark @if (request()->path() === 'interests') active @endif flex items-center px-6 py-3 font-medium"
           href="{{ url('interests') }}">
@@ -1036,7 +1041,7 @@
               </p>
             </div>
           </div>
-          <button class="hover:text-[var(--primary-color)] w-3" id="sidebarUserMenu">
+          <button class="w-3 hover:text-[var(--primary-color)]" id="sidebarUserMenu">
             <i class="fas fa-ellipsis-v"></i>
           </button>
         </div>
@@ -1085,14 +1090,18 @@
           </h1>
         </div>
         <div class="flex items-center space-x-4">
-          <div class="relative">
+          <div class="relative flex">
             <button
-              class="text-primary border-primary rounded-full border px-2 py-1 font-medium transition hover:bg-[rgba(var(--primary-color-rgb),0.3)]"
+              class="text-primary border-primary relative rounded-full border px-2 py-1 font-medium transition hover:bg-[rgba(var(--primary-color-rgb),0.3)]"
               id="bellIcon">
               <i class="fas fa-bell"></i>
             </button>
-            <span
-              class="bg-primary absolute -right-0.5 top-0.5 flex h-2.5 w-2.5 items-center justify-center rounded-full text-[10px]"></span>
+            {{-- TODO: Check if there are new notifications. Then display this if there are notifications --}}
+            <span class="absolute -right-0.5 top-0.5 flex size-3">
+              <span
+                class="bg-primary absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
+              <span class="bg-primary relative inline-flex size-3 rounded-full"></span>
+            </span>
           </div>
 
           <!-- Top Bar User Profile -->

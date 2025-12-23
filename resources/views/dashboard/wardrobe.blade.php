@@ -128,11 +128,6 @@
       color: var(--text-primary);
     }
 
-    /* .filter-dropdown-item.active {
-                  background-color: rgba(159, 122, 234, 0.1);
-                  color: #9f7aea;
-                } */
-
     .filter-dropdown-item i {
       margin-right: 8px;
       width: 16px;
@@ -250,7 +245,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: rgba(0, 0, 0, 0.7);
       z-index: 1000;
       align-items: center;
       justify-content: center;
@@ -261,10 +256,11 @@
     }
 
     .modal-content {
-      background-color: white;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
       border-radius: 16px;
       width: 90%;
-      max-width: 500px;
+      max-width: 640px;
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -314,7 +310,7 @@
 
     .detail-value {
       font-weight: 400;
-      color: #111827;
+      color: var(--text-primary);
       font-size: 1rem;
     }
 
@@ -332,6 +328,199 @@
       height: 50px;
       object-fit: cover;
       border-radius: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: #374151;
+      font-size: 14px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.2s ease;
+      background-color: white;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+    }
+
+    .form-input-error {
+      border-color: #fc8181;
+    }
+
+    .error-message {
+      color: #fc8181;
+      font-size: 12px;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .image-preview {
+      width: 150px;
+      height: 150px;
+      border: 2px dashed #d1d5db;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .upload-area {
+      border: 2px dashed #d1d5db;
+      border-radius: 8px;
+      padding: 30px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+      /* background-color: #f9fafb; */
+    }
+
+    .upload-area:hover {
+      border-color: var(--primary-color);
+    }
+    .upload-area:hover .upload-icon {
+      color: var(--primary-color);
+    }
+
+    .upload-area.dragover {
+      border-color: var(--primary-color);
+      background-color: rgba(var(--primary-color-rgb), 0.05);
+    }
+
+    .upload-icon {
+      font-size: 36px;
+      
+      margin-bottom: 8px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 15px;
+      padding-top: 20px;
+      /* border-top: 1px solid #e5e7eb; */
+    }
+
+    /* .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      font-size: 14px;
+    }
+
+    .btn-primary:hover {
+      background-color: rgba(var(--primary-color-rgb), 0.9);
+    }
+
+    .btn-secondary {
+      background-color: #f3f4f6;
+      color: #374151;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      font-size: 14px;
+    }
+
+    .btn-secondary:hover {
+      background-color: #e5e7eb;
+    } */
+
+    .status-select {
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      width: 100%;
+      background-color: white;
+    }
+
+    .status-select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+    }
+
+    .form-section {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .form-section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    textarea.form-input {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .required::after {
+      content: " *";
+      color: #fc8181;
+    }
+
+    @media (max-width: 768px) {
+
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-content {
+        width: 95%;
+        padding: 10px;
+      }
+
+      .modal-body {
+        padding: 16px;
+      }
     }
   </style>
 @endpush
@@ -352,23 +541,15 @@
       <div class="responsive-card">
         <div class="flex items-center gap-4 md:flex-row md:justify-between">
           <div class="relative">
-            <input
-              class="w-full rounded-lg py-2 pl-10 pr-4 md:w-64"
-              placeholder="Search items..." type="text">
+            <input class="w-full rounded-lg py-2 pl-10 pr-4 md:w-64" placeholder="Search items..."
+              type="text">
             <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
 
           </div>
-          <div class="flex flex-row gap-4 sm:items-center">
-            <button
-              class="bg-primary responsive-button flex h-8 w-8 items-center justify-center rounded-full font-medium text-white transition hover:bg-purple-700"
-              id="addItemBtn">
-              <i class="fas fa-plus"></i>
-            </button>
-            <button
-              class="bg-secondary responsive-button flex h-8 w-8 items-center justify-center rounded-full font-medium text-white transition hover:bg-teal-500">
-              <i class="fas fa-upload"></i>
-            </button>
-          </div>
+          <x-button class="flex h-8 w-8 items-center justify-center rounded-full" id="addItemBtn"
+            size='sm' type="button" variant='primary'>
+            <i class="fas fa-plus"></i>
+          </x-button>
 
         </div>
       </div>
@@ -821,6 +1002,197 @@
       </div>
     </div>
   </div>
+
+  <!-- Add Clothing Item Modal -->
+  <div class="modal" id="addClothingModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="text-dark text-xl font-medium">Add New Clothing Item</h2>
+        <button class="modal-close" id="closeAddModal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form enctype="multipart/form-data" id="clothingForm" method="POST">
+          {{-- action="{{ route('wardrobe.store') }}" --}}
+          @csrf
+
+          <!-- Basic Information -->
+          <div class="form-section">
+            <h3 class="form-section-title">Basic Information</h3>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label required" for="name">Item Name</label>
+                <input class="form-input @error('name') form-input-error @enderror" id="name"
+                  name="name" placeholder="e.g., Classic White T-Shirt" required type="text"
+                  value="{{ old('name') }}">
+                @error('name')
+                  <span class="error-message">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="brand">Brand</label>
+                <input class="form-input @error('brand') form-input-error @enderror" id="brand"
+                  name="brand" placeholder="e.g., Uniqlo" type="text"
+                  value="{{ old('brand') }}">
+                @error('brand')
+                  <span class="error-message">{{ $message }}</span>
+                @enderror
+              </div>
+            </div>
+
+            <div class="grid-3">
+              <div class="form-group">
+                <label class="form-label" for="color">Color</label>
+                <input class="form-input @error('color') form-input-error @enderror" id="color"
+                  name="color" placeholder="e.g., White" type="text"
+                  value="{{ old('color') }}">
+                @error('color')
+                  <span class="error-message">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="size">Size</label>
+                <input class="form-input @error('size') form-input-error @enderror" id="size"
+                  name="size" placeholder="e.g., M, L, XL" type="text"
+                  value="{{ old('size') }}">
+                @error('size')
+                  <span class="error-message">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="material">Material</label>
+                <input class="form-input @error('material') form-input-error @enderror"
+                  id="material" name="material" placeholder="e.g., 100% Cotton" type="text"
+                  value="{{ old('material') }}">
+                @error('material')
+                  <span class="error-message">{{ $message }}</span>
+                @enderror
+              </div>
+            </div>
+          </div>
+
+          <!-- Purchase Information -->
+          <div class="form-section">
+            <h3 class="form-section-title">Purchase Information</h3>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label" for="price">Price ($)</label>
+                <input class="form-input @error('price') form-input-error @enderror" id="price"
+                  name="price" placeholder="e.g., 29.99" step="0.01" type="number"
+                  value="{{ old('price') }}">
+                @error('price')
+                  <span class="error-message">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="purchase_date">Purchase Date</label>
+                <input class="form-input @error('purchase_date') form-input-error @enderror"
+                  id="purchase_date" name="purchase_date" type="date"
+                  value="{{ old('purchase_date') }}">
+                @error('purchase_date')
+                  <span class="error-message">{{ $message }}</span>
+                @enderror
+              </div>
+            </div>
+          </div>
+
+          <!-- Care Instructions -->
+          <div class="form-section">
+            <h3 class="form-section-title">Care Instructions</h3>
+
+            <div class="form-group">
+              <label class="form-label" for="care_instructions">Care Instructions</label>
+              <textarea class="form-input @error('care_instructions') form-input-error @enderror"
+                id="care_instructions" name="care_instructions"
+                placeholder="e.g., Machine wash cold, tumble dry low" rows="3">{{ old('care_instructions') }}</textarea>
+              @error('care_instructions')
+                <span class="error-message">{{ $message }}</span>
+              @enderror
+            </div>
+          </div>
+
+          <!-- Image Upload -->
+          <div class="form-section">
+            <h3 class="form-section-title">Item Image</h3>
+
+            <div class="form-group">
+              <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <p class="mb-2 text-gray-600">Click to upload or drag and drop</p>
+                <p class="text-sm text-gray-500">PNG, JPG up to 5MB</p>
+                <input accept="image/*" class="hidden" id="image" name="image"
+                  type="file">
+              </div>
+
+              <div class="image-preview hidden" id="imagePreview">
+                <img alt="Preview" id="previewImage" src="">
+              </div>
+
+              @error('image')
+                <span class="error-message">{{ $message }}</span>
+              @enderror
+            </div>
+          </div>
+
+          <!-- Notes and Status -->
+          <div class="form-section">
+            <h3 class="form-section-title">Additional Information</h3>
+
+            <div class="grid-1">
+              <div class="form-group">
+                <label class="form-label" for="notes">Notes</label>
+                <textarea class="form-input @error('notes') form-input-error @enderror" id="notes"
+                  name="notes" placeholder="Any additional notes about this item" rows="3">{{ old('notes') }}</textarea>
+                @error('notes')
+                  <span class="error-message">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <div class="form-group">
+                <label class="form-label required" for="status">Status</label>
+                <select class="status-select @error('status') form-input-error @enderror"
+                  id="status" name="status" required>
+                  <option value="">Select Status</option>
+                  <option {{ old('status') == 'available' ? 'selected' : '' }} value="available">
+                    Available</option>
+                  <option {{ old('status') == 'laundry' ? 'selected' : '' }} value="laundry">In
+                    Laundry</option>
+                  <option {{ old('status') == 'handedout' ? 'selected' : '' }} value="handedout">
+                    Handed Out</option>
+                  <option {{ old('status') == 'discarded' ? 'selected' : '' }} value="discarded">
+                    Discarded</option>
+                </select>
+                @error('status')
+                  <span class="error-message">{{ $message }}</span>
+                @enderror
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Buttons -->
+          <div class="button-group">
+            <x-button class="btn-secondary" size='md' variant='outline' id="cancelAddModal" type="button">
+              Cancel
+            </x-button>
+            <x-button class="btn-primary" size='md' variant='primary' type="submit">
+              <i class="fas fa-plus mr-2"></i>
+              Add Item
+            </x-button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- View Clothing Modal -->
   <div class="modal" id="viewClothingModal">
     <div class="modal-content">
@@ -876,7 +1248,7 @@
   </div>
 @endsection
 
-@push('scripts')
+{{-- @push('scripts')
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Modal elements
@@ -969,6 +1341,271 @@
           filterDropdown.classList.remove('show');
         });
       });
+    });
+  </script>
+@endpush --}}
+
+@push('scripts')
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add Clothing Modal elements
+      const addClothingModal = document.getElementById('addClothingModal');
+      const addItemBtn = document.getElementById('addItemBtn');
+      const uploadItemBtn = document.getElementById('uploadItemBtn');
+      const closeAddModalBtn = document.getElementById('closeAddModal');
+      const cancelAddModalBtn = document.getElementById('cancelAddModal');
+
+      // View Clothing Modal elements
+      const viewClothingModal = document.getElementById('viewClothingModal');
+      const closeModalBtn = document.getElementById('closeModal');
+
+      // Open add clothing modal
+      function openAddItemModal() {
+        addClothingModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+
+      // Close add clothing modal
+      function closeAddModal() {
+        addClothingModal.classList.remove('show');
+        document.body.style.overflow = '';
+        resetForm();
+      }
+
+      // Reset form when closing modal
+      function resetForm() {
+        document.getElementById('clothingForm').reset();
+        const imagePreview = document.getElementById('imagePreview');
+        const uploadArea = document.getElementById('uploadArea');
+        imagePreview.classList.add('hidden');
+        uploadArea.classList.remove('hidden');
+      }
+
+      // Open view clothing modal
+      function openItemModal() {
+        viewClothingModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+
+      // Close view clothing modal
+      function closeModal() {
+        viewClothingModal.classList.remove('show');
+        document.body.style.overflow = '';
+      }
+
+      // Add event listeners for add clothing modal
+      if (addItemBtn) {
+        addItemBtn.addEventListener('click', openAddItemModal);
+      }
+
+      if (uploadItemBtn) {
+        uploadItemBtn.addEventListener('click', openAddItemModal);
+      }
+
+      if (closeAddModalBtn) {
+        closeAddModalBtn.addEventListener('click', closeAddModal);
+      }
+
+      if (cancelAddModalBtn) {
+        cancelAddModalBtn.addEventListener('click', closeAddModal);
+      }
+
+      // Add event listeners to all "View Details" buttons
+      document.querySelectorAll('.view-item-btn').forEach(button => {
+        button.addEventListener('click', openItemModal);
+      });
+
+      // Close modals when clicking close buttons
+      closeModalBtn.addEventListener('click', closeModal);
+
+      // Close modals when clicking outside the modal content
+      [addClothingModal, viewClothingModal].forEach(modal => {
+        modal.addEventListener('click', function(event) {
+          if (event.target === modal) {
+            if (modal.id === 'addClothingModal') {
+              closeAddModal();
+            } else {
+              closeModal();
+            }
+          }
+        });
+      });
+
+      // Close modals with Escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          if (addClothingModal.classList.contains('show')) {
+            closeAddModal();
+          }
+          if (viewClothingModal.classList.contains('show')) {
+            closeModal();
+          }
+        }
+      });
+
+      // Image upload preview for add clothing modal
+      const uploadArea = document.getElementById('uploadArea');
+      const fileInput = document.getElementById('image');
+      const imagePreview = document.getElementById('imagePreview');
+      const previewImage = document.getElementById('previewImage');
+
+      if (uploadArea && fileInput) {
+        uploadArea.addEventListener('click', function() {
+          fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function(e) {
+          const file = e.target.files[0];
+          if (file) {
+            // Check file size (5MB limit)
+            if (file.size > 5 * 1024 * 1024) {
+              alert('File size must be less than 5MB');
+              return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+              previewImage.src = e.target.result;
+              imagePreview.classList.remove('hidden');
+              uploadArea.classList.add('hidden');
+            }
+
+            reader.readAsDataURL(file);
+          }
+        });
+
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', function(e) {
+          e.preventDefault();
+          uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', function(e) {
+          e.preventDefault();
+          uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+          e.preventDefault();
+          uploadArea.classList.remove('dragover');
+
+          const file = e.dataTransfer.files[0];
+          if (file && file.type.startsWith('image/')) {
+            // Check file size (5MB limit)
+            if (file.size > 5 * 1024 * 1024) {
+              alert('File size must be less than 5MB');
+              return;
+            }
+
+            fileInput.files = e.dataTransfer.files;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              previewImage.src = e.target.result;
+              imagePreview.classList.remove('hidden');
+              uploadArea.classList.add('hidden');
+            }
+            reader.readAsDataURL(file);
+          }
+        });
+
+        // Remove image and show upload area again
+        imagePreview.addEventListener('click', function() {
+          fileInput.value = '';
+          imagePreview.classList.add('hidden');
+          uploadArea.classList.remove('hidden');
+        });
+      }
+
+      // Form validation
+      const form = document.getElementById('clothingForm');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          const name = document.getElementById('name').value.trim();
+          const status = document.getElementById('status').value;
+
+          if (!name) {
+            e.preventDefault();
+            alert('Item name is required');
+            document.getElementById('name').focus();
+            return false;
+          }
+
+          if (!status) {
+            e.preventDefault();
+            alert('Please select a status');
+            document.getElementById('status').focus();
+            return false;
+          }
+
+          return true;
+        });
+      }
+
+      // Set max date for purchase date to today
+      const purchaseDateInput = document.getElementById('purchase_date');
+      if (purchaseDateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        purchaseDateInput.max = today;
+      }
+
+      // Filter functionality (existing code)
+      const filterDropdownBtn = document.getElementById('filterDropdownBtn');
+      const filterDropdown = document.getElementById('filterDropdown');
+      const filterBtns = document.querySelectorAll('.filter-btn[data-status]');
+
+      // Toggle filter dropdown
+      if (filterDropdownBtn) {
+        filterDropdownBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          filterDropdown.classList.toggle('show');
+        });
+      }
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function() {
+        if (filterDropdown) {
+          filterDropdown.classList.remove('show');
+        }
+      });
+
+      // Filter button functionality
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const status = this.getAttribute('data-status');
+
+          // Update active state
+          filterBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+
+          // Filter logic would go here
+          console.log('Filter by:', status);
+        });
+      });
+
+      // Filter dropdown items
+      const filterDropdownItems = document.querySelectorAll('.filter-dropdown-item');
+      filterDropdownItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const filterType = this.getAttribute('data-filter');
+
+          // Update active state
+          filterDropdownItems.forEach(i => i.classList.remove('active'));
+          this.classList.add('active');
+
+          // Filter logic would go here
+          console.log('Advanced filter by:', filterType);
+
+          // Close dropdown
+          filterDropdown.classList.remove('show');
+        });
+      });
+
+      // Auto-open modal if there are validation errors
+      @if ($errors->any())
+        openAddItemModal();
+      @endif
     });
   </script>
 @endpush

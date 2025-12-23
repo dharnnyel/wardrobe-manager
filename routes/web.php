@@ -45,6 +45,16 @@ Route::middleware('auth')->group(function () {
   })->name('logout');
   Route::view('dashboard', 'dashboard.home');
   Route::view('wardrobe', 'dashboard.wardrobe');
+  Route::view('outfits', 'dashboard.outfits');
+  Route::get('outfits/plan', function () {
+        $currentMonth = request()->input('month', date('n'));
+        $currentYear = request()->input('year', date('Y'));
+        
+        return view('dashboard.plan-outfit', [
+            'currentMonth' => $currentMonth,
+            'currentYear' => $currentYear
+        ]);
+    })->name('outfits.plan');
   Route::view('interests', 'dashboard.interests');
   Route::view('wishlist', 'dashboard.wishlist');
   Route::view('shopping', 'dashboard.shopping');

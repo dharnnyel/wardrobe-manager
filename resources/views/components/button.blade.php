@@ -1,34 +1,39 @@
 @props([
     'type' => 'button',
-    'variant' => 'primary',
+    'variant' => 'white',
     'size' => 'md',
     'disabled' => false
 ])
 
 @php
-  $baseClasses = 'font-medium transition duration-75 ease-in-out focus:outline-none focus:ring-2 focus:ring-opacity-50';
+  $baseClasses =
+      'font-medium transition duration-75 ease-in-out focus:outline-none focus:ring-2 focus:ring-opacity-50';
 
   $variantClasses = [
       'none' => '',
-      'primary' => 'bg-primary text-white hover:bg-purple-700',
-      'secondary' => 'bg-secondary text-white hover:bg-opacity-80',
-      'ghost' => 'bg-transparent text-gray-700 hover:bg-gray-100',
-      'danger' => 'bg-red-400 text-white hover:bg-red-500 focus:ring-red-500',
-      'outline' => 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+      'primary' =>
+          'relative overflow-hidden transition-all before:ease before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-white before:opacity-30 before:duration-700 hover:before:-translate-x-40 bg-primary text-white focus:ring-primary',
+      'secondary' => 'bg-secondary text-white hover:bg-opacity-80 focus:ring-secondary',
+      'white' => 'bg-white text-white border border-gray-300 hover:bg-gray-50 focus:ring-gray-500',
+      'ghost' => 'bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-500',
+      'danger' =>
+          'relative overflow-hidden transition-all bg-red-600 text-white before:ease before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-white before:opacity-30 before:duration-700 hover:before:-translate-x-40 focus:ring-red-500',
+      'outline' =>
+          'relative overflow-hidden border-[var(--primary-color)] text-gray-700 before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-[var(--primary-color)] before:transition-all before:duration-500 before:bg-[var(--primary-color)] before:duration-300 before:ease-out hover:text-white hover:before:h-full hover:before:w-full hover:before:left-0 border'
   ];
 
   $sizeClasses = [
       'none' => '',
-      'small' => 'px-4 py-2 rounded-lg',
-      'medium' => 'px-6 py-3 rounded-lg',
-      'large' => 'px-8 py-4 rounded-lg'
+      'sm' => 'px-4 py-2 rounded-lg',
+      'md' => 'px-6 py-3 rounded-lg',
+      'lg' => 'px-8 py-4 rounded-lg'
   ];
 
   // component defaults
   $componentClasses = implode(' ', [
       $baseClasses,
-      $variantClasses[$variant] ?? $variantClasses['primary'],
-      $sizeClasses[$size] ?? $sizeClasses['medium'],
+      $variantClasses[$variant] ?? $variantClasses['white'],
+      $sizeClasses[$size] ?? $sizeClasses['md'],
       $disabled ? 'opacity-50 cursor-not-allowed' : ''
   ]);
 
@@ -55,5 +60,7 @@
 
 <button {{ $disabled ? 'disabled' : '' }} {{ $attributes->merge(['class' => $classes]) }}
   type="{{ $type }}">
-  {{ $slot }}
+  <span class="relative z-10">
+    {{ $slot }}
+  </span>
 </button>

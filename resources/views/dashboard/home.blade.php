@@ -685,7 +685,9 @@
             </div>
             <button
               class="bg-primary responsive-text w-full rounded-lg px-4 py-2 font-bold text-white transition hover:bg-purple-700">
-              <i class="fas fa-calendar-plus mr-2"></i>Plan New Outfit
+              <a href="{{ url('outfits/plan') }}" class='flex items-center justify-center'>
+                <i class="fas fa-calendar-plus mr-2"></i>Plan New Outfit
+              </a>
             </button>
           </div>
         </div>

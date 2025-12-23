@@ -239,12 +239,12 @@
     }
 
     /* input:focus,
-                textarea:focus,
-                select:focus {
-                  border-color: var(--primary-color) !important;
-                  box-shadow: 0 0 0 4px rgba(var(--primary-color-rgb, 159, 122, 234), 0.08) !important;
-                  outline: none !important;
-                } */
+                            textarea:focus,
+                            select:focus {
+                              border-color: var(--primary-color) !important;
+                              box-shadow: 0 0 0 4px rgba(var(--primary-color-rgb, 159, 122, 234), 0.08) !important;
+                              outline: none !important;
+                            } */
 
     label,
     .mb-2.block.text-sm.font-medium.text-gray-700 {
@@ -359,38 +359,38 @@
 
     /* Subscription button theming */
     /* .subscription-btn {
-              background-color: var(--bg-primary) !important;
-              color: var(--text-primary) !important;
-              border: 1px solid var(--border-color) !important;
-            } */
+                          background-color: var(--bg-primary) !important;
+                          color: var(--text-primary) !important;
+                          border: 1px solid var(--border-color) !important;
+                        } */
 
     /* .subscription-btn:hover {
-              background-color: var(--bg-secondary) !important;
-              border-color: var(--primary-color) !important;
-            }
+                          background-color: var(--bg-secondary) !important;
+                          border-color: var(--primary-color) !important;
+                        }
 
-            [data-theme="dark"] .subscription-btn {
-              background-color: #2d3748 !important;
-              color: #ffffff !important;
-              border-color: #4a5568 !important;
-            }
+                        [data-theme="dark"] .subscription-btn {
+                          background-color: #2d3748 !important;
+                          color: #ffffff !important;
+                          border-color: #4a5568 !important;
+                        }
 
-            [data-theme="dark"] .subscription-btn:hover {
-              background-color: #4a5568 !important;
-              border-color: var(--primary-color) !important;
-            }
+                        [data-theme="dark"] .subscription-btn:hover {
+                          background-color: #4a5568 !important;
+                          border-color: var(--primary-color) !important;
+                        }
 
-            [data-high-contrast="true"] .subscription-btn {
-              background-color: var(--bg-primary) !important;
-              color: var(--text-primary) !important;
-              border: 2px solid var(--border-color) !important;
-              font-weight: 600;
-            }
+                        [data-high-contrast="true"] .subscription-btn {
+                          background-color: var(--bg-primary) !important;
+                          color: var(--text-primary) !important;
+                          border: 2px solid var(--border-color) !important;
+                          font-weight: 600;
+                        }
 
-            [data-high-contrast="true"] .subscription-btn:hover {
-              background-color: var(--bg-secondary) !important;
-              border-color: var(--primary-color) !important;
-            } */
+                        [data-high-contrast="true"] .subscription-btn:hover {
+                          background-color: var(--bg-secondary) !important;
+                          border-color: var(--primary-color) !important;
+                        } */
 
     /* Responsive styles with improved toggle behavior */
     @media (max-width: 639px) {
@@ -785,7 +785,7 @@
                       id="styleInput" placeholder="Add a style tag..." type="text">
                     <input id="styleTagsInput" name="style_tags" type="hidden"
                       value='{{ json_encode($currentUser->style_tags ?? []) }}'>
-                    <x-button class="w-fit rounded-lg text-base" id="addStyleBtn" size='small'
+                    <x-button class="w-fit rounded-lg text-base" id="addStyleBtn" size='sm'
                       type="button" variant='primary'>
                       Add
                     </x-button>
@@ -808,16 +808,15 @@
                   <p class="text-dark font-medium">{{ $currentUser->email }}</p>
                   <p class="text-sm text-gray-600">Your current email address</p>
                 </div>
-                <button
-                  class="bg-primary hover:bg-primary-dark w-fit rounded-lg px-4 py-3 text-base text-white transition duration-200"
-                  onclick="openEmailModal()" type="button">
+                <x-button
+                  onclick="openEmailModal()" size='md' type="button" variant='primary'>
                   Change Email
-                </button>
+                </x-button>
               </div>
             </div>
 
             <div class="flex justify-end">
-              <x-button class="rounded-lg text-base" id="saveProfileBtn" size='medium'
+              <x-button class="rounded-lg text-base" id="saveProfileBtn" size='md'
                 type="submit" variant='primary'>
                 Save Changes
               </x-button>
@@ -949,7 +948,7 @@
                   @error('clothing_categories.*')
                     <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                   @enderror
-                  <x-button class="w-fit rounded-lg text-base" id="addCategoryBtn" size='small'
+                  <x-button class="w-fit rounded-lg text-base" id="addCategoryBtn" size='sm'
                     type="button" variant='primary'>
                     Add
                   </x-button>
@@ -958,7 +957,7 @@
               </div>
             </div>
             <div class="flex justify-end">
-              <x-button class="w-fit rounded-lg text-base" id="saveWardrobeBtn" size='medium'
+              <x-button class="w-fit rounded-lg text-base" id="saveWardrobeBtn" size='md'
                 type="submit" variant='primary'>
                 Save Changes
               </x-button>
@@ -1135,7 +1134,7 @@
               @enderror
             </div>
             <div class="flex justify-end">
-              <x-button class="rounded-lg text-base" size='medium' type="submit"
+              <x-button class="rounded-lg text-base" size='md' type="submit"
                 variant='primary'>
                 Save Changes
               </x-button>
@@ -1332,7 +1331,7 @@
               </div>
             </div>
             <div class="flex justify-end">
-              <x-button class="rounded-lg text-base" size='medium' type="submit"
+              <x-button class="rounded-lg text-base" size='md' type="submit"
                 variant='primary'>
                 Save Changes
               </x-button>
@@ -1520,7 +1519,7 @@
               </div>
             </div>
             <div class="flex justify-end">
-              <x-button class="rounded-lg text-base" size='medium' type="submit"
+              <x-button class="rounded-lg text-base" size='md' type="submit"
                 variant='primary'>
                 Save Changes
               </x-button>
@@ -1579,14 +1578,14 @@
                   </div>
                   <!-- In the subscription-section, replace the buttons section -->
                   <div class="mt-2 md:mt-0">
-                    <x-button
-                      class="subscription-btn mr-2 hover:border hover:border-[rgba(var(--primary-color-rgb),1)] hover:bg-[rgba(var(--primary-color-rgb),1)]"
-                      onclick="openChangePlanModal()" size='small' type="button"
-                      variant='outline'>
+                    <x-button class="mr-2 text-white" onclick="openChangePlanModal()"
+                      size='sm' type="button" variant='outline'>
                       Change Plan
                     </x-button>
                     @if ($currentUser->subscription)
-                      <x-button class="subscription-btn rounded-lg" size='small' type="button">
+                      <x-button
+                        class="hover:bg-[rgba(var(--primary-color-rgb),1) mr-2 text-white hover:border hover:border-[rgba(var(--primary-color-rgb),1)]"
+                        size='sm' type="button">
                         Cancel Subscription
                       </x-button>
                     @endif
@@ -1601,8 +1600,8 @@
                 class="mb-5 flex flex-col justify-between gap-4 min-[490px]:flex-row min-[490px]:items-center">
                 <h3 class="text-dark text-lg font-semibold">Billing History</h3>
                 <div>
-                  <x-button class="subscription-btn mr-2 rounded-lg" size='small' type="button"
-                    variant='outline'>
+                  <x-button class="mr-2 rounded-lg text-[var(text-primary)]" size='sm'
+                    type="button" variant='outline'>
                     Download All Invoices
                   </x-button>
                 </div>
@@ -1828,7 +1827,7 @@
               </div>
             </div>
             <div class="flex justify-end">
-              <x-button class="rounded-lg text-base" size='medium' type="submit"
+              <x-button class="rounded-lg text-base" size='md' type="submit"
                 variant='primary'>
                 Save Changes
               </x-button>
@@ -1856,7 +1855,7 @@
                   </div>
                   <form action="{{ route('settings.export.wardrobe') }}" method="POST">
                     @csrf
-                    <x-button class="rounded-lg" size='small' type="submit" variant='primary'>
+                    <x-button class="rounded-lg" size='sm' type="submit" variant='primary'>
                       Export
                     </x-button>
                   </form>
@@ -1868,7 +1867,7 @@
                   </div>
                   <form action="{{ route('settings.export.preferences') }}" method="POST">
                     @csrf
-                    <x-button class="rounded-lg" size='small' type="submit" variant='primary'>
+                    <x-button class="rounded-lg" size='sm' type="submit" variant='primary'>
                       Export
                     </x-button>
                   </form>
@@ -1880,7 +1879,7 @@
                   </div>
                   <form action="{{ route('settings.export.account') }}" method="POST">
                     @csrf
-                    <x-button class="rounded-lg" size='small' type="submit" variant='primary'>
+                    <x-button class="rounded-lg" size='sm' type="submit" variant='primary'>
                       Export
                     </x-button>
                   </form>
@@ -1903,7 +1902,7 @@
                     onsubmit="return confirm('Are you sure you want to delete all your wardrobe data? This action cannot be undone.')">
                     @csrf
                     @method('DELETE')
-                    <x-button class="rounded-lg" size='small' type="submit" variant='danger'>
+                    <x-button class="rounded-lg" size='sm' type="submit" variant='danger'>
                       Delete
                     </x-button>
                   </form>
@@ -1918,7 +1917,7 @@
                     onsubmit="return confirm('Are you sure you want to delete your style preferences? This action cannot be undone.')">
                     @csrf
                     @method('DELETE')
-                    <x-button size='small' type="submit" variant='danger'>
+                    <x-button size='sm' type="submit" variant='danger'>
                       Delete
                     </x-button>
                   </form>
@@ -1932,7 +1931,7 @@
                     onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently lost.')">
                     @csrf
                     @method('DELETE')
-                    <x-button size='small' type="submit" variant='danger'>
+                    <x-button size='sm' type="submit" variant='danger'>
                       Delete Account
                     </x-button>
                   </form>
@@ -1986,7 +1985,7 @@
                   </div>
                 </div>
                 <div class="mt-4 flex justify-end">
-                  <x-button class="rounded-lg text-base" size='medium' type="submit"
+                  <x-button class="rounded-lg text-base" size='md' type="submit"
                     variant='primary'>
                     Save Changes
                   </x-button>
@@ -2000,7 +1999,7 @@
   </div>
 
   <!-- Change Email Modal -->
-  <div class="z-9999 fixed inset-0 overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm"
+  <div class="fixed inset-0 z-[9999] hidden overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm"
     id="emailModal">
     <div class="mx-auto mt-28 w-full max-w-md rounded-2xl bg-white shadow-xl">
       <!-- Header -->
@@ -2065,19 +2064,17 @@
 
             <!-- Request OTP -->
             <x-button
-              class="bg-primary hover:bg-primary/90 rounded-lg px-4 py-2 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+              class="bg-primary hover:bg-primary/90 rounded-lg px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out disabled:cursor-not-allowed disabled:opacity-50"
               disabled id="requestOtpBtn" onclick="requestOtp()" type="button">
               Send Verification Code
             </x-button>
 
-            {{-- class="mt-2 w-full cursor-pointer rounded-xl border-none bg-white/70 py-4 text-base font-medium text-purple-700 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg active:translate-y-0 disabled:transform-none disabled:cursor-not-allowed disabled:bg-white/40 disabled:opacity-50 disabled:hover:shadow-none" --}}
-
             <!-- Verify OTP -->
-            <button
+            <x-button
               class="bg-primary hover:bg-primary/90 hidden rounded-lg px-4 py-2 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
               disabled id="verifyOtpBtn" onclick="verifyOtp()" type="button">
               Verify
-            </button>
+            </x-button>
           </div>
         </form>
       </div>
@@ -2141,11 +2138,11 @@
                   Advanced analytics
                 </li>
               </ul>
-              <button
+              <x-button
                 class="mt-6 w-full rounded-lg bg-gray-100 px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-200"
                 onclick="selectPlan('free')" type="button">
                 {{ $currentUser->plan->name === 'Free' ? 'Current Plan' : 'Select Free Plan' }}
-              </button>
+              </x-button>
             </div>
 
             <!-- Pro Plan -->
@@ -2184,11 +2181,11 @@
                   Priority support
                 </li>
               </ul>
-              <button
+              <x-button
                 class="mt-6 w-full rounded-lg bg-[var(--primary-color)] px-4 py-3 text-sm font-medium text-white opacity-80 transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-100 hover:shadow-lg active:scale-95"
                 onclick="selectPlan('premium')" type="button">
                 {{ $currentUser->plan->name === 'Premium' ? 'Current Plan' : 'Upgrade to Premium' }}
-              </button>
+              </x-button>
             </div>
 
             <!-- Premium Plan -->
@@ -2226,11 +2223,11 @@
                   Priority support
                 </li>
               </ul>
-              <button
+              <x-button
                 class="mt-6 w-full rounded-lg bg-purple-800 px-4 py-3 text-sm font-medium text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-purple-600 hover:shadow-lg active:scale-95"
                 onclick="selectPlan('premium')" type="button">
                 {{ $currentUser->plan->name === 'Premium' ? 'Current Plan' : 'Upgrade to Premium' }}
-              </button>
+              </x-button>
             </div>
           </div>
 
@@ -2261,11 +2258,11 @@
         <!-- Footer -->
         <div class="border-t border-gray-200 bg-gray-50 px-6 py-4">
           <div class="flex justify-end space-x-3">
-            <button
+            <x-button
               class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
               onclick="closeChangePlanModal()" type="button">
               Cancel
-            </button>
+            </x-button>
           </div>
         </div>
       </div>
@@ -2274,6 +2271,7 @@
 @endsection
 
 @push('scripts')
+  <script src="{{ asset('js/email-validation.js') }}"></script>
   <script>
     // DOM Elements
     const settingsNavBtns = document.querySelectorAll('.settings-nav-btn');
@@ -2801,16 +2799,85 @@
       // Reset buttons to initial state
       document.getElementById("requestOtpBtn").classList.remove("hidden");
       document.getElementById("verifyOtpBtn").classList.add("hidden");
-      document.getElementById("requestOtpBtn").disabled = false;
-      document.getElementById("requestOtpBtn").innerText = "Send Verification Code";
 
       // Clear form
       document.getElementById("emailChangeForm").reset();
 
+      // Attach email validation to the modal email input and button
+      // const modalEmailInput = document.getElementById("modal_email");
+      // const requestOtpBtn = document.getElementById("requestOtpBtn");
+      // attachEmailValidation(modalEmailInput, requestOtpBtn, function(e, resetCallback) {
+      // Custom submit handler for email modal
+      // requestOtp();
+      // });
+
+      attachEmailValidation();
+
       // Focus on email input
       setTimeout(() => {
-        document.getElementById("modal_email").focus();
+        modalEmailInput.focus();
       }, 100);
+    }
+
+    const allowedDomains = [
+      'gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com',
+      'icloud.com', 'live.com', 'aol.com', 'protonmail.com', 'zoho.com', 'me.com'
+    ];
+
+    function isValidEmailFormat(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function hasAllowedDomain(email) {
+      const at = email.lastIndexOf('@');
+      if (at === -1) return false;
+      const domain = email.slice(at + 1).toLowerCase();
+      return allowedDomains.some(d => domain === d || domain.endsWith('.' + d));
+    }
+
+    function updateRequestOtpButton() {
+      const requestOtpBtn = document.getElementById("requestOtpBtn");
+      const emailInput = document.getElementById("modal_email");
+      const emailError = document.getElementById("emailError");
+
+      if (!requestOtpBtn || !emailInput) return;
+
+      const submitted = requestOtpBtn.dataset.submitted === '1';
+      const val = (emailInput.value || '').trim();
+      const ok = isValidEmailFormat(val) && hasAllowedDomain(val);
+      const shouldEnable = ok && !submitted;
+
+      requestOtpBtn.disabled = !shouldEnable;
+
+      // Update styling based on state
+      requestOtpBtn.classList.toggle('opacity-50', !shouldEnable);
+      requestOtpBtn.classList.toggle('cursor-not-allowed', !shouldEnable);
+
+      // Show/hide error message
+      if (val && !ok) {
+        emailError.textContent =
+          'Please enter a valid email address with a supported domain (Gmail, Yahoo, etc.)';
+        emailError.classList.remove("hidden");
+      } else {
+        emailError.classList.add("hidden");
+      }
+    }
+
+    function attachEmailValidation() {
+      const emailInput = document.getElementById('modal_email');
+      const requestOtpBtn = document.getElementById('requestOtpBtn');
+
+      if (!emailInput || !requestOtpBtn) return;
+
+      // Initialize button state
+      requestOtpBtn.disabled = true;
+      requestOtpBtn.dataset.submitted = '0';
+
+      // Add input event listener
+      emailInput.addEventListener('input', updateRequestOtpButton);
+
+      // Set initial state
+      updateRequestOtpButton();
     }
 
     function requestOtp() {
@@ -2822,18 +2889,8 @@
         return;
       }
 
-      // Basic client-side validation
-      if (!email) {
-        emailError.textContent = 'Please enter an email address';
-        emailError.classList.remove("hidden");
-        return;
-      }
-
-      if (!isValidEmail(email)) {
-        emailError.textContent = 'Please enter a valid email address';
-        emailError.classList.remove("hidden");
-        return;
-      }
+      // Clear any previous errors
+      emailError.classList.add("hidden");
 
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
@@ -2987,17 +3044,18 @@
       // Reset buttons
       document.getElementById("requestOtpBtn").classList.remove("hidden");
       document.getElementById("verifyOtpBtn").classList.add("hidden");
-      document.getElementById("requestOtpBtn").disabled = false;
+      document.getElementById("requestOtpBtn").disabled = true;
       document.getElementById("requestOtpBtn").innerHTML = 'Send Verification Code';
+      document.getElementById("requestOtpBtn").dataset.submitted = '0';
       document.getElementById("verifyOtpBtn").disabled = false;
       document.getElementById("verifyOtpBtn").innerHTML = 'Verify';
     }
 
-    // Utility function for email validation
-    function isValidEmail(email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(email);
-    }
+    // Utility function for email validation (now using the imported one)
+    // function isValidEmail(email) {
+    //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    //   return emailRegex.test(email);
+    // }
 
     // Change Plan Modal Functions
     function openChangePlanModal() {
@@ -3455,26 +3513,35 @@
       }
 
       const otpInput = document.getElementById('modal_otp');
-      if (otpInput) {
+      const verifyBtn = document.getElementById('verifyOtpBtn');
+
+      if (otpInput && verifyBtn) {
+        function sanitizeAndTrim(value) {
+          return (value || '').replace(/\D/g, '').slice(0, 6);
+        }
+
+        otpInput.value = sanitizeAndTrim(otpInput.value);
+        verifyBtn.disabled = otpInput.value.length !== 6;
+
+        otpInput.addEventListener('input', () => {
+          otpInput.value = sanitizeAndTrim(otpInput.value);
+          const enabled = otpInput.value.length === 6;
+          const submitted = verifyBtn.dataset.submitted === '1';
+          verifyBtn.disabled = !(enabled && !submitted);
+        });
+
+        // handle paste to ensure only digits are accepted
+        otpInput.addEventListener('paste', (e) => {
+          e.preventDefault();
+          const paste = (e.clipboardData || window.clipboardData).getData('text') || '';
+          otpInput.value = sanitizeAndTrim(paste);
+          otpInput.dispatchEvent(new Event('input'));
+        });
+
         otpInput.addEventListener('keypress', function(e) {
           if (e.key === 'Enter') {
             e.preventDefault();
-            const btn = document.getElementById('verifyOtpBtn');
-            if (!btn.disabled) {
-              verifyOtp();
-            }
-          }
-        });
-
-        // Auto-advance and format OTP input
-        otpInput.addEventListener('input', function(e) {
-          // Remove non-digits
-          this.value = this.value.replace(/\D/g, '');
-
-          // Auto-submit when 6 digits are entered
-          if (this.value.length === 6) {
-            const btn = document.getElementById('verifyOtpBtn');
-            if (!btn.disabled) {
+            if (!verifyBtn.disabled) {
               verifyOtp();
             }
           }
